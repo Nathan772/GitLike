@@ -6,6 +6,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.RawTextComparator;
+import org.eclipse.jgit.lib.Ref;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +58,22 @@ public class Handler {
     Objects.requireNonNull(filePath, "the file analyzed by blame cannot be null");
     return git.blame().setFilePath(filePath).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
   }
+
+  /**
+   * give the list of tags that are with the repo git.
+   *
+   * @return
+   * the list of tags associated to the git repo.
+   *
+   */
+  public List<Ref> retrieveTags() throws GitAPIException {
+    return git.tagList().call();
+  }
+
+  public static String parseTag(Ref tag){
+     return tag.getName();
+  }
+
   /**
    *
    * This method performs a blame on the file given as an argument and
@@ -95,16 +112,25 @@ public class Handler {
   }
 
   public static void main(String args[]) {
-    //var handler = new Handler("https://github.com/NathanBil/Splendor_for_visitors.git");
+
     HashMap<String,Integer> hmUsers;
+    var res2 = new StringBuilder();
     try {
-      var handler = new Handler("tmp/test/", true);
+      //var handler = new Handler("https://github.com/vuejs/core.git");
+      //https://gitlab.com/seilliebert-bilingi/SEILLIEBERT-BILINGI.git
+      var handler2 = new Handler("tmp/test/", true);
       //var blameResult = handler.retrieveBlameFileResult("Affichage.java");
-      hmUsers = handler.givesUsersLines("Affichage.java");
+      //hmUsers = handler.givesUsersLines("Affichage.java");
+      var listTags = handler2.retrieveTags();
+
+      for(var tmp:listTags){
+        res2.append(parseTag(tmp)).append(";");
+      }
     } catch (GitAPIException | IOException e) {
       throw new RuntimeException(e);
     }
-    System.out.println("On affiche la hashMap "+hmUsers);
+    System.out.println("On affiche les tags "+res2);
+    //System.out.println("On affiche la hashMap "+hmUsers);
   }
 
 
