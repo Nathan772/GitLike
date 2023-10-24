@@ -3,6 +3,8 @@ micronaut:
     name: gitclout
   router:
     static-resources:
+      default:
+        paths: classpath:static
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /swagger/**
