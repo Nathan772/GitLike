@@ -14,8 +14,8 @@
     </parent>
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>17</jdk.version>
-        <release.version>17</release.version>
+        <jdk.version>21</jdk.version>
+        <release.version>21</release.version>
         <micronaut.version>4.1.5</micronaut.version>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
         <micronaut.aot.packageName>fr.uge.gitclout.aot.generated</micronaut.aot.packageName>
@@ -91,12 +91,13 @@
             <artifactId>org.eclipse.jgit</artifactId>
             <version>6.7.0.202309050840-r</version>
         </dependency>
-        <!-- JUnit Test Support for JGit -->
+        <!-- JUnit Test Support for JGit
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit.junit</artifactId>
             <version>6.7.0.202309050840-r</version>
         </dependency>
+        -->
     </dependencies>
     <build>
         <plugins>
@@ -150,7 +151,49 @@
                     <compilerArgs>
                         <arg>-Amicronaut.processing.group=fr.uge.gitclout</arg>
                         <arg>-Amicronaut.processing.module=gitclout</arg>
+                        <arg>-Xlint:all</arg>
                     </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <includes>
+                                <include>*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>org.eclipse.jgit:*</artifact>
+                            <excludes>
+                                <exclude>plugin.properties</exclude>
+                                <exclude>about.html</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>io.micronaut:*</artifact>
+                            <excludes>
+                                <exclude>micronaut-version.properties</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
             </plugin>
             <plugin>
