@@ -85,6 +85,7 @@ public class DataBaseHandler {
      * @param filePath
      * the path for the path you want to blame
      * @throws GitAPIException
+     * handle the use of blame
      */
     public void analyseOneFileForEachTag(String filePath) throws GitAPIException {
         var tags = retrieveTags();
