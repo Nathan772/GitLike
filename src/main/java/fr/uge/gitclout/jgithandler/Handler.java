@@ -21,6 +21,7 @@ public class Handler {
 
   public Handler(String url) throws GitAPIException {
     Objects.requireNonNull(url);
+    // voir pour créer un dossier avec le nom du repo
     git = Git.cloneRepository()
             .setURI(url)
             .setDirectory(new File("tmp/test")) // gives the path for the location of the directory
@@ -116,21 +117,22 @@ public class Handler {
     HashMap<String,Integer> hmUsers;
     var res2 = new StringBuilder();
     try {
-      //var handler = new Handler("https://github.com/vuejs/core.git");
+      //var handler = new Handler("https://github.com/NathanBil/Splendor_for_visitors");
+      //"https://github.com/vuejs/core.git")
       //https://gitlab.com/seilliebert-bilingi/SEILLIEBERT-BILINGI.git
       var handler2 = new Handler("tmp/test/", true);
-      //var blameResult = handler.retrieveBlameFileResult("Affichage.java");
-      //hmUsers = handler.givesUsersLines("Affichage.java");
-      var listTags = handler2.retrieveTags();
-
+      //var blameResult = handler2.retrieveBlameFileResult("Affichage.java");
+      hmUsers = handler2.givesUsersLines("Affichage.java");
+      //var listTags = handler2.retrieveTags();
+      /*
       for(var tmp:listTags){
         res2.append(parseTag(tmp)).append(";");
-      }
-    } catch (GitAPIException | IOException e) {
+      }*/
+    } catch (GitAPIException |  IOException e) {
       throw new RuntimeException(e);
     }
-    System.out.println("On affiche les tags "+res2);
-    //System.out.println("On affiche la hashMap "+hmUsers);
+    //System.out.println("On affiche les tags "+res2);
+    System.out.println("On affiche la hashMap "+hmUsers);
   }
 
 
