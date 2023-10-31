@@ -11,15 +11,17 @@ import org.eclipse.jgit.lib.Ref;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class DataBaseHandler {
     private final Git git;
     private final String url;
+    private final String repoPath;
 
     /**
      * Constructor that enables to open an already existing project
@@ -35,6 +37,7 @@ public class DataBaseHandler {
         var pattern = Pattern.compile(".*\\.com\\/(.*)");
         this.url = url;
 
+
         //capture the expression
         var matcher = pattern.matcher(url);
         //if the url is inconsistent with what was expected
@@ -42,6 +45,7 @@ public class DataBaseHandler {
             throw new IllegalArgumentException("url must match with the regex expected for an url");
         //if the url is consistent with what was expected
         var file = new File("repo/"+matcher.group(1));
+        repoPath = "repo/"+matcher.group(1);
 
         //if the project had already been imported
         if(file.exists() && file.isDirectory())
@@ -81,34 +85,40 @@ public class DataBaseHandler {
 
     /**
      *
-     * This method blame every version of a given file and display the number of line by user.
+     * This method blame every version (tag) of a given file and display the number of line by user.
      * @param filePath
      * the path for the path you want to blame
      * @throws GitAPIException
      * handle the use of blame
      */
-    public void analyseOneFileForEachTag(String filePath) throws GitAPIException {
+    public void parseOneFileForEachTag(String filePath) throws GitAPIException {
         var tags = retrieveTags();
         for(var tag:tags) {
             var blameResult = git.blame().setFilePath(filePath).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
             HashMap<String, Integer> hashUserLine = new HashMap<String, Integer>();
             //retrieve the total of rows of the blame
-            for (int i = 0; i < blameResult.getResultContents().size();i++) {
+            for (int i = 0; i < blameResult.getResultContents().size(); i++) {
                 //create a tuple for this user
-                hashUserLine.computeIfAbsent(blameResult.getSourceAuthor(i).getName(), (k)-> 1);
+                hashUserLine.computeIfAbsent(blameResult.getSourceAuthor(i).getName(), (k) -> 1);
                 //increase by one the number of line for this user
-                hashUserLine.computeIfPresent(blameResult.getSourceAuthor(i).getName(), (k,v)->v+1);
+                hashUserLine.computeIfPresent(blameResult.getSourceAuthor(i).getName(), (k, v) -> v + 1);
 
-                if(i==blameResult.getResultContents().size()-1) {
-                    System.out.println("Pour le tag : "+tag.getName()+", le nombre de ligne est : "+hashUserLine);
+                if (i == blameResult.getResultContents().size() - 1) {
+                    System.out.println("Pour le tag : " + tag.getName() + ", le nombre de ligne est : " + hashUserLine);
                 }
+
             }
-
         }
-
-
-
-
+    }
+    /**
+     * this method enables to retrieve every file path from the current repo.
+     * @return
+     * all the files associated to the repo.
+     */
+    public List<String> retrieveEveryFileFromRepo() throws IOException {
+        Path startDir = Paths.get(repoPath);
+        List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
+        return fileList.stream().map(Path::toString).collect(Collectors.toList());
     }
 
     public static String parseTag(Ref tag){
@@ -167,9 +177,8 @@ public class DataBaseHandler {
             // hmUsers = handler2.givesUsersContributionLines("package.json");
             //nécessite un deuxième appel avec les fichiers déjà importés
             //var listTags = handler2.retrieveTags();
-            handler2.analyseOneFileForEachTag("package.json");
-            //for(var tag:listTags) {
-            //git = Git.cloneRepository().setURI(url).setDirectory(new File("repo/" + matcher.group(1))).call();}
+            //handler2.parseOneFileForEachTag("package.json");
+            System.out.println(""+handler2.retrieveEveryFileFromRepo());
         } catch (GitAPIException | IOException e) {
             throw new RuntimeException(e);
         }
