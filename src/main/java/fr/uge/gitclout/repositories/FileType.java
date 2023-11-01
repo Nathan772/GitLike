@@ -6,4 +6,5 @@ public enum FileType {
   RESOURCE,
   CONFIG,
   DOCUMENTATION,
+  Unknown,
 }

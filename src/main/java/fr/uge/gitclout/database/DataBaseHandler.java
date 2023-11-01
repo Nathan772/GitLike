@@ -1,10 +1,7 @@
 package fr.uge.gitclout.database;
 
 
-import fr.uge.gitclout.repositories.Contributes;
-import fr.uge.gitclout.repositories.Contributor;
-import fr.uge.gitclout.repositories.Repository;
-import fr.uge.gitclout.repositories.Tag;
+import fr.uge.gitclout.repositories.*;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
@@ -82,6 +79,7 @@ public class DataBaseHandler {
      *
      */
     public List<Ref> retrieveTags() throws GitAPIException {
+        //System.out.println("On a retrouvé les tags "+git.tagList().call());
         return git.tagList().call();
     }
 
@@ -135,19 +133,16 @@ public class DataBaseHandler {
      * a hash map that contains the number of line by user for the file "filePath" and the tag "tag"
      */
     public void fromMapToListContribution(ArrayList<Contributes> contributes, HashMap<String, Integer> hashUserLine, String filePath,  Ref tag){
-        Objects.requireNonNull(tag);
-        Objects.requireNonNull(filePath);
-        Objects.requireNonNull(hashUserLine);
+        Objects.requireNonNull(tag);Objects.requireNonNull(filePath);Objects.requireNonNull(hashUserLine);
         Objects.requireNonNull(contributes);
-        /*var repo = new Repository(url);
-        var file = new File(filePath,,repo);
-        var tag =  new Tag(tag.getName(), repo, 0,line);
-        hashUserLine.forEach((user,line) ->
-                contributes.add(
-                new Contributor(user),
-
-                )
-        );*/
+        var languages = Language.initLanguages();
+        var repo = new Repository(url);
+        var language = Language.fromFileToLanguage(languages, filePath);
+        var file = new MyFile(filePath,language,repo);
+        var tag1 =  new Tag(tag.getName(), repo);
+        hashUserLine.forEach((user,lines) ->
+                contributes.add(new Contributes(new Contributor(user),tag1, file,0,lines))
+        );
     }
     /**
      *
@@ -164,10 +159,14 @@ public class DataBaseHandler {
         HashMap<String, Integer> hashUserLine = new HashMap<String, Integer>();
         var listContributes = new ArrayList<Contributes>();
         for(var tag:retrieveTags()) {
+            System.out.println("le tag : "+tag.getName()+" a été trouvé");
             var blameResult = git.blame().setFilePath(filePath).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
             if(blameResult != null) {
                 feedHashWithBlame(hashUserLine, blameResult);
                 fromMapToListContribution(listContributes, hashUserLine, filePath, tag);
+            }
+            else{
+                System.out.println(" le résultat de blame vaut null");
             }
         }
         return listContributes;
@@ -239,7 +238,6 @@ public class DataBaseHandler {
     }
 
     /**
-     *
      * This method parse every file from the repo and give the user per line.
      * @param repoDirectory
      * The repo from which all the project are stored
@@ -260,31 +258,51 @@ public class DataBaseHandler {
         }
     }
 
-    public static void main(String args[]) {
+    /**
+     *
+     * This method parse every file from the repo and give the user per line.
+     *
+     * @param repoDirectory
+     * The repo from which all the project are stored
+     *
+     * @return List<Contributes>
+     * the list of contribution with every user and their number of lines by files and by tag.
+     *
+     * @throws GitAPIException
+     * exception for the use of method from retrieveEveryFileFromDepo.
+     * @throws IOException
+     * exception for the use of the method from parseOneFileForEachTag.
+     */
 
+    public List<Contributes> parseEveryFileFromCurrentRepoAndTransformItIntoContribution(String repoDirectory) throws GitAPIException, IOException {
+        //the final lists with all hte contributions
+        var contributesList = new ArrayList<Contributes>();
+        int compteur = 0;
+        var files = retrieveEveryFileFromRepo(repoDirectory);
+        for(var file:files) {
+            if(compteur == 30) // stop after 30 files in order to not wait too much
+                break;
+            var listContributes = parseOneFileForEachTagWithContributors(file);
+            contributesList.addAll(listContributes);
+            if(!listContributes.isEmpty())
+                compteur++;
+        }
+        System.out.println();
+        return contributesList;
+    }
+
+    public static void main(String[] args) {
         HashMap<String,Integer> hmUsers = new HashMap<String, Integer>();
-        var res2 = new StringBuilder();
         try {
-            //"https://github.com/vuejs/core")
-            //https://gitlab.com/seilliebert-bilingi/SEILLIEBERT-BILINGI
-            //https://github.com/NathanBil/Splendor_for_visitors
-            //package.json
-            var repositoryPath = "https://github.com/vuejs/core";
+            var repositoryPath = "https://github.com/facebookresearch/llama";
             var handler2 = new DataBaseHandler(repositoryPath);
-            // hmUsers = handler2.givesUsersContributionLines("package.json");
-            //nécessite un deuxième appel avec les fichiers déjà importés
-            //var listTags = handler2.retrieveTags();
-            //handler2.parseOneFileForEachTag("package.json");
-            //System.out.println(""+handler2.retrieveEveryFileFromRepo());
-            //handler2.parseEveryFileFromCurrentRepo();
-            //System.out.println("Les hashMaps : "+handler2.parseOneFileForEachTag("package.json"));
-            //System.out.println("Les hashMaps : "+handler2.retrieveEveryFileFromRepo("repo/"));
-            handler2.parseEveryFileFromCurrentRepo("repo/");
+            var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution("repo/");
+            for(var contribution:resContribution){
+                System.out.println(contribution);
+            }
         } catch (GitAPIException | IOException e) {
             throw new RuntimeException(e);
         }
-       // System.out.println("On affiche les tags "+res2);
-       // System.out.println("On affiche la hashMap "+hmUsers);
     }
 
 }
