@@ -87,15 +87,16 @@ public class DataBaseHandler {
      * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame
      * @param hashUserLine
      * the hashMap you want to fill
-     * @
+     * @param blameResult
+     * the result of the blame you made on a file.
      */
-    public static void feedHashWithBlame(HashMap<String, Integer> hashUserLine, BlameResult blameResult){
+    public static void feedHashWithBlame(HashMap<Contributor, Integer> hashUserLine, BlameResult blameResult){
         //retrieve the total of rows of the blame
         for (int i = 0; i < blameResult.getResultContents().size(); i++) {
             //create a tuple for this user
-            hashUserLine.computeIfAbsent(blameResult.getSourceAuthor(i).getName(), (k) -> 1);
+            hashUserLine.computeIfAbsent(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), (k) -> 1);
             //increase by one the number of line for this user
-            hashUserLine.computeIfPresent(blameResult.getSourceAuthor(i).getName(), (k, v) -> v + 1);
+            hashUserLine.computeIfPresent(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), (k, v) -> v + 1);
         }
     }
 
@@ -109,9 +110,9 @@ public class DataBaseHandler {
      * @return
      * a HashMap with the pair : <UserName, Line>
      */
-    public HashMap<String, Integer> parseOneFileForEachTag(String filePath) throws GitAPIException {
+    public HashMap<Contributor, Integer> parseOneFileForEachTag(String filePath) throws GitAPIException {
         Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
-        HashMap<String, Integer> hashUserLine = new HashMap<String, Integer>();
+        HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
         for(var tag:retrieveTags()) {
             var blameResult = git.blame().setFilePath(filePath).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
             if(blameResult != null) {
@@ -132,7 +133,7 @@ public class DataBaseHandler {
      * @param hashUserLine
      * a hash map that contains the number of line by user for the file "filePath" and the tag "tag"
      */
-    public void fromMapToListContribution(ArrayList<Contributes> contributes, HashMap<String, Integer> hashUserLine, String filePath,  Ref tag){
+    public void fromMapToListContribution(ArrayList<Contributes> contributes, HashMap<Contributor, Integer> hashUserLine, String filePath,  Ref tag){
         Objects.requireNonNull(tag);Objects.requireNonNull(filePath);Objects.requireNonNull(hashUserLine);
         Objects.requireNonNull(contributes);
         var languages = Language.initLanguages();
@@ -141,7 +142,7 @@ public class DataBaseHandler {
         var file = new MyFile(filePath,language,repo);
         var tag1 =  new Tag(tag.getName(), repo);
         hashUserLine.forEach((user,lines) ->
-                contributes.add(new Contributes(new Contributor(user),tag1, file,0,lines))
+                contributes.add(new Contributes(new Contributor(user.name(),user.email()),tag1, file,0,lines))
         );
     }
     /**
@@ -156,7 +157,7 @@ public class DataBaseHandler {
      */
     public List<Contributes> parseOneFileForEachTagWithContributors(String filePath) throws GitAPIException {
         Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
-        HashMap<String, Integer> hashUserLine = new HashMap<String, Integer>();
+        HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
         var listContributes = new ArrayList<Contributes>();
         for(var tag:retrieveTags()) {
             System.out.println("le tag : "+tag.getName()+" a été trouvé");
@@ -181,18 +182,18 @@ public class DataBaseHandler {
     public List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
         Path startDir = Paths.get(repoPath);
         List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
-        var pattern = Pattern.compile(".*\\.com\\/(.*)");
-        var matcher = pattern.matcher(url);
-        //if the url is inconsistent with what was expected
-        if(!matcher.find())
-            //the regex doesn't match with a url format, it's not supposed to happen
-            return new ArrayList<String>();
+            var pattern = Pattern.compile(".*\\.com\\/(.*)");
+            var matcher = pattern.matcher(url);
+            //if the url is inconsistent with what was expected
+            if (!matcher.find())
+                //the regex doesn't match with a url format, it's not supposed to happen
+                return new ArrayList<String>();
 
-        //var pattern = Pattern.compile(".*\\.com\\/(.*)");
-        var files = fileList.stream().map(Path::toString).collect(Collectors.toList());
-        //retrieve the part of the file name which is relevant
-        var files2 = files.stream().map(x->x.substring((directoryForRepoStorage+matcher.group(1)).length()+1)).toList();
-        return files2;
+            //var pattern = Pattern.compile(".*\\.com\\/(.*)");
+            var files = fileList.stream().map(Path::toString).collect(Collectors.toList());
+            //retrieve the part of the file name which is relevant
+            var files2 = files.stream().map(x -> x.substring((directoryForRepoStorage + matcher.group(1)).length() + 1)).toList();
+            return files2;
     }
 
     public static String parseTag(Ref tag){
@@ -280,19 +281,17 @@ public class DataBaseHandler {
         int compteur = 0;
         var files = retrieveEveryFileFromRepo(repoDirectory);
         for(var file:files) {
-            if(compteur == 30) // stop after 30 files in order to not wait too much
+            if(compteur == 10) // stop after 30 files in order to not wait too much
                 break;
             var listContributes = parseOneFileForEachTagWithContributors(file);
             contributesList.addAll(listContributes);
             if(!listContributes.isEmpty())
                 compteur++;
         }
-        System.out.println();
         return contributesList;
     }
 
     public static void main(String[] args) {
-        HashMap<String,Integer> hmUsers = new HashMap<String, Integer>();
         try {
             var repositoryPath = "https://github.com/facebookresearch/llama";
             var handler2 = new DataBaseHandler(repositoryPath);
