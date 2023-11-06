@@ -11,3 +11,17 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
+datasources:
+  default:
+    url: jdbc:sqlite:src/main/resources/db/gitclout.db
+    driverClassName: org.sqlite.JDBC
+    dialect: org.hibernate.community.dialect.SQLiteDialect
+jpa:
+  default:
+    entity-scan:
+      packages: 'fr.uge.gitclout.model'
+#    properties:
+#      hibernate:
+#        hbm2ddl:
+#          auto: update
+#        show_sql: true

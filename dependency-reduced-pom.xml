@@ -54,6 +54,16 @@
                 </exclusion>
               </exclusions>
             </path>
+            <path>
+              <groupId>io.micronaut.data</groupId>
+              <artifactId>micronaut-data-hibernate-jpa</artifactId>
+              <version>4.1.4</version>
+            </path>
+            <path>
+              <groupId>io.micronaut.data</groupId>
+              <artifactId>micronaut-data-processor</artifactId>
+              <version>4.1.4</version>
+            </path>
           </annotationProcessorPaths>
           <compilerArgs>
             <arg>-Amicronaut.processing.group=fr.uge.gitclout</arg>
@@ -226,7 +236,7 @@
   </dependencies>
   <properties>
     <micronaut.aot.enabled>false</micronaut.aot.enabled>
-    <exec.mainClass>fr.uge.gitclout.rest.Application</exec.mainClass>
+    <exec.mainClass>fr.uge.gitclout.app.Application</exec.mainClass>
     <micronaut.aot.packageName>fr.uge.gitclout.aot.generated</micronaut.aot.packageName>
     <packaging>jar</packaging>
     <micronaut.runtime>netty</micronaut.runtime>
