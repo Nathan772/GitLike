@@ -20,8 +20,8 @@ jpa:
   default:
     entity-scan:
       packages: 'fr.uge.gitclout.model'
-#    properties:
-#      hibernate:
-#        hbm2ddl:
-#          auto: update
-#        show_sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true

@@ -1,53 +1,33 @@
 package fr.uge.gitclout.app;
 
-import fr.uge.gitclout.db.RepositoryRepository;
-import fr.uge.gitclout.git.GitManager;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import jakarta.inject.Inject;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.Map;
 
 @Controller("/api")
 public class GitcloutController {
-
-  //private final DatabaseManager databaseManager = new DatabaseManager();
-
   @Inject
-  private RepositoryRepository repositoryRepository;
+  private ApplicationUtils applicationUtils;
 
-  @Post(uri = "/post-url", produces = "application/json")
-  public Mono<String> postURL(String url) {
-    try {
-      var git = new GitManager(url, "target/tmp");
-      var repo = git.cloneRepository();
-      repositoryRepository.save(repo);
-//      databaseManager.saveRepository(repo);
-      return Mono.just(url);
-    } catch (GitAPIException e) {
-      return Mono.just("Error");
-    }
+  @Post(uri = "/repository", produces = "application/json")
+  public Mono<Map<String, String>> postRepository(String url) {
+    return Mono.fromCallable(() -> {
+      var repo = applicationUtils.processRepository(url);
+      return ApplicationUtils.createJsonResponse("ok", "Repository (" + url + ") saved");
+    }).subscribeOn(Schedulers.boundedElastic());
   }
 
-//  @Post(uri = "/post-url", produces = "application/json")
-//  public Mono<String> postURL(String url) {
-//    return Mono.fromCallable(() -> {
-//      var git = new GitManager(url, "target/tmp");
-//      var repo = git.cloneRepository();
-//      databaseManager.saveRepository(repo);
-//      return url;
-//    }).subscribeOn(Schedulers.boundedElastic());
-//  }
-//
-//  @Post(uri = "/post-url2", produces = "application/json")
-//  public HttpResponse<String> postURL2(String url) {
-//    try {
-//      var git = new GitManager(url, "target/tmp");
-//      var repo = git.cloneRepository();
-//      repositoryRepository.save(repo);
-//      return HttpResponse.ok(url);
-//    } catch (GitAPIException e) {
-//      return HttpResponse.serverError("Error");
-//    }
-//  }
+  @Get(uri = "/{repositoryURL}/tags", produces = "application/json")
+  public Mono<Map<String, Object>> getTags(String repositoryURL) {
+    return Mono.fromCallable(() -> {
+      var repo = applicationUtils.processRepository(repositoryURL);
+      var tags = applicationUtils.processTags(repo);
+      return Map.of("data", tags, "message", "Tags found for repository " + repositoryURL, "status", "ok");
+    }).subscribeOn(Schedulers.boundedElastic());
+  }
 }
