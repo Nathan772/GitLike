@@ -82,7 +82,8 @@ public class GitManager {
   }
 
   public static void main(String[] args) throws IOException, GitAPIException {
-    var git = new GitManager("https://gitlab.ow2.org/asm/asm.git", "target/tmp");
+    var git = new GitManager("https://gitlab.ow2.org/asm/asm.git");
+    //git.cloneRepository();
     System.out.println(git.getTags());
     git.close();
   }

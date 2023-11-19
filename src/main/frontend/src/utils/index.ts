@@ -14,3 +14,9 @@ export const postRepository = async (repoURL: string) => {
 
     return response.json();
 };
+
+export const getTags = async (repoId: string) => {
+    const response = await fetch(`${API_URL}/tags/${repoId}`);
+
+    return response.json();
+}

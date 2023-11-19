@@ -16,40 +16,47 @@ import java.util.Map;
 @Singleton
 public class ApplicationUtils {
 
-  private final RepositoryRepository repositoryRepository;
-  private final TagRepository tagRepository;
+    private final RepositoryRepository repositoryRepository;
+    private final TagRepository tagRepository;
 
-  @Inject
-  public ApplicationUtils(RepositoryRepository repositoryRepository, TagRepository tagRepository) {
-    this.repositoryRepository = repositoryRepository;
-    this.tagRepository = tagRepository;
-  }
-
-  static Map<String, String> createJsonResponse(String status, String message) {
-    return Map.of("status", status, "message", message);
-  }
-
-  Repository processRepository(String repositoryURL) throws GitAPIException, IOException {
-    var git = new GitManager(repositoryURL);
-    if (!git.isCloned()) {
-      var repo = git.cloneRepository();
-      repositoryRepository.save(repo);
-      return repo;
-    } else if (repositoryRepository.findByURL(repositoryURL).isPresent()) {
-      return repositoryRepository.findByURL(repositoryURL).get();
-    } else {
-      throw new RuntimeException("Repository not found");
+    @Inject
+    public ApplicationUtils(RepositoryRepository repositoryRepository, TagRepository tagRepository) {
+        this.repositoryRepository = repositoryRepository;
+        this.tagRepository = tagRepository;
     }
-  }
 
-  List<Tag> processTags(Repository repository) throws IOException, GitAPIException {
-    if (tagRepository.findAllByRepositoryId(repository.getId()) != null) {
-      return tagRepository.findAllByRepositoryId(repository.getId());
+    static Map<String, String> createJsonResponse(String status, String message) {
+        return Map.of("status", status, "message", message);
     }
-    var git = GitManager.fromRepository(repository);
-    var tags = git.getTags();
-    tags.forEach(tag -> tag.setRepository(repository));
-    tagRepository.saveAll(tags);
-    return tags;
-  }
+
+    Repository processRepository(String repositoryURL) throws GitAPIException, IOException {
+        var git = new GitManager(repositoryURL);
+        if (!git.isCloned()) {
+            var repo = git.cloneRepository();
+            repositoryRepository.save(repo);
+            return repo;
+        } else if (repositoryRepository.findByURL(repositoryURL).isPresent()) {
+            return repositoryRepository.findByURL(repositoryURL).get();
+        } else {
+            throw new RuntimeException("Repository not found");
+        }
+    }
+
+    Repository getRepositoryById(long id) {
+        if (repositoryRepository.findById(id).isPresent()) {
+            return repositoryRepository.findById(id).get();
+        }
+        throw new RuntimeException("Repository not found");
+    }
+
+    List<Tag> processTags(Repository repository) throws IOException, GitAPIException {
+        /*if (tagRepository.findAllByRepositoryId(repository.getId()) != null) {
+            return tagRepository.findAllByRepositoryId(repository.getId());
+        }*/
+        var git = GitManager.fromRepository(repository);
+        var tags = git.getTags();
+        tags.forEach(tag -> tag.setRepository(repository));
+        tagRepository.saveAll(tags);
+        return tags;
+    }
 }

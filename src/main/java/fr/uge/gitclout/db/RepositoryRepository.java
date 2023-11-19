@@ -8,4 +8,5 @@ import java.util.Optional;
 @io.micronaut.data.annotation.Repository
 public interface RepositoryRepository extends CrudRepository<Repository, Long> {
   Optional<Repository> findByURL(String URL);
+  Optional<Repository> findById(long id);
 }
