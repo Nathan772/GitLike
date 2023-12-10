@@ -35,7 +35,7 @@ public class GitcloutController {
   public Mono<Map<String, Object>> getTagsById(long repositoryId) {
     return Mono.fromCallable(() -> {
       var repo = applicationUtils.getRepositoryById(repositoryId);
-      var tags = applicationUtils.processTags(repo);
+      var tags = applicationUtils.processTags(repo).toIterable();
       return Map.of("data", Map.of("tags", tags, "repo", repo), "message", "Tags found for repository " + repo.getURL(), "status", "ok");
     }).subscribeOn(Schedulers.boundedElastic());
   }
