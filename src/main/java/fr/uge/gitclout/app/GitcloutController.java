@@ -1,5 +1,6 @@
 package fr.uge.gitclout.app;
 
+import fr.uge.gitclout.git.GitManager;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
@@ -35,8 +36,19 @@ public class GitcloutController {
   public Mono<Map<String, Object>> getTagsById(long repositoryId) {
     return Mono.fromCallable(() -> {
       var repo = applicationUtils.getRepositoryById(repositoryId);
-      var tags = applicationUtils.processTags(repo).toIterable();
+      var tags = applicationUtils.processTags(repo);
       return Map.of("data", Map.of("tags", tags, "repo", repo), "message", "Tags found for repository " + repo.getURL(), "status", "ok");
+    }).subscribeOn(Schedulers.boundedElastic());
+  }
+
+  @Get(uri = "/{repositoryURL}/contributions", produces = "application/json")
+  public Mono<Map<String, Object>> getContributions(String repositoryURL) {
+    return Mono.fromCallable(() -> {
+      var repo = applicationUtils.processRepository(repositoryURL);
+      var url = repo.getURL();
+      var git = new GitManager(url);
+      var contributions = git.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
+      return Map.of("data", contributions, "message", "Contributions found for repository " + repositoryURL, "status", "ok");
     }).subscribeOn(Schedulers.boundedElastic());
   }
 }
