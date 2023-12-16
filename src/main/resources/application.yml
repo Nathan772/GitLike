@@ -3,8 +3,9 @@ micronaut:
     name: gitclout
   router:
     static-resources:
-      default:
+      app:
         paths: classpath:static
+        mapping: /**
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /swagger/**
@@ -19,7 +20,7 @@ datasources:
 jpa:
   default:
     entity-scan:
-      packages: 'fr.uge.gitclout.model'
+      packages: 'fr.uge.gitclout'
     properties:
       hibernate:
         hbm2ddl:

@@ -4,6 +4,13 @@ import solid from 'vite-plugin-solid'
 export default defineConfig({
   plugins: [solid()],
   build: {
-    outDir: '../resources/static'
+    outDir: '../resources/static/',
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/index.js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
   }
 })
