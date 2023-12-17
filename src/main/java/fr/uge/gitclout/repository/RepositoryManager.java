@@ -3,6 +3,8 @@ package fr.uge.gitclout.repository;
 import jakarta.inject.Singleton;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.URIish;
 
 import java.io.IOException;
@@ -43,7 +45,7 @@ public class RepositoryManager {
     return repositoryPath.resolve(getRepositoryName(repositoryURL) + "-" + timestamp);
   }
 
-  public Path resolveRepository(String repositoryURL) throws GitAPIException, URISyntaxException {
+  public Repository resolveRepository(String repositoryURL) throws GitAPIException, URISyntaxException, IOException {
     var repository = repositoryRepository.findByRepositoryURL(repositoryURL);
     if (repository.isPresent()) {
       try {
@@ -51,11 +53,11 @@ public class RepositoryManager {
       } catch (IOException e) {
         cloneRepository(repositoryURL, Path.of(repository.get().getRepositoryLocalPath()));
       }
-      return Path.of(repository.get().getRepositoryLocalPath());
+      return new FileRepository(Path.of(repository.get().getRepositoryLocalPath()).toFile());
     } else {
       var repositoryLocalPath = generateRepositoryLocalPath(repositoryURL);
       cloneRepository(repositoryURL, repositoryLocalPath);
-      return repositoryLocalPath;
+      return new FileRepository(repositoryLocalPath.toFile());
     }
   }
 }

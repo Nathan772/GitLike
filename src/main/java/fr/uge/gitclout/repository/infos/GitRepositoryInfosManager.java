@@ -1,5 +1,6 @@
 package fr.uge.gitclout.repository.infos;
 
+import fr.uge.gitclout.app.json.JSONRepository;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -47,8 +48,8 @@ public class GitRepositoryInfosManager {
             .toList().reversed();
   }
 
-  public RepositoryInfos getRepositoryInfos() throws URISyntaxException, GitAPIException {
-    return new RepositoryInfos(getRepositoryName(), repositoryURL, getRemoteRepositoryTags());
+  public JSONRepository getRepositoryInfos() throws URISyntaxException, GitAPIException {
+    return new JSONRepository(getRepositoryName(), repositoryURL, getRemoteRepositoryTags());
   }
 }
 

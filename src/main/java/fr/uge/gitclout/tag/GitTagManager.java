@@ -3,23 +3,21 @@ package fr.uge.gitclout.tag;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GitTagManager {
-  private final Path repositoryPath;
+  private final Repository repository;
 
-  public GitTagManager(Path repositoryPath) {
-    this.repositoryPath = repositoryPath;
+  public GitTagManager(Repository repository) {
+    this.repository = repository;
   }
 
-  public List<String> getTags() throws GitAPIException, IOException {
-    var git = Git.open(repositoryPath.toFile());
-    var tags = git.tagList().call();
-    return tags.stream().map(Ref::getName).collect(Collectors.toList());
+  public List<Ref> getTags() throws GitAPIException, IOException {
+    var git = new Git(repository);
+    return git.tagList().call();
   }
 
 }

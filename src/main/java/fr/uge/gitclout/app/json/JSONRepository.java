@@ -1,12 +1,11 @@
-package fr.uge.gitclout.repository.infos;
+package fr.uge.gitclout.app.json;
 
-import fr.uge.gitclout.app.json.JSONData;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.List;
 
 @Serdeable
-public record RepositoryInfos(
+public record JSONRepository(
         String name,
         String URL,
         List<String> tags
