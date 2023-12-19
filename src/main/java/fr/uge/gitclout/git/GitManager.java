@@ -1,6 +1,7 @@
 package fr.uge.gitclout.git;
 
-import Language.Language;
+import fr.uge.gitclout.Contribution.Contribution;
+import fr.uge.gitclout.Documentation.Documentation;
 import fr.uge.gitclout.model.*;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -22,10 +23,22 @@ public class GitManager {
   private final Path localPath;
   private final String projectName;
   private final Repository repository;
+  /* it represents all the documents chosen by the user (all the file that exists and documentation files that exists) */
+  private final ArrayList<Documentation> documentations;
 
   private static final String PATH = "target/tmp";
 
-  public GitManager(String remoteURL, String localPath) throws IOException {
+  /**
+   *
+   * @param remoteURL
+   * it represents the url of the git project
+   * @param localPath
+   * it represents
+   * @param documentationChosenByUser
+   * it's the file that contains all the language and documentation (BUILD, CONFIG, ETC...) available.
+   * @throws IOException
+   */
+  public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) throws IOException {
     Objects.requireNonNull(remoteURL);
     Objects.requireNonNull(localPath);
     this.remoteURL = Path.of(remoteURL);
@@ -35,10 +48,11 @@ public class GitManager {
       git = Git.open(new File(this.localPath.toString()));
     }
     this.repository = new Repository(projectName, remoteURL, this.localPath.toString());
+    this.documentations = Documentation.fromPathToListDocumentation(documentationChosenByUser);
   }
 
   public GitManager(String remoteURL) throws IOException {
-    this(remoteURL, Path.of(PATH).resolve(createProjectName(remoteURL)).toString());
+    this(remoteURL, Path.of(PATH).resolve(createProjectName(remoteURL)).toString(), Path.of("FILES/langages_reconnus/langagesListe.txt"));
   }
 
   private static String createProjectName(String remoteURL) {
@@ -49,7 +63,7 @@ public class GitManager {
   }
 
   public static GitManager fromRepository(Repository repository) throws IOException {
-    return new GitManager(repository.getURL(), repository.getLocalPath());
+    return new GitManager(repository.getURL(), repository.getLocalPath(), Path.of("FILES/langages_reconnus/langagesListe.txt"));
   }
 
   public boolean isCloned() {
@@ -101,9 +115,9 @@ public class GitManager {
     return files.stream().map(x -> x.substring((directoryForRepoStorage).length() + 1)).toList();
   }
 
-  public List<Contributes> parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
+  public List<Contribution> parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
     //the final lists with all hte contributions
-    var contributesList = new ArrayList<Contributes>();
+    var contributesList = new ArrayList<Contribution>();
     int compteur = 0;
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
@@ -129,28 +143,50 @@ public class GitManager {
     }
   }
 
-  public void fromMapToListContribution(ArrayList<Contributes> contributes, HashMap<Contributor, Integer> hashUserLine, String filePath, Ref tag) {
+    /**
+     *
+     * @param contributions
+     * the list that will contain the contributions made by the users.
+     * @param hashUserLine
+     * @param documentation
+     * it represents the kind of documentation used by the user.
+     */
+  public void fromMapToListContribution(ArrayList<Contribution> contributions, HashMap<Contributor, Integer> hashUserLine, Documentation documentation, Ref tag) {
     Objects.requireNonNull(tag);
-    Objects.requireNonNull(filePath);
+    Objects.requireNonNull(documentation);
     Objects.requireNonNull(hashUserLine);
-    Objects.requireNonNull(contributes);
-    var languages = Language.initLanguages();
-    var repo = repository;
-    var language = Language.fromFileToLanguage(languages, filePath);
-    var file = new MyFile(filePath, language, repo);
-    var tag1 = new Tag(tag.getName(), tag.getName(), new Date(), repo);
+    Objects.requireNonNull(contributions);
+    //c'est tard, faites le plus tôt dans le programme
+    //var documentationList = Documentation.fromPathToListDocumentation(filePath);
+    // var repo = repository;
+    //var language = Language.fromFileToLanguage(languages, filePath);
+    //var file = new MyFile(filePath, language, repo);
+
+    var tag1 = new Tag(tag.getName(), tag.getName(), new Date(), repository);
     hashUserLine.forEach((user, lines) ->
-            contributes.add(new Contributes(new Contributor(user.name(), user.email()), tag1, file, 0, lines))
+            contributions.add(new Contribution(new Contributor(user.name(), user.email()), tag1, documentation , 0, lines))
     );
   }
 
-  public List<Contributes> parseOneFileForEachTagWithContributors(String filePath) throws GitAPIException {
+  /**
+   *
+   * this method enable to convert the data from a filePath to information about its kind of documentation
+   * (example : it's code type and it's language C)
+   * @param file
+   * the filePath you want to use in order to know its kind.
+   * @return
+   * the type of documentation it represents( BUILD, C programming, Python programming, angular programming ...)
+   */
+  public Documentation fromFileToDocumentation(Path file){
+    return null;
+  }
+  /* à résoudre */
+  public List<Contribution> parseOneFileForEachTagWithContributors(String filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
     HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
-    var listContributes = new ArrayList<Contributes>();
-    int compteur = 0;
+    var listContributes = new ArrayList<Contribution>();
+    /*int compteur = 0;
     for (var tag : retrieveTags()) {
-      //System.out.println("le tag : "+tag.getName()+" a été trouvé");
       var blameResult = git.blame().setFilePath(filePath).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
       if (blameResult != null) {
         compteur++;
@@ -163,7 +199,7 @@ public class GitManager {
         if (blameResult != null) {
           //System.out.println("" + blameResult.getResultContents());
       }}
-    }
+    }*/
     return listContributes;
   }
 

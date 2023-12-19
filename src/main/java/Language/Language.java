@@ -7,18 +7,42 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public record Language(String name, String extension, ArrayList<String> beginCommentRegex,
-                       ArrayList<String> endCommentRegex
+public class Language {
+    private final String name;
+    private final ArrayList<String> beginCommentRegex;
+    private final ArrayList<String> endCommentRegex;
 
-) {
-    public Language{
+    public Language(String name, ArrayList<String> beginCommentRegex,
+                    ArrayList<String> endCommentRegex){
         Objects.requireNonNull(name, "language's name cannot be null");
-        Objects.requireNonNull(extension, "language's extension cannot be null");
         Objects.requireNonNull(beginCommentRegex, "language's commentRegex cannot be null");
         Objects.requireNonNull(endCommentRegex, "language's commentRegex cannot be null");
-        /* à supprimer
-        Objects.requireNonNull(fileType, "language's file type cannot be null");
-         */
+       this.name=name;
+       this.beginCommentRegex = beginCommentRegex;
+       this.endCommentRegex = endCommentRegex;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        return obj instanceof Language lang && lang.name.equals(name) && lang.beginCommentRegex.equals(this.beginCommentRegex)
+                && lang.endCommentRegex.equals(endCommentRegex);
+    }
+    @Override
+    public String toString(){
+        var bd = new StringBuilder();
+        bd.append(" the language is : ");bd.append(name);
+
+        for(var i=0;i<beginCommentRegex.size();i++){
+            bd.append("\n their comments can start by : "); bd.append(beginCommentRegex.get(i));
+            bd.append("\n"); bd.append(" and end with : "); bd.append(endCommentRegex.get(i));
+            bd.append("\n");
+        }
+        return bd.toString();
+    }
+
+    @Override
+    public int hashCode(){
+       return name.hashCode()^beginCommentRegex.hashCode()^endCommentRegex.hashCode();
     }
     /**
      * This method enables to use a string tab format to transform it into a "Language" object.
@@ -27,6 +51,7 @@ public record Language(String name, String extension, ArrayList<String> beginCom
      * @return Language
      * an object of type Language that represents the languages you obtain from your string.
      */
+
 
     public static Language fromStringTabToLanguage(String[] tabLanguage){
         Objects.requireNonNull(tabLanguage);
@@ -39,20 +64,19 @@ public record Language(String name, String extension, ArrayList<String> beginCom
                 beginRegex.add(tabLanguage[i]);
                 // add the end of comment
             else if(i>=4)
-                endRegex.add(tabLanguage[i]);
+                endRegex.add(tabLanguage[i].replace("]", ""));
         }
         //we start at index 1 to avoid the first "["
-        return new Language(tabLanguage[0].substring(1),tabLanguage[1],beginRegex,endRegex);
+        return new Language(tabLanguage[0].substring(1),beginRegex,endRegex);
     }
     /**
      * this method enables to initiate a list with all the languages that might exist.
      * @return
      * a list with all the existing languages.
      */
-    /*
-    à supprimer...
+    //à supprimer...
 
-    public static List<Language> initLanguages(){
+    /*public static List<Language> initLanguages(){
         var list = new ArrayList<Language>();
         var python = new Language("Python", ".py", FileType.CODE,"#(.*)|\"\"\"(.|\n)*\"\"\"");
         var java =  new Language("Java", ".java", FileType.CODE,"\\/\\/(.*)|\\/\\*(.|\n)*\\*\\/");
