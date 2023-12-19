@@ -76,6 +76,8 @@ public record Language(String name, String extension, ArrayList<String> beginCom
      * @return
      * the language associated to the file.
      */
+    /*
+    à supprimer
     public static Language fromFileToLanguage(List<Language> languages, String filePath){
         Objects.requireNonNull(languages);
         Objects.requireNonNull(filePath);
@@ -89,5 +91,5 @@ public record Language(String name, String extension, ArrayList<String> beginCom
         }
         //case with default language
         return new Language("Unknown", "", FileType.Unknown, "");
-    }
+    }*/
 }
