@@ -48,6 +48,15 @@ public class Contribution {
         return obj instanceof Contribution contrib && contrib.tag.equals(tag) && contrib.contributor.equals(contributor)
                 && contrib.commentLines == commentLines && contrib.lines == lines;
     }
+
+    /**
+     * an acccessor to the field "documentation"
+     * @return
+     * the documentation associated to the contribution.
+     */
+    public Documentation documentation(){
+        return documentation;
+    }
     @Override
     public String toString(){
         var bd = new StringBuilder();

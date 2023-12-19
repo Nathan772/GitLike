@@ -134,11 +134,13 @@ public class Documentation {
         var tab1 = line.split(",");
         //programming language case
         if(fromStringToFileType(tab1[2].replace("\"","").replace("]","").replace(" ", "")) == FileType.CODE){
-            return new Documentation(Language.fromStringTabToLanguage(tab1) ,FileType.CODE, tab1[1]);
+            return new Documentation(Language.fromStringTabToLanguage(tab1) ,FileType.CODE,
+                    tab1[1].replace("\"", "").replace(" ", ""));
         }
         //no-programming language
         else
-            return new Documentation(null, fromStringToFileType(tab1[2].replace("\"","").replace("]","").replace(" ", "")), tab1[1]);
+            return new Documentation(null, fromStringToFileType(tab1[2].replace("\"","").replace("]","").replace(" ", "")),
+                    tab1[1].replace("\"", "").replace(" ", ""));
     }
 
 

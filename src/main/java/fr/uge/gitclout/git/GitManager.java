@@ -156,8 +156,9 @@ public class GitManager {
     int compteur = 0;
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
+      //System.out.println("le fichier analysé : "+file);
       //need to be deleted (à supprimer).
-      if (compteur == 10) // stop after 30 files in order to not wait too much
+      if (compteur == 30) // stop after 30 files in order to not wait too much
         break;
       var listContributes = parseOneFileForEachTagWithContributors(Path.of(file));
 
@@ -216,13 +217,17 @@ public class GitManager {
    * the type of documentation it represents( BUILD, C programming, Python programming, angular programming ...)
    */
   public Documentation fromFileToDocumentation(Path file){
+    //System.out.println("le fichier analysé est : "+file.toString()+"\n\n");
     for(var document:documentations){
-        var pattern = Pattern.compile(".*\\."+document.extension());
+        var pattern = Pattern.compile(".*"+document.extension());
+        //System.out.println("l'extension testée est : "+document.extension());
         var matcher = pattern.matcher(file.toString());
         if(matcher.find()){
-          if(document.language().isPresent())
+          if(document.language().isPresent()) {
+            //System.out.println("on a reconnu un langage qui est : "+document.language());
             //return new Documentation(document.language().orElseThrow(), document.fileType(),document.extension());
             return document;
+          }
           else
             return new Documentation(null, document.fileType(),document.extension());
         }
@@ -254,12 +259,6 @@ public class GitManager {
         feedHashWithBlame(hashUserLine, blameResult);
         fromMapToListContribution(listContributes, hashUserLine, document, tag);
       }
-
-      //test ici, à supprimer plus tard
-      if (compteur == 1) {
-        if (blameResult != null) {
-          //System.out.println("" + blameResult.getResultContents());
-      }}
     }
     return listContributes;
   }
@@ -274,7 +273,9 @@ public class GitManager {
     try {
       /*"https://github.com/vuejs/core"
       "https://github.com/facebookresearch/llama"*/
-      var repositoryPath = "https://github.com/vuejs/core";
+      //var repositoryPath = "https://github.com/vuejs/core";
+      //"https://github.com/damo-vilab/AnyDoor";
+      var repositoryPath ="https://github.com/LC044/WeChatMsg";
       var handler2 = new GitManager(repositoryPath);
       handler2.cloneRepository();
       var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
