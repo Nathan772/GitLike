@@ -9,13 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 /*
 this class associated a fileType to a language if necessary
  */
 public class Documentation {
     /* it represents the programming language used*/
-    private final Language language;
+    private Language language = null;
     /* it represents the fileType (CODE, BUILD, ETC...)*/
     private final FileType fileType;
     /* The extension associated to the file */
@@ -29,6 +30,16 @@ public class Documentation {
         this.language = language;
         this.fileType = fileType;
         this.extension = extension;
+    }
+    /**
+     *
+     * this method creates a document of type "unknown" for the unknown kind of files.
+     *
+     * @return
+     * an unknown file type content.
+     */
+    public static Documentation unknownFile(){
+        return new Documentation (null,FileType.Unknown,"unknown");
     }
 
     public boolean equals(Object obj){
@@ -51,6 +62,32 @@ public class Documentation {
         bd.append("Type of file : "); bd.append(fileType); bd.append("\n");
 
         return bd.toString();
+    }
+    /**
+        an accessor to the field "extension".
+        @return
+        the content of the field extension
+     */
+    public String extension(){
+        return extension;
+    }
+
+    /**
+     an accessor to the field "fileType".
+     @return
+     the content of the field fileType.
+     */
+    public FileType fileType(){
+        return fileType;
+    }
+
+    /**
+     * an accessor to the field "language".
+     * @return
+     * the language associated to the document.
+     */
+    public Optional<Language> language(){
+        return Optional.of(language);
     }
 
     /**
@@ -107,8 +144,6 @@ public class Documentation {
 
 
     public static FileType fromStringToFileType(String typeFile){
-        System.out.println("le fichier est de type : "+typeFile);
-        System.out.println("typeFile est égal à build:" +typeFile.equals("BUILD"));
         switch (typeFile){
             case "BUILD" -> {return FileType.BUILD;}
             case "CODE" -> {return FileType.CODE;}

@@ -31,8 +31,28 @@ public class Tag {
     this.repository = repository;
   }
 
-  public Tag() {
+  @Override
+  public boolean equals(Object obj){
+    return obj instanceof Tag tag1 && tag1.name.equals(name) && tag1.gitName.equals(gitName) && tag1.date.equals(date)
+            && tag1.repository.equals(repository);
+  }
+  @Override
+  public int hashCode(){
+    return name.hashCode()^gitName.hashCode()^date.hashCode()^repository.hashCode();
+  }
 
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
+
+  public String toString() {
+    var bd = new StringBuilder();
+    bd.append("Tag infos : \n "); bd.append(name);
+    bd.append("\n Repository : \n");bd.append(repository);
+    bd.append("\n Date : ");bd.append(date);
+    bd.append("\n");
+    return bd.toString();
   }
 
   public Long getId() {

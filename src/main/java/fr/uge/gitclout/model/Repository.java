@@ -36,7 +36,22 @@ public class Repository {
     this.localPath = localPath;
   }
 
-  public Repository() {
+  @Override
+  public boolean equals(Object obj){
+    return obj instanceof Repository repo && repo.name.equals(name) &&
+            repo.URL.equals(URL) && localPath.equals(repo.localPath);
+  }
+
+  public int hashCode(){
+    return name.hashCode()^URL.hashCode()^localPath.hashCode();
+  }
+  @Override
+  public String toString(){
+    var bd = new StringBuilder();
+    bd.append("Repository Content : \n");bd.append("name : ");
+    bd.append(name); bd.append("\n");
+    bd.append("URL : "); bd.append(URL);bd.append("\n");
+    return bd.toString();
   }
 
   public Long getId() {

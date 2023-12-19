@@ -57,7 +57,6 @@ public class Language {
         Objects.requireNonNull(tabLanguage);
         var beginRegex = new ArrayList<String>();
         var endRegex= new ArrayList<String>();
-        //we start at index 1 to avoid the first "["
         for(var i =0;i<tabLanguage.length;i++){
                 //add the beginning of comment
             if(i>=3 && i % 2 != 0)

@@ -15,11 +15,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class GitManager {
   private Git git;
-  private final Path remoteURL;
+  private final String remoteURL;
   private final Path localPath;
   private final String projectName;
   private final Repository repository;
@@ -41,7 +42,7 @@ public class GitManager {
   public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) throws IOException {
     Objects.requireNonNull(remoteURL);
     Objects.requireNonNull(localPath);
-    this.remoteURL = Path.of(remoteURL);
+    this.remoteURL = remoteURL;
     this.projectName = createProjectName(remoteURL);
     this.localPath = Path.of(localPath);
     if (new File(localPath).exists()) {
@@ -71,11 +72,24 @@ public class GitManager {
   }
 
   public Repository cloneRepository() throws GitAPIException {
-    git = Git.cloneRepository()
-            .setURI(remoteURL.toString())
-            .setDirectory(new File(localPath.toString()))
-            .call();
-    return repository;
+
+    var file = new File(PATH+"/"+projectName);
+    //if the project had already been imported
+    if(file.exists() && file.isDirectory()){
+      //case when the project has already been import
+        try {
+            git = Git.open(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //if the project never had been imported
+    else
+      // clone the repo in a directory which has the same name as the repo
+      // gives the path for the location of the directory
+
+      git = Git.cloneRepository().setURI(remoteURL).setDirectory(file).call();
+      return repository;
   }
 
   private Date getTagDate(Ref ref) throws IOException {
@@ -93,9 +107,14 @@ public class GitManager {
       }
     }).toList();
   }
-
+  /**
+   * give the list of tags that are with the repo git.
+   *
+   * @return
+   * the list of tags associated to the git repo.
+   *
+   */
   public List<Ref> retrieveTags() throws GitAPIException {
-    //System.out.println("On a retrouvé les tags "+git.tagList().call());
     return git.tagList().call();
   }
 
@@ -103,7 +122,13 @@ public class GitManager {
   public void close() {
     git.close();
   }
-
+  /**
+   * This method parse every file from the repo and give the user per line.
+   * @param directoryForRepoStorage
+   * exception for the use of method from retrieveEveryFileFromDepo.
+   * @throws IOException
+   * exception for the use of the method from parseOneFileForEachTag.
+   */
   public List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
     Path startDir = Paths.get(localPath.toString());
     List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
@@ -115,15 +140,26 @@ public class GitManager {
     return files.stream().map(x -> x.substring((directoryForRepoStorage).length() + 1)).toList();
   }
 
+  /**
+   *
+   * This method parse every file from the repo and give the user per line.
+   *
+   * @throws GitAPIException
+   * exception for the use of method from retrieveEveryFileFromDepo.
+   * @throws IOException
+   * exception for the use of the method from parseOneFileForEachTag.
+   */
+
   public List<Contribution> parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
     //the final lists with all hte contributions
     var contributesList = new ArrayList<Contribution>();
     int compteur = 0;
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
+      //need to be deleted (à supprimer).
       if (compteur == 10) // stop after 30 files in order to not wait too much
         break;
-      var listContributes = parseOneFileForEachTagWithContributors(file);
+      var listContributes = parseOneFileForEachTagWithContributors(Path.of(file));
 
       contributesList.addAll(listContributes);
       if (!listContributes.isEmpty())
@@ -131,15 +167,17 @@ public class GitManager {
     }
     return contributesList;
   }
-
+  /**
+   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame
+   * @param hashUserLine
+   * the hashMap you want to fill
+   * @param blameResult
+   * the result of the blame you made on a file.
+   */
   public static void feedHashWithBlame(HashMap<Contributor, Integer> hashUserLine, BlameResult blameResult) {
     //retrieve the total of rows of the blame
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-      //blameResultContents().
-      //create a tuple for this user
-      hashUserLine.computeIfAbsent(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), (k) -> 1);
-      //increase by one the number of line for this user
-      hashUserLine.computeIfPresent(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), (k, v) -> v + 1);
+      hashUserLine.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
     }
   }
 
@@ -171,27 +209,50 @@ public class GitManager {
   /**
    *
    * this method enable to convert the data from a filePath to information about its kind of documentation
-   * (example : it's code type and it's language C)
+   * (example : its code type and its language C)
    * @param file
    * the filePath you want to use in order to know its kind.
    * @return
    * the type of documentation it represents( BUILD, C programming, Python programming, angular programming ...)
    */
   public Documentation fromFileToDocumentation(Path file){
-    return null;
+    for(var document:documentations){
+        var pattern = Pattern.compile(".*\\."+document.extension());
+        var matcher = pattern.matcher(file.toString());
+        if(matcher.find()){
+          if(document.language().isPresent())
+            //return new Documentation(document.language().orElseThrow(), document.fileType(),document.extension());
+            return document;
+          else
+            return new Documentation(null, document.fileType(),document.extension());
+        }
+    }
+    return Documentation.unknownFile();
   }
-  /* à résoudre */
-  public List<Contribution> parseOneFileForEachTagWithContributors(String filePath) throws GitAPIException {
+
+  /**
+   *
+   * This method blame every version (tag) of a given file and display the number of line by user.
+   * @param filePath
+   * the path for the path you want to blame
+   * @throws GitAPIException
+   * handle the use of blame
+   * @return
+   * a list with all the contribution
+   */
+  public List<Contribution> parseOneFileForEachTagWithContributors(Path filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
+    //retrieve the document
+    var document = fromFileToDocumentation(filePath);
     HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
     var listContributes = new ArrayList<Contribution>();
-    /*int compteur = 0;
+    int compteur = 0;
     for (var tag : retrieveTags()) {
-      var blameResult = git.blame().setFilePath(filePath).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
+      var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
       if (blameResult != null) {
         compteur++;
         feedHashWithBlame(hashUserLine, blameResult);
-        fromMapToListContribution(listContributes, hashUserLine, filePath, tag);
+        fromMapToListContribution(listContributes, hashUserLine, document, tag);
       }
 
       //test ici, à supprimer plus tard
@@ -199,7 +260,7 @@ public class GitManager {
         if (blameResult != null) {
           //System.out.println("" + blameResult.getResultContents());
       }}
-    }*/
+    }
     return listContributes;
   }
 
@@ -211,9 +272,11 @@ public class GitManager {
     git.close();*/
 
     try {
-      var repositoryPath = "https://github.com/facebookresearch/llama";
+      /*"https://github.com/vuejs/core"
+      "https://github.com/facebookresearch/llama"*/
+      var repositoryPath = "https://github.com/vuejs/core";
       var handler2 = new GitManager(repositoryPath);
-      //handler2.cloneRepository();
+      handler2.cloneRepository();
       var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
             for(var contribution:resContribution){
                 System.out.println(contribution);
