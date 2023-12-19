@@ -1,0 +1,18 @@
+{
+  "java": {
+    "type": "CODE",
+    "commentsRegex": "//.*"
+  },
+  "javascript": {
+    "type": "CODE",
+    "commentsRegex": "//.*"
+  },
+  "python": {
+    "type": "CODE",
+    "commentsRegex": "#.*"
+  },
+  "md": {
+    "type": "DOCUMENTATION",
+    "commentsRegex": "<!--.*-->"
+  }
+}

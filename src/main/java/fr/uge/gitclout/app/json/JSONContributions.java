@@ -1,12 +1,13 @@
 package fr.uge.gitclout.app.json;
 
-import fr.uge.gitclout.contributions.ContributionsPerAuthor;
+import fr.uge.gitclout.contributions.ContributionInfos;
+import fr.uge.gitclout.contributions.ContributionType;
 import io.micronaut.serde.annotation.Serdeable;
 
-import java.util.List;
+import java.util.Map;
 
 @Serdeable
 public record JSONContributions(
-        List<ContributionsPerAuthor> contributions
+        Map<String, Map<ContributionType, ContributionInfos>> contributions
 ) implements JSONData {
 }

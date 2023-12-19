@@ -37,12 +37,34 @@ function Repo() {
                 };
 
                 addToast(info);
+
+                const evtSource = new EventSource(`http://localhost:8080/api/analyze-tags?url=${url}`);
+
+                let count = 0;
+
+                evtSource.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    console.log(data);
+                    count++;
+
+                    if (count === tags().length) {
+                        console.log('done');
+                        evtSource.close();
+                    }
+                }
+
+                evtSource.onerror = (event) => {
+                    console.log(event);
+                }
+
+
             } else {
                 setStoreError({ message: res.message });
                 navigate('/not-found');
             }
         });
         modal.show();
+
     });
 
     return (

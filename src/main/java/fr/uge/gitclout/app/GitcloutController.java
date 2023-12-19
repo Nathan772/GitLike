@@ -1,5 +1,6 @@
 package fr.uge.gitclout.app;
 
+import fr.uge.gitclout.app.json.JSONContributions;
 import fr.uge.gitclout.app.json.JSONResponse;
 import fr.uge.gitclout.contributions.ContributionManager;
 import fr.uge.gitclout.repository.RepositoryManager;
@@ -66,17 +67,17 @@ public class GitcloutController {
       var repository = repositoryManager.resolveRepository(url);
       var gitTagManager = new GitTagManager(repository);
       var tags = gitTagManager.getTags();
-      var contributionManager = new ContributionManager(repository);
       return Flux.generate(() -> 0, (i, emitter) -> {
         if (i < tags.size()) {
           var tag = tags.get(i);
-          var contributionsInfos = contributionManager.getContributions(tag.getName());
+          var contributionManager = new ContributionManager(repository, tag.getName());
+          var contributions = contributionManager.getContributions();
           emitter.next(
                   Event.of(
                           new JSONResponse(
                                   "Analyzed tag '" + tag.getName() + "' for repository '" + url + "'.",
                                   "success",
-                                  contributionsInfos
+                                  new JSONContributions(contributions.getContributions())
                           )
                   )
           );
