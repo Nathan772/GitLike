@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.AUTO;
@@ -21,6 +23,8 @@ public class Repository {
   private String URL;
   private String localPath;
 
+  private ArrayList<String> testASupprimer = new ArrayList<>();
+
 
   public Repository(
           String name,
@@ -32,6 +36,7 @@ public class Repository {
     this.name = name;
     this.URL = URL;
     this.localPath = localPath;
+    this.testASupprimer.add("blibli");
   }
 
   public Repository() {
@@ -39,6 +44,10 @@ public class Repository {
 
   public Long getId() {
     return id;
+  }
+
+  public List<String> getTestASupprimer() {
+    return testASupprimer;
   }
 
   public String getName() {
@@ -63,6 +72,10 @@ public class Repository {
 
   public void setURL(String URL) {
     this.URL = URL;
+  }
+
+  public void setTestASupprimer(ArrayList<String> testASupprimer) {
+    this.testASupprimer = testASupprimer;
   }
 
   public void setLocalPath(String localPath) {

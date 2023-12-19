@@ -1,5 +1,6 @@
 package fr.uge.gitclout.git;
 
+import Language.Language;
 import fr.uge.gitclout.model.*;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class GitManager {
   private Git git;
-  private final String remoteURL;
+  private final Path remoteURL;
   private final Path localPath;
   private final String projectName;
   private final Repository repository;
@@ -27,7 +28,7 @@ public class GitManager {
   public GitManager(String remoteURL, String localPath) throws IOException {
     Objects.requireNonNull(remoteURL);
     Objects.requireNonNull(localPath);
-    this.remoteURL = remoteURL;
+    this.remoteURL = Path.of(remoteURL);
     this.projectName = createProjectName(remoteURL);
     this.localPath = Path.of(localPath);
     if (new File(localPath).exists()) {
@@ -57,7 +58,7 @@ public class GitManager {
 
   public Repository cloneRepository() throws GitAPIException {
     git = Git.cloneRepository()
-            .setURI(remoteURL)
+            .setURI(remoteURL.toString())
             .setDirectory(new File(localPath.toString()))
             .call();
     return repository;

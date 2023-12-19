@@ -1,5 +1,7 @@
 package fr.uge.gitclout.model;
 
+import Language.Language;
+
 import java.util.Objects;
 
 public record MyFile(String name, Language language, Repository repository) {

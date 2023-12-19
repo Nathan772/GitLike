@@ -1,5 +1,7 @@
 package fr.uge.gitclout.model;
 
+import Language.Language;
+
 import java.util.Objects;
 
 public record Contribution(ContributionType type, int linesCount, Language language, Contributor contributor, Tag tag) {
