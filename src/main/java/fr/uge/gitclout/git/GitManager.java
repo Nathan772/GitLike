@@ -154,11 +154,12 @@ public class GitManager {
     //the final lists with all hte contributions
     var contributesList = new ArrayList<Contribution>();
     int compteur = 0;
+    //int compteurFile = 10;
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
       //System.out.println("le fichier analysé : "+file);
       //need to be deleted (à supprimer).
-      if (compteur == 30) // stop after 30 files in order to not wait too much
+      if (compteur == 60) // stop after 30 files in order to not wait too much
         break;
       var listContributes = parseOneFileForEachTagWithContributors(Path.of(file));
 
@@ -195,8 +196,6 @@ public class GitManager {
     Objects.requireNonNull(documentation);
     Objects.requireNonNull(hashUserLine);
     Objects.requireNonNull(contributions);
-    //c'est tard, faites le plus tôt dans le programme
-    //var documentationList = Documentation.fromPathToListDocumentation(filePath);
     // var repo = repository;
     //var language = Language.fromFileToLanguage(languages, filePath);
     //var file = new MyFile(filePath, language, repo);
@@ -251,11 +250,9 @@ public class GitManager {
     var document = fromFileToDocumentation(filePath);
     HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
     var listContributes = new ArrayList<Contribution>();
-    int compteur = 0;
     for (var tag : retrieveTags()) {
       var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
       if (blameResult != null) {
-        compteur++;
         feedHashWithBlame(hashUserLine, blameResult);
         fromMapToListContribution(listContributes, hashUserLine, document, tag);
       }
@@ -265,16 +262,14 @@ public class GitManager {
 
 
   public static void main(String[] args) throws IOException, GitAPIException {
-    /*var git = new GitManager("https://gitlab.ow2.org/asm/asm.git");
-    //git.cloneRepository();
-    System.out.println(git.getTags());
-    git.close();*/
 
     try {
       /*"https://github.com/vuejs/core"
       "https://github.com/facebookresearch/llama"*/
       //var repositoryPath = "https://github.com/vuejs/core";
       //"https://github.com/damo-vilab/AnyDoor";
+      //https://github.com/LC044/WeChatMsg;
+      //https://gitlab.ow2.org/asm/asm.git
       var repositoryPath ="https://github.com/LC044/WeChatMsg";
       var handler2 = new GitManager(repositoryPath);
       handler2.cloneRepository();
