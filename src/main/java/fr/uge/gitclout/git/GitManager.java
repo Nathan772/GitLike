@@ -19,6 +19,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
+
 public class GitManager {
   private Git git;
   private final String remoteURL;
@@ -151,24 +154,20 @@ public class GitManager {
    * exception for the use of the method from parseOneFileForEachTag.
    */
 
-  public List<Contribution> parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
+  public ContributionLoader parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
     //the final lists with all hte contributions
-    var contributesList = new ArrayList<Contribution>();
+    var contributionLoader = new ContributionLoader();
     int compteur = 0;
-    //int compteurFile = 10;
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
       //System.out.println("le fichier analysé : "+file);
       //need to be deleted (à supprimer).
-      if (compteur == 30) // stop after 30 files in order to not wait too much
-        break;
-      var listContributes = parseOneFileForEachTagWithContributors(Path.of(file));
-
-      contributesList.addAll(listContributes.contributions());
-      if (!listContributes.contributions().isEmpty())
-        compteur++;
+      /*if (compteur == 30)   // stop after 30 files in order to not wait too much
+          break;*/
+      parseOneFileForEachTagWithContributors(contributionLoader, Path.of(file));
+       compteur++;
     }
-    return contributesList;
+    return contributionLoader;
   }
   /**
    * @param document
@@ -324,24 +323,20 @@ public class GitManager {
    * @return
    * a list with all the contribution
    */
-  public ContributionLoader parseOneFileForEachTagWithContributors(Path filePath) throws GitAPIException {
+  public void parseOneFileForEachTagWithContributors(ContributionLoader contributionLoader,Path filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
-    //retrieve the actual lines of contribution
-    HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
-    //retrieve the comment line of contribution
-    HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
-    var listContributes = new ContributionLoader();
+    //retrieve the actual lines of contribution and retrieve the comment line of contribution
+    HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
     for (var tag : retrieveTags()) {
 
       var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
       if (blameResult != null) {
         feedHashWithBlame(document, hashUserLine, hashUserCommentLine ,blameResult);
-        fromMapToListContribution(listContributes, hashUserLine,hashUserCommentLine, document, tag);
+        fromMapToListContribution(contributionLoader, hashUserLine,hashUserCommentLine, document, tag);
       }
     }
-    return listContributes;
   }
 
 
@@ -358,7 +353,7 @@ public class GitManager {
       var handler2 = new GitManager(repositoryPath);
       handler2.cloneRepository();
       var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
-            for(var contribution:resContribution){
+            for(var contribution:resContribution.contributions()){
                 System.out.println(contribution);
             }
     } catch (GitAPIException | IOException e) {

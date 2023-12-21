@@ -60,6 +60,32 @@ public class Contribution {
     public Tag tag(){
         return tag;
     }
+    /**
+     * this method give an access to the object itself.
+     * return
+     * the object itself.
+     */
+    public Contribution identity(){
+        return this;
+    }
+
+    /**
+     * this method gives an accessor on the number of comment lines
+     * @return
+     * the number of comment lines
+     */
+    public int commentLines(){
+        return commentLines;
+    }
+
+    /**
+     * this method gives an accessor on the number of lines
+     * @return
+     * the number of non-comment lines
+     */
+    public int lines(){
+        return lines;
+    }
 
     /**
      *
