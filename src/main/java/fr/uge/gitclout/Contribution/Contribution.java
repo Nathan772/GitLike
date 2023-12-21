@@ -106,7 +106,7 @@ public class Contribution {
      * @param codeLine
      * the of code line to increase
      */
-    public void increaseLine(int commentLine, int codeLine){
+    public void increaseLine(int codeLine, int commentLine){
 
         commentLines+= commentLine;
         lines += codeLine;
