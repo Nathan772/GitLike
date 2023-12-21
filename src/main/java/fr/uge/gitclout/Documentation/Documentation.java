@@ -87,6 +87,8 @@ public class Documentation {
      * the language associated to the document.
      */
     public Optional<Language> language(){
+        if(language == null)
+            return Optional.empty();
         return Optional.of(language);
     }
 
@@ -109,11 +111,14 @@ public class Documentation {
         var documentations = new ArrayList<Documentation>();
         try(var reader = Files.newBufferedReader(filePath)){
             String line;
+            //on analyse la ligne ssi ce n'est pas un commentaire.
             while((line = reader.readLine()) != null) {
-               var doc= fromLineToDocumentation(line);
-               //prevent from adding twice the same language
-               if(!documentations.contains(doc))
-                   documentations.add(doc);
+                if(!line.startsWith("#")) {
+                    var doc = fromLineToDocumentation(line);
+                    //prevent from adding twice the same language
+                    if (!documentations.contains(doc))
+                        documentations.add(doc);
+                }
             }
         }
         catch(IOException e) {
@@ -129,7 +134,7 @@ public class Documentation {
      * @return
      * a new Documentation object which represents the object
      */
-    public static Documentation fromLineToDocumentation(String line){
+    private static Documentation fromLineToDocumentation(String line){
         Objects.requireNonNull(line);
         var tab1 = line.split(",");
         //programming language case

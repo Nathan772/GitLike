@@ -159,7 +159,7 @@ public class GitManager {
     for (var file : files) {
       //System.out.println("le fichier analysé : "+file);
       //need to be deleted (à supprimer).
-      if (compteur == 60) // stop after 30 files in order to not wait too much
+      if (compteur == 30) // stop after 30 files in order to not wait too much
         break;
       var listContributes = parseOneFileForEachTagWithContributors(Path.of(file));
 
@@ -170,16 +170,88 @@ public class GitManager {
     return contributesList;
   }
   /**
-   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame
-   * @param hashUserLine
-   * the hashMap you want to fill
+   * @param document
+   * the document you use to know the kind of comment of your file.
+   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
+   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
+   *
+   * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
+   * @param hashUserLines
+   * the hashMap with user's non-comment line you want to fill
+   * @param hashUserCommentLines
+   * the hashMap with user's comment line you want to fill
    * @param blameResult
    * the result of the blame you made on a file.
    */
-  public static void feedHashWithBlame(HashMap<Contributor, Integer> hashUserLine, BlameResult blameResult) {
-    //retrieve the total of rows of the blame
-    for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-      hashUserLine.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
+  public static void feedHashWithBlame(Documentation document, HashMap<Contributor, Integer> hashUserLines, HashMap<Contributor, Integer> hashUserCommentLines, BlameResult blameResult) {
+    var containsComments = document.language().isPresent();
+    //this variable enable to know if the program is parsing commentLine
+    var isInCommentMode = false;
+    //this variable enable to know which comment we are using
+    var currentCommentIndex = -1;
+      for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+        //specific case of languages possessing comments
+        if(containsComments) {
+          //the line you want to parse
+          var lineToParse = blameResult.getResultContents().getString(i);
+          //case with end of a multiline comment
+          if(isInCommentMode && !document.language().orElseThrow().thisStringEndsComment(lineToParse, currentCommentIndex)){
+            //add a new line for comments
+            hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
+                    blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
+            //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
+            //System.out.println(hashUserCommentLines);
+            isInCommentMode = false;
+          }
+          //check if a new comment starts
+          else if(!isInCommentMode){
+            currentCommentIndex = document.language().orElseThrow().thisStringStartsWithComment(lineToParse);
+            // a new comment starts here at the beginning of the line
+            if(currentCommentIndex != -1){
+                // an ew comment has started
+                isInCommentMode = true;
+                //we remove the first part of the comment in order to not suppose a comment ends sooner than it actually does
+                /* this apply for very specific cases just like """ """ in python because the beginning and the end of the comment
+                are represented by the same string */
+                lineToParse = lineToParse.replaceFirst(document.language().orElseThrow().endCommentRegex().get(currentCommentIndex), "");
+                hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
+                      blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
+                //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
+                //System.out.println(hashUserCommentLines);
+              //the comment finish on the same line here
+              if(!document.language().orElseThrow().thisStringEndsComment(lineToParse, currentCommentIndex)){
+                isInCommentMode = false;
+              }
+            }
+            //case where the line doesn't start with a comment but with some code
+            else{
+              //increase the line of code
+              hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
+            }
+            //check if there's a comment at the end of the line.
+            if(!isInCommentMode){
+              var lineAlreadyAdded = currentCommentIndex >= 0;
+              // a comment on the same line starts but doesn't end.
+              currentCommentIndex = document.language().orElseThrow().thisStringEndsWithUnfinishedComment(lineToParse);
+              if(currentCommentIndex != -1){
+                isInCommentMode = true;
+                // a new comment is added.
+                if(!lineAlreadyAdded) {
+                  hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
+                          blameResult.getSourceAuthor(i).getEmailAddress()), 0, (oldValue, newValue) -> oldValue + 1);
+                  //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
+                }
+              }
+
+            }
+
+
+          }
+        }
+        //this is not a programming language, then there's no comments
+        else
+          hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
+
     }
   }
 
@@ -188,10 +260,13 @@ public class GitManager {
      * @param contributions
      * the list that will contain the contributions made by the users.
      * @param hashUserLine
+     * the line written by each users.
+     * @param hashUserCommentLine
+     * the comment line written by each users.
      * @param documentation
      * it represents the kind of documentation used by the user.
      */
-  public void fromMapToListContribution(ArrayList<Contribution> contributions, HashMap<Contributor, Integer> hashUserLine, Documentation documentation, Ref tag) {
+  public void fromMapToListContribution(ArrayList<Contribution> contributions, HashMap<Contributor, Integer> hashUserLine, HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
     Objects.requireNonNull(tag);
     Objects.requireNonNull(documentation);
     Objects.requireNonNull(hashUserLine);
@@ -199,10 +274,11 @@ public class GitManager {
     // var repo = repository;
     //var language = Language.fromFileToLanguage(languages, filePath);
     //var file = new MyFile(filePath, language, repo);
-
+    /*System.out.println("le resultat des lignes de commentaires : "+ hashUserCommentLine);
+    System.out.println("le resultat des lignes de non-commentaires : "+ hashUserLine);*/
     var tag1 = new Tag(tag.getName(), tag.getName(), new Date(), repository);
     hashUserLine.forEach((user, lines) ->
-            contributions.add(new Contribution(new Contributor(user.name(), user.email()), tag1, documentation , 0, lines))
+            contributions.add(new Contribution(user, tag1, documentation , hashUserCommentLine.getOrDefault(user, 0), lines))
     );
   }
 
@@ -248,13 +324,17 @@ public class GitManager {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
+    //retrieve the actual lines of contribution
     HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
+    //retrieve the comment line of contribution
+    HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
     var listContributes = new ArrayList<Contribution>();
     for (var tag : retrieveTags()) {
+
       var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
       if (blameResult != null) {
-        feedHashWithBlame(hashUserLine, blameResult);
-        fromMapToListContribution(listContributes, hashUserLine, document, tag);
+        feedHashWithBlame(document, hashUserLine, hashUserCommentLine ,blameResult);
+        fromMapToListContribution(listContributes, hashUserLine,hashUserCommentLine, document, tag);
       }
     }
     return listContributes;
@@ -270,7 +350,7 @@ public class GitManager {
       //"https://github.com/damo-vilab/AnyDoor";
       //https://github.com/LC044/WeChatMsg;
       //https://gitlab.ow2.org/asm/asm.git
-      var repositoryPath ="https://github.com/LC044/WeChatMsg";
+      var repositoryPath ="https://github.com/facebookresearch/llama";
       var handler2 = new GitManager(repositoryPath);
       handler2.cloneRepository();
       var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();

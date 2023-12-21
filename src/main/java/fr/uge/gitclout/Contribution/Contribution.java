@@ -50,6 +50,28 @@ public class Contribution {
     }
 
     /**
+     *
+     * This method returns a contributor
+     * @param email
+     * the mail of the contributor that will enable you to find them.
+     * @return
+     * the contributor you want to find
+     */
+    /* à supprimer
+    public Contributor findContributorByMail(String email){
+
+    }*/
+
+    /**
+     * this method increases the number of lines of commentLine.
+     * @param quantity
+     * the quantity of the increase.
+     */
+    public void increaseCommentLine(int quantity){
+        commentLines+= quantity;
+    }
+
+    /**
      * an acccessor to the field "documentation"
      * @return
      * the documentation associated to the contribution.
