@@ -44,7 +44,8 @@ public class Documentation {
 
     public boolean equals(Object obj){
         return obj instanceof Documentation doc && doc.fileType.equals(fileType) && extension.equals(doc.extension)
-                && language.equals(doc.language);
+                && ((language == doc.language) && (doc.language == null) || language != null && doc.language != null &&
+                language.equals(doc.language));
     }
 
     public int hashCode(){

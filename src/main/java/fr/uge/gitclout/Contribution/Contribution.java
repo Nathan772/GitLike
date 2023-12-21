@@ -46,29 +46,45 @@ public class Contribution {
     @Override
     public boolean equals(Object obj){
         return obj instanceof Contribution contrib && contrib.tag.equals(tag) && contrib.contributor.equals(contributor)
-                && contrib.commentLines == commentLines && contrib.lines == lines;
+           && contrib.documentation.equals(documentation);
     }
 
     /**
      *
-     * This method returns a contributor
-     * @param email
-     * the mail of the contributor that will enable you to find them.
+     * This method is an accessor to the tag associated to a contribution
+     *
      * @return
-     * the contributor you want to find
+     * the tag from the contribution
      */
-    /* à supprimer
-    public Contributor findContributorByMail(String email){
 
-    }*/
+    public Tag tag(){
+        return tag;
+    }
 
     /**
-     * this method increases the number of lines of commentLine.
-     * @param quantity
-     * the quantity of the increase.
+     *
+     * This method is an accessor to the contributor associated to a contribution
+     *
+     * @return
+     * the contributor associated to the contribution.
      */
-    public void increaseCommentLine(int quantity){
-        commentLines+= quantity;
+
+    public Contributor contributor(){
+        return contributor;
+    }
+
+    /**
+     * this method increases the number of lines of commentLine and code line.
+     * @param commentLine
+     * the number of commentLine to increase
+     * @param codeLine
+     * the of code line to increase
+     */
+    public void increaseLine(int commentLine, int codeLine){
+
+        commentLines+= commentLine;
+        lines += codeLine;
+
     }
 
     /**
@@ -95,8 +111,7 @@ public class Contribution {
 
     @Override
     public int hashCode() {
-        return contributor.hashCode()^tag.hashCode()^documentation.hashCode()^
-                Integer.hashCode(commentLines)^Integer.hashCode(lines);
+        return contributor.hashCode()^tag.hashCode()^documentation.hashCode();
     }
 }
 

@@ -1,6 +1,7 @@
 package fr.uge.gitclout.git;
 
 import fr.uge.gitclout.Contribution.Contribution;
+import fr.uge.gitclout.Contribution.ContributionLoader;
 import fr.uge.gitclout.Documentation.Documentation;
 import fr.uge.gitclout.model.*;
 import org.eclipse.jgit.api.Git;
@@ -163,8 +164,8 @@ public class GitManager {
         break;
       var listContributes = parseOneFileForEachTagWithContributors(Path.of(file));
 
-      contributesList.addAll(listContributes);
-      if (!listContributes.isEmpty())
+      contributesList.addAll(listContributes.contributions());
+      if (!listContributes.contributions().isEmpty())
         compteur++;
     }
     return contributesList;
@@ -257,29 +258,32 @@ public class GitManager {
 
     /**
      *
-     * @param contributions
+     * @param contributionLoader
      * the list that will contain the contributions made by the users.
      * @param hashUserLine
-     * the line written by each users.
+     * the line written by each user.
      * @param hashUserCommentLine
-     * the comment line written by each users.
+     * the comment line written by each user.
      * @param documentation
      * it represents the kind of documentation used by the user.
      */
-  public void fromMapToListContribution(ArrayList<Contribution> contributions, HashMap<Contributor, Integer> hashUserLine, HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
+  public void fromMapToListContribution(ContributionLoader contributionLoader, HashMap<Contributor, Integer> hashUserLine, HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
     Objects.requireNonNull(tag);
     Objects.requireNonNull(documentation);
     Objects.requireNonNull(hashUserLine);
-    Objects.requireNonNull(contributions);
-    // var repo = repository;
-    //var language = Language.fromFileToLanguage(languages, filePath);
-    //var file = new MyFile(filePath, language, repo);
-    /*System.out.println("le resultat des lignes de commentaires : "+ hashUserCommentLine);
-    System.out.println("le resultat des lignes de non-commentaires : "+ hashUserLine);*/
+    Objects.requireNonNull(contributionLoader);
     var tag1 = new Tag(tag.getName(), tag.getName(), new Date(), repository);
-    hashUserLine.forEach((user, lines) ->
-            contributions.add(new Contribution(user, tag1, documentation , hashUserCommentLine.getOrDefault(user, 0), lines))
-    );
+
+    hashUserLine.forEach((user, lines) -> {
+            var contribution = contributionLoader.getFromDescription(tag1,user,documentation);
+            //check if the contribution already exists
+            if(contribution.isPresent())  contribution.orElseThrow().increaseLine(lines, hashUserCommentLine.getOrDefault(user, 0));
+            //case of new contribution
+            else contributionLoader.add(new Contribution(user, tag1, documentation , hashUserCommentLine.getOrDefault(user, 0), lines));
+    });
+
+    //contributions.add(new Contribution(user, tag1, documentation , hashUserCommentLine.getOrDefault(user, 0), lines))
+
   }
 
   /**
@@ -320,7 +324,7 @@ public class GitManager {
    * @return
    * a list with all the contribution
    */
-  public List<Contribution> parseOneFileForEachTagWithContributors(Path filePath) throws GitAPIException {
+  public ContributionLoader parseOneFileForEachTagWithContributors(Path filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
@@ -328,7 +332,7 @@ public class GitManager {
     HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>();
     //retrieve the comment line of contribution
     HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
-    var listContributes = new ArrayList<Contribution>();
+    var listContributes = new ContributionLoader();
     for (var tag : retrieveTags()) {
 
       var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
