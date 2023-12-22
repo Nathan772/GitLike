@@ -11,3 +11,5 @@
 ["php",".php","CODE",/\*,\*/, #,\n ,//,\n]
 ["build" ,".xml","BUILD"]
 ["config" ,".github","CONFIGURATION"]
+["IML" ,".iml","CONFIGURATION"]
+["EML" ,".eml","CONFIGURATION"]

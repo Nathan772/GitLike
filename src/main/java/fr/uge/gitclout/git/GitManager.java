@@ -136,11 +136,12 @@ public class GitManager {
   public List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
     Path startDir = Paths.get(localPath.toString());
     List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
-
+    System.out.println("la liste des fichiers récupérés via walk : "+fileList);
     //var pattern = Pattern.compile(".*\\.com\\/(.*)");
     var files = fileList.stream().map(Path::toString).collect(Collectors.toList());
     //retrieve the part of the file name which is relevant
 
+    //System.out.println("les fichiers après transformation "+files2);
     return files.stream().map(x -> x.substring((directoryForRepoStorage).length() + 1)).toList();
   }
 
@@ -160,11 +161,12 @@ public class GitManager {
     int compteur = 0;
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
+      //System.out.println("le fichier suivant à traiter est : "+file);
       //need to be deleted (à supprimer).
       /*if (compteur == 30)   // stop after 30 files in order to not wait too much
           break;*/
         parseOneFileForEachTagWithContributors(contributionLoader, Path.of(file));
-        compteur++;
+        //compteur++;
     }
     return contributionLoader;
   }
@@ -188,7 +190,9 @@ public class GitManager {
     var isInCommentMode = false;
     //this variable enable to know which comment we are using
     var currentCommentIndex = -1;
+    //System.out.println("le fichier à traiter "+document);
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+      //System.out.println("Le contributeur de cette ligne est : "+blameResult.getSourceAuthor(i).getName()+ " et son mail est : "+blameResult.getSourceAuthor(i).getEmailAddress());
       //you take off the space from the line
       var lineToParse = blameResult.getResultContents().getString(i);//#.replaceAll(" ", "");
       //specific case of languages possessing comments
@@ -366,6 +370,7 @@ public class GitManager {
    */
   public void parseOneFileForEachTagWithContributors(ContributionLoader contributionLoader,Path filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
+    //System.out.println("le fichier traité : "+filePath);
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
     //retrieve the actual lines of contribution and retrieve the comment line of contribution
