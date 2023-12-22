@@ -342,19 +342,13 @@ public class GitManager {
    * the type of documentation it represents( BUILD, C programming, Python programming, angular programming ...)
    */
   public Documentation fromFileToDocumentation(Path file){
-    //System.out.println("le fichier analysé est : "+file.toString()+"\n\n");
     for(var document:documentations){
-        var pattern = Pattern.compile(".*"+document.extension());
-        //System.out.println("l'extension testée est : "+document.extension());
+        var pattern = Pattern.compile(".*"+document.extension()+"$");
         var matcher = pattern.matcher(file.toString());
         if(matcher.find()){
-          if(document.language().isPresent()) {
-            //System.out.println("on a reconnu un langage qui est : "+document.language());
-            //return new Documentation(document.language().orElseThrow(), document.fileType(),document.extension());
-            return document;
-          }
-          else
-            return new Documentation(null, document.fileType(),document.extension());
+          if(document.language().isPresent()) return document;
+
+          else return new Documentation(null, document.fileType(),document.extension());
         }
     }
     return Documentation.unknownFile();
@@ -397,7 +391,7 @@ public class GitManager {
       //https://gitlab.ow2.org/asm/asm.git
       //var repositoryPath ="https://github.com/facebookresearch/llama";
       //"https://github.com/bruno00o/Patchwork"
-      var repositoryPath = "https://github.com/facebookresearch/llama";
+      var repositoryPath = "https://github.com/bruno00o/Patchwork";
       var handler2 = new GitManager(repositoryPath);
       handler2.cloneRepository();
       var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();

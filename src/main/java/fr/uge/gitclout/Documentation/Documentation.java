@@ -108,8 +108,7 @@ public class Documentation {
 
     //trop de lignes, à modifier...
     public static ArrayList<Documentation> fromPathToListDocumentation(Path filePath){
-        Objects.requireNonNull(filePath);
-        var documentations = new ArrayList<Documentation>();
+        Objects.requireNonNull(filePath); var documentations = new ArrayList<Documentation>();
         try(var reader = Files.newBufferedReader(filePath)){
             String line;
             //on analyse la ligne ssi ce n'est pas un commentaire.
@@ -117,14 +116,11 @@ public class Documentation {
                 if(!line.startsWith("#")) {
                     var doc = fromLineToDocumentation(line);
                     //prevent from adding twice the same language
-                    if (!documentations.contains(doc))
-                        documentations.add(doc);
+                    if (!documentations.contains(doc)) documentations.add(doc);
                 }
             }
         }
-        catch(IOException e) {
-            System.err.println(e.getMessage());
-        }
+        catch(IOException e) {System.err.println(e.getMessage());}
         return documentations;
     }
 

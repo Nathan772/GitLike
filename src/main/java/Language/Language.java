@@ -82,12 +82,9 @@ public class Language {
         var endRegex= new ArrayList<String>();
         for(var i =0;i<tabLanguage.length;i++){
                 //add the beginning of comment
-            if(i>=3 && i % 2 != 0)
-                beginRegex.add(tabLanguage[i].replace(" ", ""));
+            if(i>=3 && i % 2 != 0)  beginRegex.add(tabLanguage[i].replace(" ", ""));
                 // add the end of comment
-            else if(i>=4)
-                endRegex.add(tabLanguage[i].replace("]", "").replace(" ", ""));
-
+            else if(i>=4) endRegex.add(tabLanguage[i].replace("]", "").replace(" ", ""));
         }
         //we start at index 1 to avoid the first "["
         return new Language(tabLanguage[0].substring(1),beginRegex,endRegex);
@@ -132,6 +129,7 @@ public class Language {
         for(var comment:beginCommentRegex){
             if(line.contains(comment)) {
                 // a regex to represents the end of comment in order to check if the comment end at the same line
+               // System.out.println("la end comment regex ressmeble à : "+endCommentRegex);
                 var pattern = Pattern.compile(comment+"(?!.*("+endCommentRegex.get(counter)+")).*");
                 var matcher = pattern.matcher(line);
                 //we have to handle in a particular manner the case of comment that ends with \n
