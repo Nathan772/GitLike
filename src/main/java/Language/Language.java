@@ -129,8 +129,9 @@ public class Language {
         for(var comment:beginCommentRegex){
             if(line.contains(comment)) {
                 // a regex to represents the end of comment in order to check if the comment end at the same line
-               // System.out.println("la end comment regex ressmeble à : "+endCommentRegex);
+                // System.out.println("la end comment regex ressmeble à : "+endCommentRegex);
                 var pattern = Pattern.compile(comment+"(?!.*("+endCommentRegex.get(counter)+")).*");
+                //System.out.println("la regex qui correspond au commentaire "+pattern.toString());
                 var matcher = pattern.matcher(line);
                 //we have to handle in a particular manner the case of comment that ends with \n
                 if(matcher.find() && !endCommentRegex.get(counter).equals("\\n")) {
@@ -179,6 +180,7 @@ public class Language {
         String commentStyle2 = "\"\"\" est un commentaire random de type 2 \"\"\" ";
         String commentStyle5 = "\"\"\" est un début de commentaire random de type 5 ";
         String commentStyle6 = "       #Copyright(c)MetaPlatforms,Inc.andaffiliates.";
+        String commentStyle7 = "<!-- est un début de commentaire random de type 5 ";
         /*String commentStyle6 = " \"\"\" " +
                 Perform text completion for a list of prompts using the language generation model.
         \"\"\" "*/

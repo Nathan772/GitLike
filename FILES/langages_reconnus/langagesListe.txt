@@ -4,6 +4,7 @@
 #les commentaires et leur fin doivent être associées par paires (d'abord le commentaire, puis la fin du commentaire juste après)
 #les étoiles doivnet être précédés par des "\" pour éviter la confusion avec leur forme utilisée pour les regex. 
 ["java",".java", "CODE",/\*,\*\/,//,\n]
+["javascript",".js", "CODE",/\*,\*\/,//,\n]
 ["python",".py", "CODE",""",""", # ,\n]
 ["c",".c","CODE" , //,\n,/\*,\*/]
 ["html",".html","CODE",<!--,--!>]

@@ -113,7 +113,8 @@ public class Documentation {
             String line;
             //on analyse la ligne ssi ce n'est pas un commentaire.
             while((line = reader.readLine()) != null) {
-                if(!line.startsWith("#")) {
+                //gère le cas des commentaires dans le fichier à analyser
+                if(!line.replaceAll(" ","").startsWith("#")) {
                     var doc = fromLineToDocumentation(line);
                     //prevent from adding twice the same language
                     if (!documentations.contains(doc)) documentations.add(doc);

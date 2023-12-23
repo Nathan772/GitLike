@@ -191,25 +191,22 @@ public class GitManager {
     //this variable enable to know which comment we are using
     var currentCommentIndex = -1;
     //System.out.println("le fichier à traiter "+document);
+    //System.out.println("il y a au total de ligne : "+blameResult.getResultContents().size());
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-      //System.out.println("Le contributeur de cette ligne est : "+blameResult.getSourceAuthor(i).getName()+ " et son mail est : "+blameResult.getSourceAuthor(i).getEmailAddress());
       //you take off the space from the line
-      var lineToParse = blameResult.getResultContents().getString(i);//#.replaceAll(" ", "");
+      var lineToParse = blameResult.getResultContents().getString(i);
       //specific case of languages possessing comments
       if(containsComments) {
-        //System.out.println("on reconnait un langage de programmation qui contient des commentaires");
         //check if we must add this line in code Line
         if(!isInCommentMode && document.language().orElseThrow().thisStringStartsWithComment(lineToParse) == -1){
-          hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
-          //System.out.println("no comment here");
+          hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),1,(oldValue, newValue) -> oldValue+1);
         }
         //the line you want to parse
         //case with end of a multiline comment
         if(isInCommentMode && document.language().orElseThrow().thisStringEndsComment(lineToParse, currentCommentIndex)){
           //add a new line for comments
           hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
-                  blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
-          //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
+                  blameResult.getSourceAuthor(i).getEmailAddress()),1,(oldValue, newValue) -> oldValue+1);
           isInCommentMode = false;
           //there's no longer commentIndex
           currentCommentIndex = -1;
@@ -226,13 +223,11 @@ public class GitManager {
                 are represented by the same string */
             var lineToParse2 = lineToParse.replaceFirst(document.language().orElseThrow().endCommentRegex().get(currentCommentIndex), "");
             hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
-                    blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
+                    blameResult.getSourceAuthor(i).getEmailAddress()),1,(oldValue, newValue) -> oldValue+1);
             //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
             //System.out.println(hashUserCommentLines);
             //the comment finish on the same line here
-            if(!document.language().orElseThrow().thisStringEndsComment(lineToParse2, currentCommentIndex)){
-              isInCommentMode = false;
-            }
+            if(!document.language().orElseThrow().thisStringEndsComment(lineToParse2, currentCommentIndex)) isInCommentMode = false;
           }
           //check if there's a comment at the end of the line.
           if(!isInCommentMode){
@@ -243,20 +238,17 @@ public class GitManager {
               //System.out.println("a multiline comment starts : "+lineToParse+" + line : "+i+" and the index of the comment is : "+currentCommentIndex);
               isInCommentMode = true;
               // a new comment is added.
-              if(!lineAlreadyAdded) {
-                hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
-                        blameResult.getSourceAuthor(i).getEmailAddress()), 0, (oldValue, newValue) -> oldValue + 1);
+              if(!lineAlreadyAdded)
+                hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
                 //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
-              }
+
             }
 
           }
         }
       }
       //this is not a programming language, then there's no comments
-      else
-        hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),0,(oldValue, newValue) -> oldValue+1);
-
+      else hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
     }
   }
 
@@ -351,7 +343,6 @@ public class GitManager {
         var matcher = pattern.matcher(file.toString());
         if(matcher.find()){
           if(document.language().isPresent()) return document;
-
           else return new Documentation(null, document.fileType(),document.extension());
         }
     }
@@ -370,17 +361,20 @@ public class GitManager {
    */
   public void parseOneFileForEachTagWithContributors(ContributionLoader contributionLoader,Path filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
-    //System.out.println("le fichier traité : "+filePath);
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
-    //retrieve the actual lines of contribution and retrieve the comment line of contribution
-    HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>(); HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
     for (var tag : retrieveTags()) {
-      var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).setTextComparator(RawTextComparator.WS_IGNORE_ALL).call();
+      //System.out.println(" on teste pour le tag :"+tag);
+      //retrieve the actual lines of contribution and retrieve the comment line of contribution
+      HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>(); HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
+      var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).call();
       if (blameResult != null) {
-        feedHashWithBlame(document, hashUserLine, hashUserCommentLine ,blameResult);
+        feedHashWithBlame(document, hashUserLine, hashUserCommentLine, blameResult);
         fromMapToListContribution(contributionLoader, hashUserLine,hashUserCommentLine, document, tag);
       }
+//      else{
+//        System.out.println("Le blame result est null pour le tag "+tag);
+//      }
     }
   }
 
@@ -388,22 +382,31 @@ public class GitManager {
   public static void main(String[] args) throws IOException, GitAPIException {
 
     try {
-      /*"https://github.com/vuejs/core"
+
+      /*projets tests :
+      "https://github.com/vuejs/core"
       "https://github.com/facebookresearch/llama"*/
       //var repositoryPath = "https://github.com/vuejs/core";
       //"https://github.com/damo-vilab/AnyDoor";
       //https://github.com/LC044/WeChatMsg;
       //https://gitlab.ow2.org/asm/asm.git
       //var repositoryPath ="https://github.com/facebookresearch/llama";
-      //"https://github.com/bruno00o/Patchwork"
-      var repositoryPath = "https://github.com/bruno00o/Patchwork";
+      //"https://github.com/bruno00o/Patchwork"*/
+      var repositoryPath = "https://github.com/vuejs/core";
+      var fileForAnalyze = "packages/vue/examples/classic/grid.html";
+      //var fileForAnalyze = "Patchwork.iml";
       var handler2 = new GitManager(repositoryPath);
-      handler2.cloneRepository();
-      var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
-            for(var contribution:resContribution.contributions()){
+      /*handler2.cloneRepository();
+      var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();*/
+      var resContribution = new ContributionLoader();
+      handler2.parseOneFileForEachTagWithContributors(resContribution, Path.of(fileForAnalyze));
+      System.out.println("on teste seulement le fichier "+fileForAnalyze+"\n\n");
+      for(var contribution:resContribution.contributions()){
               //if(contribution.contributor().name().equals("Timothee Lacroix"))
                 System.out.println(contribution);
-            }
+      }
+
+
     } catch (GitAPIException | IOException e) {
       throw new RuntimeException(e);
     }
