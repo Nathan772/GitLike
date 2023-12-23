@@ -61,6 +61,7 @@ public class GitManager {
   }
 
   private static String createProjectName(String remoteURL) {
+    Objects.requireNonNull(remoteURL);
     if (remoteURL.endsWith(".git")) {
       return remoteURL.substring(remoteURL.lastIndexOf("/") + 1, remoteURL.lastIndexOf("."));
     }
@@ -68,6 +69,7 @@ public class GitManager {
   }
 
   public static GitManager fromRepository(Repository repository) throws IOException {
+    Objects.requireNonNull(repository);
     return new GitManager(repository.getURL(), repository.getLocalPath(), Path.of("FILES/langages_reconnus/langagesListe.txt"));
   }
 
@@ -134,6 +136,7 @@ public class GitManager {
    * exception for the use of the method from parseOneFileForEachTag.
    */
   public List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
+    Objects.requireNonNull(directoryForRepoStorage);
     Path startDir = Paths.get(localPath.toString());
     List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
     System.out.println("la liste des fichiers récupérés via walk : "+fileList);
@@ -170,87 +173,7 @@ public class GitManager {
     }
     return contributionLoader;
   }
-  /**
-   * @param document
-   * the document you use to know the kind of comment of your file.
-   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
-   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
-   *
-   * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
-   * @param hashUserLines
-   * the hashMap with user's non-comment line you want to fill
-   * @param hashUserCommentLines
-   * the hashMap with user's comment line you want to fill
-   * @param blameResult
-   * the result of the blame you made on a file.
-   */
-  public static void feedHashWithBlame(Documentation document, HashMap<Contributor, Integer> hashUserLines, HashMap<Contributor, Integer> hashUserCommentLines, BlameResult blameResult) {
-    var containsComments = document.language().isPresent();
-    //this variable enable to know if the program is parsing commentLine
-    var isInCommentMode = false;
-    //this variable enable to know which comment we are using
-    var currentCommentIndex = -1;
-    //System.out.println("le fichier à traiter "+document);
-    //System.out.println("il y a au total de ligne : "+blameResult.getResultContents().size());
-    for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-      //you take off the space from the line
-      var lineToParse = blameResult.getResultContents().getString(i);
-      //specific case of languages possessing comments
-      if(containsComments) {
-        //check if we must add this line in code Line
-        if(!isInCommentMode && document.language().orElseThrow().thisStringStartsWithComment(lineToParse) == -1){
-          hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()),1,(oldValue, newValue) -> oldValue+1);
-        }
-        //the line you want to parse
-        //case with end of a multiline comment
-        if(isInCommentMode && document.language().orElseThrow().thisStringEndsComment(lineToParse, currentCommentIndex)){
-          //add a new line for comments
-          hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
-                  blameResult.getSourceAuthor(i).getEmailAddress()),1,(oldValue, newValue) -> oldValue+1);
-          isInCommentMode = false;
-          //there's no longer commentIndex
-          currentCommentIndex = -1;
-        }
-        //check if a new comment starts
-        if(!isInCommentMode){
-          currentCommentIndex = document.language().orElseThrow().thisStringStartsWithComment(lineToParse);
-          // a new comment starts here at the beginning of the line
-          if(currentCommentIndex != -1){
-            // a new comment has started
-            isInCommentMode = true;
-            //we remove the first part of the comment in order to not suppose a comment ends sooner than it actually does
-                /* this apply for very specific cases just like """ """ in python because the beginning and the end of the comment
-                are represented by the same string */
-            var lineToParse2 = lineToParse.replaceFirst(document.language().orElseThrow().endCommentRegex().get(currentCommentIndex), "");
-            hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(),
-                    blameResult.getSourceAuthor(i).getEmailAddress()),1,(oldValue, newValue) -> oldValue+1);
-            //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
-            //System.out.println(hashUserCommentLines);
-            //the comment finish on the same line here
-            if(!document.language().orElseThrow().thisStringEndsComment(lineToParse2, currentCommentIndex)) isInCommentMode = false;
-          }
-          //check if there's a comment at the end of the line.
-          if(!isInCommentMode){
-            var lineAlreadyAdded = currentCommentIndex >= 0;
-            // a comment on the same line starts but doesn't end.
-            currentCommentIndex = document.language().orElseThrow().thisStringEndsWithUnfinishedComment(lineToParse);
-            if(currentCommentIndex != -1){
-              //System.out.println("a multiline comment starts : "+lineToParse+" + line : "+i+" and the index of the comment is : "+currentCommentIndex);
-              isInCommentMode = true;
-              // a new comment is added.
-              if(!lineAlreadyAdded)
-                hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
-                //System.out.println("increase the number of comment line for "+blameResult.getSourceAuthor(i));
 
-            }
-
-          }
-        }
-      }
-      //this is not a programming language, then there's no comments
-      else hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
-    }
-  }
 
     /**
      *
@@ -338,6 +261,7 @@ public class GitManager {
    * the type of documentation it represents( BUILD, C programming, Python programming, angular programming ...)
    */
   public Documentation fromFileToDocumentation(Path file){
+    Objects.requireNonNull(file);
     for(var document:documentations){
         var pattern = Pattern.compile(".*"+document.extension()+"$");
         var matcher = pattern.matcher(file.toString());
@@ -360,7 +284,7 @@ public class GitManager {
    * a list with all the contribution
    */
   public void parseOneFileForEachTagWithContributors(ContributionLoader contributionLoader,Path filePath) throws GitAPIException {
-    Objects.requireNonNull(filePath, "the file you're parsing cannot be null");
+    Objects.requireNonNull(filePath, "the file you're parsing cannot be null"); Objects.requireNonNull(contributionLoader);
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
     for (var tag : retrieveTags()) {
@@ -378,7 +302,108 @@ public class GitManager {
     }
   }
 
+  /**
+   * @param document
+   * the document you use to know the kind of comment of your file.
+   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
+   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
+   *
+   * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
+   * @param hashUserLines
+   * the hashMap with user's non-comment line you want to fill
+   * @param hashUserCommentLines
+   * the hashMap with user's comment line you want to fill
+   * @param blameResult
+   * the result of the blame you made on a file.
+   */
+  public static void feedHashWithBlame(Documentation document, HashMap<Contributor, Integer> hashUserLines, HashMap<Contributor, Integer> hashUserCommentLines, BlameResult blameResult) {
+    Objects.requireNonNull(document); Objects.requireNonNull(hashUserLines);Objects.requireNonNull(blameResult); Objects.requireNonNull(hashUserCommentLines);
+    var containsComments = document.language().isPresent();
+    //handle programming language
+    if(containsComments) feedHashWithBlameForProgrammingLanguage(document, hashUserLines, hashUserCommentLines, blameResult);
+    //handle non-programming language
+      // this is not a programming language, then there's no comments
+    else feedHashWithBlameForNonProgrammingLanguage(document, hashUserLines, blameResult);
+  }
 
+  /**
+   * @param document
+   * the document you use to know the kind of comment of your file.
+   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
+   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
+   *
+   * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
+   * @param hashUserLines
+   * the hashMap with user's comment line you want to fill
+   * @param blameResult
+   * the result of the blame you made on a file.
+   */
+  private static void feedHashWithBlameForNonProgrammingLanguage(Documentation document, HashMap<Contributor, Integer> hashUserLines, BlameResult blameResult){
+    Objects.requireNonNull(document); Objects.requireNonNull(hashUserLines);Objects.requireNonNull(blameResult); Objects.requireNonNull(blameResult);
+    for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+      hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+    }
+  }
+
+  /**
+   * @param document
+   * the document you use to know the kind of comment of your file.
+   * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
+   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
+   *
+   * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
+   * @param hashUserLines
+   * the hashMap with user's non-comment line you want to fill
+   * @param hashUserCommentLines
+   * the hashMap with user's comment line you want to fill
+   * @param blameResult
+   * the result of the blame you made on a file.
+   */
+  public static void feedHashWithBlameForProgrammingLanguage(Documentation document, HashMap<Contributor, Integer> hashUserLines, HashMap<Contributor, Integer> hashUserCommentLines, BlameResult blameResult){
+    Objects.requireNonNull(document); Objects.requireNonNull(hashUserLines);Objects.requireNonNull(hashUserCommentLines);
+    Objects.requireNonNull(blameResult); Objects.requireNonNull(blameResult);
+    //check if we are into a comment line
+    var isInCommentMode = false;
+    //this variable enable to know which comment we are using
+    var currentCommentIndex = -1;
+    for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+      //retrieve the current line content
+      var lineToParse = blameResult.getResultContents().getString(i);
+      //a multiline continue
+      if(isInCommentMode && !document.language().orElseThrow().thisStringEndsComment(lineToParse,currentCommentIndex)){
+        //the comments ends here
+        isInCommentMode = false;
+        currentCommentIndex =-1;
+        //one last comment line
+        hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+
+      }
+      //we start a single line comment
+      else if(document.language().orElseThrow().thisStringStartsWithSingleLineComment(lineToParse)){
+        isInCommentMode = false;
+        //increase the number of comments
+        hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+      }
+      else{
+        //check if a new multiline comment starts
+        currentCommentIndex = document.language().orElseThrow().thisStringEndsWithUnfinishedComment(lineToParse);
+        if(currentCommentIndex > -1){
+          System.out.println(" un multi line comment commence "+lineToParse);
+          //comment mode start
+          isInCommentMode = true;
+          hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+        }
+        //code line (but not exhaustive should check if there's code between two comments
+        else{
+          hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+          isInCommentMode = false;
+        }
+
+      }
+
+    }
+
+  }
   public static void main(String[] args) throws IOException, GitAPIException {
 
     try {
@@ -393,7 +418,7 @@ public class GitManager {
       //var repositoryPath ="https://github.com/facebookresearch/llama";
       //"https://github.com/bruno00o/Patchwork"*/
       var repositoryPath = "https://github.com/vuejs/core";
-      var fileForAnalyze = "packages/vue/examples/classic/grid.html";
+      var fileForAnalyze = "packages/global.d.ts";
       //var fileForAnalyze = "Patchwork.iml";
       var handler2 = new GitManager(repositoryPath);
       /*handler2.cloneRepository();

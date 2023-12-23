@@ -100,13 +100,16 @@ public class Language {
      * the index of the comment type (it's -1 if there's no comment)
      */
     public int thisStringStartsWithComment(String line){
+        Objects.requireNonNull(line);
         int counter = 0;
         //On retire les espaces blancs au début de la ligne pour voir si elle commence par un commentaire.
-        line=line.replaceFirst("^\\s*", "");
+        line=line.replaceAll(" ", "");
+
         for(var comment:beginCommentRegex){
-            if(line.startsWith(comment)){
-                return counter;
-            }
+            //System.out.println("la regex produite est : " +Pattern.compile("^"+comment));
+            //System.out.println("la regex qui correspond au commentaire "+pattern.toString());
+            var matcher = Pattern.compile("^"+comment).matcher(line);
+            if(matcher.find()) return counter;
             counter++;
         }
         return -1;
@@ -127,10 +130,12 @@ public class Language {
         //take off the white space in order to know if the line begins by a comment.
         int counter = 0; line=line.replace("^\\s*", "");
         for(var comment:beginCommentRegex){
-            if(line.contains(comment)) {
+            //var regexBeginComment = ;
+            if(Pattern.compile(comment).matcher(line).find()) {
                 // a regex to represents the end of comment in order to check if the comment end at the same line
-                // System.out.println("la end comment regex ressmeble à : "+endCommentRegex);
+                //System.out.println("la end comment regex ressmeble à : "+endCommentRegex);
                 var pattern = Pattern.compile(comment+"(?!.*("+endCommentRegex.get(counter)+")).*");
+                System.out.println("la regex qui teste produite est : " +pattern);
                 //System.out.println("la regex qui correspond au commentaire "+pattern.toString());
                 var matcher = pattern.matcher(line);
                 //we have to handle in a particular manner the case of comment that ends with \n
@@ -158,10 +163,56 @@ public class Language {
      * the index of the comment type (it's -1 if there's no comment)
      */
     public boolean thisStringEndsComment(String line, int commentIndex){
+        Objects.checkIndex(commentIndex, endCommentRegex.size());
         //take off the white space in order to know if the line begins by a comment.
         line=line.replace("^\\s*", "");
-
         return line.contains(endCommentRegex.get(commentIndex));
+    }
+
+    /**
+     * this method enables to know if the current comment is a "single line" comment.
+     *
+     * @param commentIndex
+     * the index associated to the beginning of the comment.
+     *
+     * @return
+     * true if it's a  single lien comment
+     * false if it's not
+     */
+    public boolean thisIndexIsSingleLineComment(int commentIndex){
+        Objects.checkIndex(commentIndex, endCommentRegex.size());
+        return endCommentRegex.get(commentIndex).equals("\\n");
+    }
+
+    /**
+     * this method enables to know if the current comment is a "multi line" comment.
+     *
+     * @param commentIndex
+     * the index associated to the beginning of the comment.
+     *
+     * @return
+     * true if it's a  single lien comment
+     * false if it's not
+     */
+    public boolean thisIndexIsMultiLineComment(int commentIndex){
+        Objects.checkIndex(commentIndex, endCommentRegex.size());
+        return !endCommentRegex.get(commentIndex).equals(("\n"));
+    }
+
+
+    /**
+     * this method enables to know if a string contains a comment line or not at its beginning.
+     *
+     * @param line
+     * the string you want to parse
+     *
+     * @return
+     * the index of the comment type (it's -1 if there's no comment)
+     */
+    public boolean thisStringStartsWithSingleLineComment(String line){
+        Objects.requireNonNull(line);
+        var beginCommentIndex = thisStringStartsWithComment(line);
+        return beginCommentIndex != -1 && thisIndexIsSingleLineComment(beginCommentIndex);
     }
 
     public static void main(String[] args){
@@ -169,27 +220,16 @@ public class Language {
         après le premier appel pour pouvoir gérer les cas où le début de commentaire est identique à la fin */
         var beginCommentRegex = new ArrayList<String>();
         var endCommentRegex = new ArrayList<String>();
-        beginCommentRegex.add("\"\"\"");
-        beginCommentRegex.add("#");
-        endCommentRegex.add("\"\"\"");
+        beginCommentRegex.add("\\/\\*");
+        beginCommentRegex.add("//");
+        endCommentRegex.add("\\*\\/");
         endCommentRegex.add("\\n");
-        var lang = new Language("Python", beginCommentRegex,endCommentRegex);
-        String commentStyle1 = "# ceci est un commentaire random de type 1";
-        String commentStyle3 = "x=3 #ceci est un commentaire random de type 3\n";
-        String commentStyle4 = "     # ceci est un commentaire random de type 4";
-        String commentStyle2 = "\"\"\" est un commentaire random de type 2 \"\"\" ";
-        String commentStyle5 = "\"\"\" est un début de commentaire random de type 5 ";
-        String commentStyle6 = "       #Copyright(c)MetaPlatforms,Inc.andaffiliates.";
-        String commentStyle7 = "<!-- est un début de commentaire random de type 5 ";
-        /*String commentStyle6 = " \"\"\" " +
-                Perform text completion for a list of prompts using the language generation model.
-        \"\"\" "*/
-        /*System.out.println("this string starts comment : "+lang.thisStringStartsWithComment(commentStyle4));
-        System.out.println("this string ends with a comment that doesn't finish: "+lang.thisStringEndsWithUnfinishedComment(commentStyle3));
-        System.out.println("this string ends with a comment : "+lang.thisStringEndsComment(commentStyle3,1));*/
-        System.out.println("this string starts with a comment "+lang.thisStringStartsWithComment(commentStyle6));
-        commentStyle5 = commentStyle5.replaceFirst("\"\"\"", "");
-        System.out.println("this string ends with a comment that actually finish: "+lang.thisStringEndsComment(commentStyle5, 0));
-        System.out.println("this string ends with a comment that actually doesn't finish: "+lang.thisStringEndsWithUnfinishedComment(commentStyle3));
+        /*
+
+        /* */ int cc = 3; //
+        var lang = new Language("Java", beginCommentRegex,endCommentRegex);
+        String commentStyle1 = "int blabla; /* ceci est un commentaire random de type 1 ";
+        System.out.println("this string contains an unfinished comment : "+lang.thisStringEndsWithUnfinishedComment(commentStyle1));
+        //System.out.println("this string is a single line comment here : "+lang.thisStringStartsWithSingleLineComment(commentStyle1));
     }
 }

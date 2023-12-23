@@ -2,14 +2,16 @@
 #s'ensuit l'extension associée puis la catégoriee "CODE", "BUILD"...
 #on indique ensuite comment commence un commentaire et ensuite comme il se termine
 #les commentaires et leur fin doivent être associées par paires (d'abord le commentaire, puis la fin du commentaire juste après)
-#les étoiles doivnet être précédés par des "\" pour éviter la confusion avec leur forme utilisée pour les regex. 
-["java",".java", "CODE",/\*,\*\/,//,\n]
-["javascript",".js", "CODE",/\*,\*\/,//,\n]
+#les étoiles doivent être précédés par deux "\\" pour éviter la confusion avec leur forme utilisée pour les regex, sauf si elles sont déjà précédées par un "/"
+#les "/" doivent être précédés par des "\" pour la même raison
+["java",".java", "CODE",\/\*,\*\/,//,\n]
+["javascript",".js", "CODE",\/\*,\*\/,//,\n]
 ["python",".py", "CODE",""",""", # ,\n]
-["c",".c","CODE" , //,\n,/\*,\*/]
-["html",".html","CODE",<!--,--!>]
-["css",".css","CODE",/\*,\*\]
-["php",".php","CODE",/\*,\*/, #,\n ,//,\n]
+["c",".c","CODE" , //,\n,\/\*,\*/]
+["html",".html","CODE",<!--,-->,//,\n]
+["css",".css","CODE",\/\*,\*\]
+["php",".php","CODE",\/\*,\*/, #,\n ,//,\n]
+["TypeScript",".ts","CODE",\/\*,\*\/,//,\n]
 ["build" ,".xml","BUILD"]
 ["config" ,".github","CONFIGURATION"]
 ["IML" ,".iml","CONFIGURATION"]
