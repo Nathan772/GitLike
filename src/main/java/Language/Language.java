@@ -116,6 +116,31 @@ public class Language {
     }
 
     /**
+     * this method enables to know if a string contains a comment line or not somewhere.
+     *
+     * @param line
+     * the string you want to parse
+     *
+     * @return
+     * the index of the comment type (it's -1 if there's no comment)
+     */
+    public int thisStringContainsANewComment(String line){
+        Objects.requireNonNull(line);
+        int counter = 0;
+        //On retire les espaces blancs au début de la ligne pour voir si elle commence par un commentaire.
+        line=line.replaceAll(" ", "");
+
+        for(var comment:beginCommentRegex){
+            //System.out.println("la regex produite est : " +Pattern.compile("^"+comment));
+            //System.out.println("la regex qui correspond au commentaire "+pattern.toString());
+            var matcher = Pattern.compile(comment).matcher(line);
+            if(matcher.find()) return counter;
+            counter++;
+        }
+        return -1;
+    }
+
+    /**
      * this method enables to know if a string contains a comment line or not at its end that doesn't
      * finish at the end of the line.
      *
@@ -135,15 +160,10 @@ public class Language {
                 // a regex to represents the end of comment in order to check if the comment end at the same line
                 //System.out.println("la end comment regex ressmeble à : "+endCommentRegex);
                 var pattern = Pattern.compile(comment+"(?!.*("+endCommentRegex.get(counter)+")).*");
-                System.out.println("la regex qui teste produite est : " +pattern);
                 //System.out.println("la regex qui correspond au commentaire "+pattern.toString());
                 var matcher = pattern.matcher(line);
                 //we have to handle in a particular manner the case of comment that ends with \n
-                if(matcher.find() && !endCommentRegex.get(counter).equals("\\n")) {
-                    //System.out.println(" a multiline comment starts : "+line+"\n");
-                    return counter;
-                }
-
+                if(matcher.find() && !endCommentRegex.get(counter).equals("\\n")) return counter;
             }
             counter++;
         }
@@ -201,7 +221,7 @@ public class Language {
 
 
     /**
-     * this method enables to know if a string contains a comment line or not at its beginning.
+     * this method enables to know if a string contains a one line, comment line or not at its beginning.
      *
      * @param line
      * the string you want to parse
@@ -214,6 +234,7 @@ public class Language {
         var beginCommentIndex = thisStringStartsWithComment(line);
         return beginCommentIndex != -1 && thisIndexIsSingleLineComment(beginCommentIndex);
     }
+
 
     public static void main(String[] args){
         /* si une ligne contient un début de commentaire il va falloir le retirer

@@ -385,12 +385,20 @@ public class GitManager {
         hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
       }
       else{
-        //check if a new multiline comment starts
+        //check if a new multiline comment starts and doesn't finish on the same line
         currentCommentIndex = document.language().orElseThrow().thisStringEndsWithUnfinishedComment(lineToParse);
         if(currentCommentIndex > -1){
-          System.out.println(" un multi line comment commence "+lineToParse);
+          //System.out.println(" un multi line comment commence "+lineToParse);
           //comment mode start
           isInCommentMode = true;
+          hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+          //the line didn't start by a comment, then it start by code
+          if(document.language().orElseThrow().thisStringStartsWithComment(lineToParse) != -1) hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+
+        }
+
+        //a multiline comment starts and ends on the same line at the start of the line
+        else if(document.language().orElseThrow().thisStringStartsWithComment(lineToParse) != -1){
           hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
         }
         //code line (but not exhaustive should check if there's code between two comments
@@ -418,17 +426,16 @@ public class GitManager {
       //var repositoryPath ="https://github.com/facebookresearch/llama";
       //"https://github.com/bruno00o/Patchwork"*/
       var repositoryPath = "https://github.com/vuejs/core";
-      var fileForAnalyze = "packages/global.d.ts";
+      //var fileForAnalyze = "packages/global.d.ts";
+      var fileForAnalyze = "scripts/aliases.js";
       //var fileForAnalyze = "Patchwork.iml";
       var handler2 = new GitManager(repositoryPath);
-      /*handler2.cloneRepository();
-      var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();*/
-      var resContribution = new ContributionLoader();
-      handler2.parseOneFileForEachTagWithContributors(resContribution, Path.of(fileForAnalyze));
-      System.out.println("on teste seulement le fichier "+fileForAnalyze+"\n\n");
+      var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
+      //var resContribution = new ContributionLoader();
+      //handler2.parseOneFileForEachTagWithContributors(resContribution, Path.of(fileForAnalyze));
+      //System.out.println("on teste seulement le fichier "+fileForAnalyze+"\n\n");
       for(var contribution:resContribution.contributions()){
-              //if(contribution.contributor().name().equals("Timothee Lacroix"))
-                System.out.println(contribution);
+        System.out.println(contribution);
       }
 
 
