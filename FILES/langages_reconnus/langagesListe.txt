@@ -13,6 +13,7 @@
 ["php",".php","CODE",\/\*,\*/, #,\n ,//,\n]
 ["TypeScript",".ts","CODE",\/\*,\*\/,//,\n]
 ["build" ,".xml","BUILD"]
+["Texte" ,".txt","DOCUMENTATION"]
 ["config" ,".github","CONFIGURATION"]
 ["IML" ,".iml","CONFIGURATION"]
 ["EML" ,".eml","CONFIGURATION"]

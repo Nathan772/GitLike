@@ -43,7 +43,7 @@ public class GitManager {
    * it's the file that contains all the language and documentation (BUILD, CONFIG, ETC...) available.
    * @throws IOException
    */
-  public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) throws IOException {
+  public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) throws IOException, GitAPIException {
     Objects.requireNonNull(remoteURL);
     Objects.requireNonNull(localPath);
     this.remoteURL = remoteURL;
@@ -52,11 +52,13 @@ public class GitManager {
     if (new File(localPath).exists()) {
       git = Git.open(new File(this.localPath.toString()));
     }
+    else this.cloneRepository();
+
     this.repository = new Repository(projectName, remoteURL, this.localPath.toString());
     this.documentations = Documentation.fromPathToListDocumentation(documentationChosenByUser);
   }
 
-  public GitManager(String remoteURL) throws IOException {
+  public GitManager(String remoteURL) throws IOException, GitAPIException {
     this(remoteURL, Path.of(PATH).resolve(createProjectName(remoteURL)).toString(), Path.of("FILES/langages_reconnus/langagesListe.txt"));
   }
 
@@ -68,7 +70,7 @@ public class GitManager {
     return remoteURL.substring(remoteURL.lastIndexOf("/") + 1);
   }
 
-  public static GitManager fromRepository(Repository repository) throws IOException {
+  public static GitManager fromRepository(Repository repository) throws IOException, GitAPIException {
     Objects.requireNonNull(repository);
     return new GitManager(repository.getURL(), repository.getLocalPath(), Path.of("FILES/langages_reconnus/langagesListe.txt"));
   }
@@ -296,9 +298,6 @@ public class GitManager {
         feedHashWithBlame(document, hashUserLine, hashUserCommentLine, blameResult);
         fromMapToListContribution(contributionLoader, hashUserLine,hashUserCommentLine, document, tag);
       }
-//      else{
-//        System.out.println("Le blame result est null pour le tag "+tag);
-//      }
     }
   }
 
@@ -367,49 +366,52 @@ public class GitManager {
     //this variable enable to know which comment we are using
     var currentCommentIndex = -1;
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-      //retrieve the current line content
+//      //retrieve the current line content
       var lineToParse = blameResult.getResultContents().getString(i);
-      //a multiline continue
-      if(isInCommentMode && !document.language().orElseThrow().thisStringEndsComment(lineToParse,currentCommentIndex)){
-        //the comments ends here
+//      //a multiline continue
+      if (isInCommentMode && !document.language().orElseThrow().thisStringEndsComment(lineToParse, currentCommentIndex)) {
+//        //the comments ends here
         isInCommentMode = false;
-        currentCommentIndex =-1;
-        //one last comment line
+        currentCommentIndex = -1;
+//        //one last comment line
         hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
 
       }
-      //we start a single line comment
-      else if(document.language().orElseThrow().thisStringStartsWithSingleLineComment(lineToParse)){
+//      //we start a single line comment
+      else if (document.language().orElseThrow().thisStringStartsWithSingleLineComment(lineToParse)) {
         isInCommentMode = false;
-        //increase the number of comments
+//        //increase the number of comments
         hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
       }
+
       else{
-        //check if a new multiline comment starts and doesn't finish on the same line
+//        //check if a new multiline comment starts and doesn't finish on the same line
         currentCommentIndex = document.language().orElseThrow().thisStringEndsWithUnfinishedComment(lineToParse);
         if(currentCommentIndex > -1){
-          //System.out.println(" un multi line comment commence "+lineToParse);
-          //comment mode start
+//          //System.out.println(" un multi line comment commence "+lineToParse);
+//          //comment mode start
           isInCommentMode = true;
           hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
-          //the line didn't start by a comment, then it start by code
-          if(document.language().orElseThrow().thisStringStartsWithComment(lineToParse) != -1) hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+//          //the line didn't start by a comment, then it start by code
+          if(document.language().orElseThrow().thisStringStartsWithComment(lineToParse) != -1)
+            hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
 
         }
-
-        //a multiline comment starts and ends on the same line at the start of the line
+//
+//        //a multiline comment starts and ends on the same line at the start of the line
         else if(document.language().orElseThrow().thisStringStartsWithComment(lineToParse) != -1){
           hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
         }
-        //code line (but not exhaustive should check if there's code between two comments
+//        //code line (but not exhaustive should check if there's code between two comments
         else{
           hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
           isInCommentMode = false;
         }
+        //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
 
       }
-
     }
+
 
   }
   public static void main(String[] args) throws IOException, GitAPIException {
@@ -425,7 +427,7 @@ public class GitManager {
       //https://gitlab.ow2.org/asm/asm.git
       //var repositoryPath ="https://github.com/facebookresearch/llama";
       //"https://github.com/bruno00o/Patchwork"*/
-      var repositoryPath = "https://github.com/vuejs/core";
+      var repositoryPath = "https://gitlab.ow2.org/asm/asm.git";
       //var fileForAnalyze = "packages/global.d.ts";
       var fileForAnalyze = "scripts/aliases.js";
       //var fileForAnalyze = "Patchwork.iml";
