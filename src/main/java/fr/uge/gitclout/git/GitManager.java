@@ -49,17 +49,25 @@ public class GitManager {
    * it represents
    * @param documentationChosenByUser
    * it's the file that contains all the language and documentation (BUILD, CONFIG, ETC...) available.
-   * @throws IOException
    */
-  public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) throws IOException, GitAPIException {
+  public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) {
     Objects.requireNonNull(remoteURL); Objects.requireNonNull(localPath);
     this.remoteURL = remoteURL;
     this.projectName = createProjectName(remoteURL);
     this.localPath = Path.of(localPath);
     //the project is already loaded
-    if (new File(localPath).exists())  git = Git.open(new File(this.localPath.toString()));
-    else this.cloneRepository();
-    //git.getRepository();
+    if (new File(localPath).exists()) {
+        try {git = Git.open(new File(this.localPath.toString()));} catch (IOException e) {
+            System.out.println("Erreur : Problème lors du chargement du repo git ");
+            throw new RuntimeException(e);
+        }
+    }
+    else {
+        try {this.cloneRepository();} catch (GitAPIException e) {
+            System.out.println("Erreur : Problème lors du clonage du repo git ");
+            throw new RuntimeException(e);
+        }
+    }
     this.repository = new Repository(projectName, remoteURL, this.localPath.toString());
     this.documentations = Documentation.fromPathToListDocumentation(documentationChosenByUser);
   }
@@ -218,11 +226,11 @@ public class GitManager {
    */
 
   //old à supprimer
-  public List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
+  private List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
     Objects.requireNonNull(directoryForRepoStorage);
     Path startDir = Paths.get(localPath.toString());
     List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
-    var files = fileList.stream().map(Path::toString).collect(Collectors.toList());
+    var files = fileList.stream().map(Path::toString).toList();
     //retrieve the part of the file name which is relevant
     return files.stream().map(x -> x.substring((directoryForRepoStorage).length() + 1)).toList();
   }
@@ -237,23 +245,13 @@ public class GitManager {
    * exception for the use of the method from parseOneFileForEachTag.
    */
 
-  public ContributionLoader parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
+  private ContributionLoader parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
     //the final lists with all hte contributions
     var contributionLoader = new ContributionLoader();
-    int compteur = 0;
     var files = retrieveEveryFileFromRepo(localPath.toString());
-    System.out.println("le nombre de fichiers à traiter est : "+files.size());
-    /*for (var file : files) {
-      if (new File(PATH+"/"+projectName+"/"+file).exists()){
-        compteur++;
-      }
-      //if (compteur == 30)   // stop after 30 files in order to not wait too much
-          break;
+    for (var file : files) {
         parseOneFileForEachTagWithContributors(contributionLoader, Path.of(file));
-        //compteur++;
-
-    }*/
-    //System.out.println("le nombre total de fichiers existants est : "+compteur);
+    }
     return contributionLoader;
   }
 
@@ -313,9 +311,9 @@ public class GitManager {
    * @param contributionLoader
    * the list that will contain the contributions made by the users.
    * @param hashUserCommentLine
-   * the comment lines written by each user.
-   * @param hashUserCommentLine
    * the comment line written by each user.
+   * @param tag
+   * the tag you refer to this contribution
    * @param documentation
    * it represents the kind of documentation used by the user.
    */
@@ -356,6 +354,7 @@ public class GitManager {
     return Documentation.unknownFile();
   }
 
+
   /**
    *
    * This method blame every version (tag) of a given file and display the number of line by user.
@@ -363,10 +362,9 @@ public class GitManager {
    * the path for the path you want to blame
    * @throws GitAPIException
    * handle the use of blame
-   * @return
-   * a list with all the contribution
+   *
    */
-  public void parseOneFileForEachTagWithContributors(ContributionLoader contributionLoader,Path filePath) throws GitAPIException {
+  private void parseOneFileForEachTagWithContributors(ContributionLoader contributionLoader,Path filePath) throws GitAPIException {
     Objects.requireNonNull(filePath, "the file you're parsing cannot be null"); Objects.requireNonNull(contributionLoader);
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
@@ -385,8 +383,7 @@ public class GitManager {
    * @param document
    * the document you use to know the kind of comment of your file.
    * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
-   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
-   *
+   * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame
    * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
    * @param hashUserLines
    * the hashMap with user's non-comment line you want to fill
@@ -410,7 +407,6 @@ public class GitManager {
    * the document you use to know the kind of comment of your file.
    * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
    * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
-   *
    * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
    * @param hashUserLines
    * the hashMap with user's comment line you want to fill
@@ -429,7 +425,6 @@ public class GitManager {
    * the document you use to know the kind of comment of your file.
    * Fill an hashMap "user, number of line"  with the number of line by user using the result of a blame.
    * And fill an hashMap "user, number of comment line" with the number of comment made by user using the result of a blame.
-   *
    * This method assumes that a line that would contain some code and a comment would be considered as a code Line.
    * @param hashUserLines
    * the hashMap with user's non-comment line you want to fill
