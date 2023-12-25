@@ -13,6 +13,8 @@ export const checkRepository = async (repoURL: string) => {
 
 export const getRepoInfos = async (repoURL: string) => {
     const response = await fetch(`${API_URL}/repository-info?url=${repoURL}`);
+    //System.out.println("le truc qui m'intrigue : "+`${API_URL}/repository-info?url=${repoURL}`gh);
     console.log(response);
+    console.log("blablabla viki blabla")
     return response.json();
 }

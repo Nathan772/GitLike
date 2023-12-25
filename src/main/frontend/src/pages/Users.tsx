@@ -1,4 +1,3 @@
-
 import { For, createSignal, onMount } from 'solid-js';
 import { getRepoInfos } from "../utils";
 import { useNavigate, useSearchParams } from '@solidjs/router';
@@ -8,10 +7,11 @@ import { setStoreError } from '../store';
 import { Toasts, addToast } from '../components/Toasts';
 import { ToastInfo } from '../types/ToastInfo';
 
-function Repo() {
+function UserFromTagList() {
     const navigate = useNavigate();
     const [name, setName] = createSignal('');
     const [url, setUrl] = createSignal('');
+    /* this variable will contains the tags */
     const [tags, setTags] = createSignal([] as string[]);
 
     onMount(async () => {
@@ -30,6 +30,7 @@ function Repo() {
             if (res.status === "success") {
                 setName(data.name);
                 setUrl(data.URL);
+                /* retrieve the tags from the project */
                 setTags(data.tags);
 
                 const info: ToastInfo = {
@@ -83,7 +84,7 @@ function Repo() {
                 <p>{url()}</p>
 
                 <div class="mt-5">
-                    <h2 class="h3">Tags test Nathan pour voir si c'est bien l'affichage </h2>
+                    <h2 class="h3">Liste des tags du projet </h2>
                     <ul class="d-flex overflow-x-auto ps-0">
                         <For each={tags()}>
                             {(tag: any) => (
@@ -97,7 +98,7 @@ function Repo() {
                     </ul>
                 </div>
 
-                
+
 
             </main>
 
@@ -123,4 +124,4 @@ function Repo() {
     )
 }
 
-export default Repo
+export default UserFromTagList
