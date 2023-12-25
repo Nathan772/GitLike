@@ -4,18 +4,26 @@ import fr.uge.gitclout.Contribution.Contribution;
 import fr.uge.gitclout.Contribution.ContributionLoader;
 import fr.uge.gitclout.Documentation.Documentation;
 import fr.uge.gitclout.model.*;
+import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.blame.BlameResult;
 import org.eclipse.jgit.diff.RawTextComparator;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -44,16 +52,14 @@ public class GitManager {
    * @throws IOException
    */
   public GitManager(String remoteURL, String localPath, Path documentationChosenByUser) throws IOException, GitAPIException {
-    Objects.requireNonNull(remoteURL);
-    Objects.requireNonNull(localPath);
+    Objects.requireNonNull(remoteURL); Objects.requireNonNull(localPath);
     this.remoteURL = remoteURL;
     this.projectName = createProjectName(remoteURL);
     this.localPath = Path.of(localPath);
-    if (new File(localPath).exists()) {
-      git = Git.open(new File(this.localPath.toString()));
-    }
+    //the project is already loaded
+    if (new File(localPath).exists())  git = Git.open(new File(this.localPath.toString()));
     else this.cloneRepository();
-
+    //git.getRepository();
     this.repository = new Repository(projectName, remoteURL, this.localPath.toString());
     this.documentations = Documentation.fromPathToListDocumentation(documentationChosenByUser);
   }
@@ -95,9 +101,9 @@ public class GitManager {
     else
       // clone the repo in a directory which has the same name as the repo
       // gives the path for the location of the directory
+      git = Git.cloneRepository().setURI(remoteURL).setDirectory(file).setBare(true).call();
 
-      git = Git.cloneRepository().setURI(remoteURL).setDirectory(file).call();
-      return repository;
+    return repository;
   }
 
   private Date getTagDate(Ref ref) throws IOException {
@@ -122,8 +128,12 @@ public class GitManager {
    * the list of tags associated to the git repo.
    *
    */
-  public List<Ref> retrieveTags() throws GitAPIException {
-    return git.tagList().call();
+  public List<Ref> retrieveTags() {
+      try {
+          return git.tagList().call();
+      } catch (GitAPIException e) {
+          throw new RuntimeException(e);
+      }
   }
 
 
@@ -131,22 +141,89 @@ public class GitManager {
     git.close();
   }
   /**
-   * This method parse every file from the repo and give the user per line.
-   * @param directoryForRepoStorage
    * exception for the use of method from retrieveEveryFileFromDepo.
    * @throws IOException
    * exception for the use of the method from parseOneFileForEachTag.
    */
+  public ContributionLoader retrieveEveryFileFromCurrentRepoAndParseToContribution() throws IOException, GitAPIException, ExecutionException, InterruptedException {
+    var contributionLoader = new ContributionLoader();
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    List<Callable<Void>> callables = new ArrayList<>();
+
+    try (RevWalk walk = new RevWalk(git.getRepository())) {
+      List<Ref> tags = git.tagList().call();
+      for (Ref tagRef : tags) {
+        //System.out.println("Analyzing tag " + tagRef.getName());
+        ObjectId commitId = tagRef.getPeeledObjectId();
+        if (commitId == null) commitId = tagRef.getObjectId();
+
+        RevCommit commit = walk.parseCommit(commitId);
+        try (TreeWalk treeWalk = new TreeWalk(git.getRepository())) {
+          treeWalk.addTree(commit.getTree());
+          treeWalk.setRecursive(true);
+          while (treeWalk.next()) {
+            String filePath = treeWalk.getPathString();
+            ObjectId finalCommitId = commitId; // Variable finale pour utilisation dans lambda
+            var document = fromFileToDocumentation(Path.of(filePath));
+            /*callables.add(() -> {
+              try {*/
+                BlameResult blameResult = new BlameCommand(git.getRepository()).setFilePath(filePath).setStartCommit(finalCommitId).call();
+                HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>(); HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
+                feedHashWithBlame(document, hashUserLine, hashUserCommentLine, blameResult);
+                fromMapToListContribution(contributionLoader, hashUserLine,hashUserCommentLine, document, tagRef);
+                /*
+                for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+                  RevCommit lineCommit = blameResult.getSourceCommit(i);
+                  String author = lineCommit.getAuthorIdent().getName();
+                 ;
+                  String fileExtension = getFileExtension(filePath);
+
+                  synchronized (contributions) {
+                    contributions
+                            .computeIfAbsent(tagRef.getName(), k -> new HashMap<>())
+                            .computeIfAbsent(author, k -> new HashMap<>())
+                            .merge(fileExtension, 1, Integer::sum);
+                  }
+
+                  synchronized (linesPerFiles) {
+                    linesPerFiles
+                            .computeIfAbsent(tagRef.getName(), k -> new HashMap<>())
+                            .computeIfAbsent(author, k -> new HashMap<>())
+                            .merge(filePath, 1, Integer::sum);
+                  }*/
+              /*} catch (GitAPIException e) {
+                e.printStackTrace();
+              }
+              return null;
+            });*/
+
+          }
+        }
+      }
+    }
+
+    /*for (Future<Void> future : executorService.invokeAll(callables)) {
+      future.get(); // Attendre la fin de chaque tâche
+    }*/
+
+    return contributionLoader;
+  }
+
+  /**
+   * This method parse every file from the repo and give the user per line.
+   //* @param directoryForRepoStorage
+   * exception for the use of method from retrieveEveryFileFromDepo.
+   * @throws IOException
+   * exception for the use of the method from parseOneFileForEachTag.
+   */
+
+  //old à supprimer
   public List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
     Objects.requireNonNull(directoryForRepoStorage);
     Path startDir = Paths.get(localPath.toString());
     List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
-    System.out.println("la liste des fichiers récupérés via walk : "+fileList);
-    //var pattern = Pattern.compile(".*\\.com\\/(.*)");
     var files = fileList.stream().map(Path::toString).collect(Collectors.toList());
     //retrieve the part of the file name which is relevant
-
-    //System.out.println("les fichiers après transformation "+files2);
     return files.stream().map(x -> x.substring((directoryForRepoStorage).length() + 1)).toList();
   }
 
@@ -165,14 +242,18 @@ public class GitManager {
     var contributionLoader = new ContributionLoader();
     int compteur = 0;
     var files = retrieveEveryFileFromRepo(localPath.toString());
-    for (var file : files) {
-      //System.out.println("le fichier suivant à traiter est : "+file);
-      //need to be deleted (à supprimer).
-      /*if (compteur == 30)   // stop after 30 files in order to not wait too much
-          break;*/
+    System.out.println("le nombre de fichiers à traiter est : "+files.size());
+    /*for (var file : files) {
+      if (new File(PATH+"/"+projectName+"/"+file).exists()){
+        compteur++;
+      }
+      //if (compteur == 30)   // stop after 30 files in order to not wait too much
+          break;
         parseOneFileForEachTagWithContributors(contributionLoader, Path.of(file));
         //compteur++;
-    }
+
+    }*/
+    //System.out.println("le nombre total de fichiers existants est : "+compteur);
     return contributionLoader;
   }
 
@@ -290,7 +371,6 @@ public class GitManager {
     //retrieve the document
     var document = fromFileToDocumentation(filePath);
     for (var tag : retrieveTags()) {
-      //System.out.println(" on teste pour le tag :"+tag);
       //retrieve the actual lines of contribution and retrieve the comment line of contribution
       HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>(); HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
       var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).call();
@@ -366,7 +446,7 @@ public class GitManager {
     //this variable enable to know which comment we are using
     var currentCommentIndex = -1;
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-//      //retrieve the current line content
+ //      //retrieve the current line content
       var lineToParse = blameResult.getResultContents().getString(i);
 //      //a multiline continue
       if (isInCommentMode && !document.language().orElseThrow().thisStringEndsComment(lineToParse, currentCommentIndex)) {
@@ -388,14 +468,15 @@ public class GitManager {
 //        //check if a new multiline comment starts and doesn't finish on the same line
         currentCommentIndex = document.language().orElseThrow().thisStringEndsWithUnfinishedComment(lineToParse);
         if(currentCommentIndex > -1){
-//          //System.out.println(" un multi line comment commence "+lineToParse);
-//          //comment mode start
+//         //System.out.println(" un multi line comment commence "+lineToParse);
+//         //comment mode start
           isInCommentMode = true;
-          hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
-//          //the line didn't start by a comment, then it start by code
+
+//        //the line didn't start by a comment, then it starts by code
           if(document.language().orElseThrow().thisStringStartsWithComment(lineToParse) != -1)
             hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
-
+          else
+            hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
         }
 //
 //        //a multiline comment starts and ends on the same line at the start of the line
@@ -407,9 +488,10 @@ public class GitManager {
           hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
           isInCommentMode = false;
         }
-        //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+        //
 
       }
+      //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
     }
 
 
@@ -429,20 +511,38 @@ public class GitManager {
       //"https://github.com/bruno00o/Patchwork"*/
       var repositoryPath = "https://gitlab.ow2.org/asm/asm.git";
       //var fileForAnalyze = "packages/global.d.ts";
-      var fileForAnalyze = "scripts/aliases.js";
-      //var fileForAnalyze = "Patchwork.iml";
+      //var fileForAnalyze = "scripts/aliases.js";
+      var fileForAnalyze = "src/fr/uge/patchwork/game/QuiltSquare.java";
       var handler2 = new GitManager(repositoryPath);
-      var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
-      //var resContribution = new ContributionLoader();
-      //handler2.parseOneFileForEachTagWithContributors(resContribution, Path.of(fileForAnalyze));
-      //System.out.println("on teste seulement le fichier "+fileForAnalyze+"\n\n");
+      //var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
+      //parse file one by one and give for each file its specific contribution
+      /*for(var file:handler2.retrieveEveryFileFromRepo(handler2.localPath.toString())) {
+        var resContribution = new ContributionLoader();
+        handler2.parseOneFileForEachTagWithContributors(resContribution, Path.of(file));
+        System.out.println("on teste le fichier : "+file+"\n\n");
+        for (var contribution : resContribution.contributions()) {
+          System.out.println(contribution);
+        }
+      }*/
+      //envoie le résultat du sysout vers un fichier
+      System.setOut(new PrintStream(new FileOutputStream("./SortieTraitement.txt")));
+      //parse every file but gather them into a language
+      //var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
+      /*for(var contribution:resContribution.contributions()){
+        System.out.println(contribution);
+      }*/
+      //parse every file but gather into a language with metadata
+      var resContribution = handler2.retrieveEveryFileFromCurrentRepoAndParseToContribution();
+      //System.out.println("le nombre de fichier dans le repos à traiter est : "+handler2.retrieveEveryFileFromRepo(handler2.localPath.toString()).size());
       for(var contribution:resContribution.contributions()){
         System.out.println(contribution);
       }
-
-
     } catch (GitAPIException | IOException e) {
       throw new RuntimeException(e);
+    } catch (ExecutionException e) {
+        throw new RuntimeException(e);
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
 
   }

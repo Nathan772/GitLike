@@ -124,13 +124,11 @@ public class Contribution {
     @Override
     public String toString(){
         var bd = new StringBuilder();
-        bd.append("Contribution's data : \n");
-        bd.append(contributor.toString());bd.append("\n");
-        bd.append(tag.toString());
-        bd.append(documentation.toString());
-        bd.append("the number of non-comment lines : ");
-        bd.append(lines);bd.append("\n the number of comment lines : ");
-        bd.append(commentLines);
+        bd.append("Contribution's data : \n");bd.append(contributor.toString());bd.append("\n");
+        bd.append(tag.toString());bd.append(documentation.toString());
+        bd.append("the number of non-comment lines : ");bd.append(lines);bd.append("\n the number of comment lines : ");
+        bd.append(commentLines); bd.append("\n");
+        bd.append("total line : "); bd.append(commentLines+lines);
         bd.append("\n");
         return bd.toString();
     }

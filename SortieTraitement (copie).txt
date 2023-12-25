@@ -1,0 +1,778 @@
+le nombre de fichier à traiter est : 115
+le fichier existant ce nomme : target/tmp/Patchwork/Patchwork.userlibraries
+filepath.to string vaut :Patchwork.userlibraries
+le blame est différent de null pour el fichier Patchwork.userlibraries
+filepath.to string vaut :Patchwork.userlibraries
+le blame est différent de null pour el fichier Patchwork.userlibraries
+filepath.to string vaut :Patchwork.userlibraries
+le blame est différent de null pour el fichier Patchwork.userlibraries
+le fichier existant ce nomme : target/tmp/Patchwork/Patchwork.iml
+filepath.to string vaut :Patchwork.iml
+le blame est différent de null pour el fichier Patchwork.iml
+filepath.to string vaut :Patchwork.iml
+le blame est différent de null pour el fichier Patchwork.iml
+filepath.to string vaut :Patchwork.iml
+le blame est différent de null pour el fichier Patchwork.iml
+le fichier existant ce nomme : target/tmp/Patchwork/lib/zen5.jar
+filepath.to string vaut :lib/zen5.jar
+le blame est différent de null pour el fichier lib/zen5.jar
+filepath.to string vaut :lib/zen5.jar
+le blame est différent de null pour el fichier lib/zen5.jar
+filepath.to string vaut :lib/zen5.jar
+le blame est différent de null pour el fichier lib/zen5.jar
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/QuiltBoard.java
+filepath.to string vaut :src/fr/uge/patchwork/game/QuiltBoard.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/QuiltBoard.java
+filepath.to string vaut :src/fr/uge/patchwork/game/QuiltBoard.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/QuiltBoard.java
+filepath.to string vaut :src/fr/uge/patchwork/game/QuiltBoard.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/QuiltBoard.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/CirclePatches.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CirclePatches.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CirclePatches.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CirclePatches.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CirclePatches.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CirclePatches.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CirclePatches.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/CentralBoard.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CentralBoard.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CentralBoard.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CentralBoard.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CentralBoard.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CentralBoard.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CentralBoard.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/Button.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Button.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Button.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Button.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Button.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Button.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Button.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/SpecialTile.java
+filepath.to string vaut :src/fr/uge/patchwork/game/SpecialTile.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/SpecialTile.java
+filepath.to string vaut :src/fr/uge/patchwork/game/SpecialTile.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/SpecialTile.java
+filepath.to string vaut :src/fr/uge/patchwork/game/SpecialTile.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/SpecialTile.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/main/AdvancedGame.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/AdvancedGame.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/AdvancedGame.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/AdvancedGame.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/AdvancedGame.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/AdvancedGame.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/AdvancedGame.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/main/Game.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/Game.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/Game.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/Game.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/Game.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/Game.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/Game.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/main/BasicGame.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/BasicGame.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/BasicGame.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/BasicGame.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/BasicGame.java
+filepath.to string vaut :src/fr/uge/patchwork/game/main/BasicGame.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/main/BasicGame.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/QuiltSquare.java
+filepath.to string vaut :src/fr/uge/patchwork/game/QuiltSquare.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/QuiltSquare.java
+filepath.to string vaut :src/fr/uge/patchwork/game/QuiltSquare.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/QuiltSquare.java
+filepath.to string vaut :src/fr/uge/patchwork/game/QuiltSquare.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/QuiltSquare.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/TimeToken.java
+filepath.to string vaut :src/fr/uge/patchwork/game/TimeToken.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/TimeToken.java
+filepath.to string vaut :src/fr/uge/patchwork/game/TimeToken.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/TimeToken.java
+filepath.to string vaut :src/fr/uge/patchwork/game/TimeToken.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/TimeToken.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/Patch.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Patch.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Patch.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Patch.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Patch.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Patch.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Patch.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/complete_circle_patches.txt
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/assets/complete_board.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/complete_board.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/complete_board.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/complete_board.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/complete_board.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/complete_board.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/complete_board.txt
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/basic_circle_patches.txt
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/assets/basic_board.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/basic_board.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/basic_board.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/basic_board.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/basic_board.txt
+filepath.to string vaut :src/fr/uge/patchwork/game/assets/basic_board.txt
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/assets/basic_board.txt
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/Player.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Player.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Player.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Player.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Player.java
+filepath.to string vaut :src/fr/uge/patchwork/game/Player.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/Player.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/game/CentralBoardSquare.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CentralBoardSquare.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CentralBoardSquare.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CentralBoardSquare.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CentralBoardSquare.java
+filepath.to string vaut :src/fr/uge/patchwork/game/CentralBoardSquare.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/game/CentralBoardSquare.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/ASCII.java
+filepath.to string vaut :src/fr/uge/patchwork/display/ASCII.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/ASCII.java
+filepath.to string vaut :src/fr/uge/patchwork/display/ASCII.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/ASCII.java
+filepath.to string vaut :src/fr/uge/patchwork/display/ASCII.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/ASCII.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/GUI.java
+filepath.to string vaut :src/fr/uge/patchwork/display/GUI.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/GUI.java
+filepath.to string vaut :src/fr/uge/patchwork/display/GUI.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/GUI.java
+filepath.to string vaut :src/fr/uge/patchwork/display/GUI.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/GUI.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/8.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/8.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/8.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/8.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/8.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/8.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/8.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/29.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/29.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/29.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/29.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/29.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/29.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/29.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/28.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/28.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/28.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/28.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/28.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/28.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/28.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/14.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/14.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/14.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/14.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/14.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/14.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/14.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/10.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/10.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/10.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/10.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/10.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/10.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/10.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/9.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/9.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/9.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/9.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/9.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/9.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/9.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/23.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/23.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/23.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/23.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/23.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/23.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/23.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/21.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/21.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/21.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/21.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/21.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/21.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/21.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/4.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/4.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/4.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/4.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/4.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/4.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/4.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/5.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/5.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/5.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/5.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/5.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/5.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/5.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/31.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/31.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/31.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/31.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/31.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/31.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/31.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/1.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/1.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/1.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/1.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/1.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/1.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/1.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/27.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/27.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/27.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/27.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/27.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/27.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/27.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/16.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/16.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/16.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/16.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/16.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/16.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/16.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/26.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/26.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/26.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/26.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/26.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/26.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/26.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/button.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/button.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/button.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/button.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/button.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/button.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/button.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/central_board.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/central_board.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/central_board.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/central_board.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/central_board.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/central_board.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/central_board.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/25.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/25.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/25.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/25.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/25.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/25.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/25.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/24.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/24.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/24.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/24.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/24.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/24.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/24.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/17.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/17.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/17.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/17.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/17.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/17.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/17.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/18.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/18.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/18.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/18.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/18.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/18.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/18.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/leather_patch.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/leather_patch.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/leather_patch.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/leather_patch.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/leather_patch.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/leather_patch.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/leather_patch.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/20.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/20.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/20.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/20.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/20.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/20.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/20.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/12.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/12.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/12.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/12.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/12.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/12.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/12.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/19.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/19.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/19.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/19.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/19.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/19.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/19.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/34.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/34.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/34.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/34.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/34.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/34.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/34.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/6.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/6.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/6.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/6.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/6.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/6.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/6.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/13.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/13.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/13.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/13.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/13.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/13.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/13.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/30.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/30.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/30.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/30.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/30.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/30.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/30.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/33.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/33.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/33.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/33.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/33.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/33.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/33.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/35.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/35.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/35.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/35.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/35.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/35.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/35.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/11.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/11.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/11.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/11.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/11.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/11.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/11.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/3.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/3.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/3.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/3.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/3.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/3.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/3.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/32.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/32.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/32.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/32.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/32.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/32.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/32.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/7.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/7.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/7.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/7.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/7.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/7.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/7.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/15.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/15.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/15.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/15.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/15.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/15.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/15.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/0.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/0.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/0.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/0.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/0.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/0.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/0.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/2.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/2.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/2.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/2.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/2.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/2.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/2.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/assets/22.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/22.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/22.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/22.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/22.png
+filepath.to string vaut :src/fr/uge/patchwork/display/assets/22.png
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/assets/22.png
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/display/Display.java
+filepath.to string vaut :src/fr/uge/patchwork/display/Display.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/Display.java
+filepath.to string vaut :src/fr/uge/patchwork/display/Display.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/Display.java
+filepath.to string vaut :src/fr/uge/patchwork/display/Display.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/display/Display.java
+le fichier existant ce nomme : target/tmp/Patchwork/src/fr/uge/patchwork/main/Patchwork.java
+filepath.to string vaut :src/fr/uge/patchwork/main/Patchwork.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/main/Patchwork.java
+filepath.to string vaut :src/fr/uge/patchwork/main/Patchwork.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/main/Patchwork.java
+filepath.to string vaut :src/fr/uge/patchwork/main/Patchwork.java
+le blame est différent de null pour el fichier src/fr/uge/patchwork/main/Patchwork.java
+le fichier existant ce nomme : target/tmp/Patchwork/.gitignore
+filepath.to string vaut :.gitignore
+le blame est différent de null pour el fichier .gitignore
+filepath.to string vaut :.gitignore
+le blame est différent de null pour el fichier .gitignore
+filepath.to string vaut :.gitignore
+le blame est différent de null pour el fichier .gitignore
+le fichier existant ce nomme : target/tmp/Patchwork/Patchwork.eml
+filepath.to string vaut :Patchwork.eml
+le blame est différent de null pour el fichier Patchwork.eml
+filepath.to string vaut :Patchwork.eml
+le blame est différent de null pour el fichier Patchwork.eml
+filepath.to string vaut :Patchwork.eml
+le blame est différent de null pour el fichier Patchwork.eml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/misc.xml
+filepath.to string vaut :.idea/misc.xml
+le blame est différent de null pour el fichier .idea/misc.xml
+filepath.to string vaut :.idea/misc.xml
+le blame est différent de null pour el fichier .idea/misc.xml
+filepath.to string vaut :.idea/misc.xml
+le blame est différent de null pour el fichier .idea/misc.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/artifacts/Patchwork_jar.xml
+filepath.to string vaut :.idea/artifacts/Patchwork_jar.xml
+le blame est différent de null pour el fichier .idea/artifacts/Patchwork_jar.xml
+filepath.to string vaut :.idea/artifacts/Patchwork_jar.xml
+le blame est différent de null pour el fichier .idea/artifacts/Patchwork_jar.xml
+filepath.to string vaut :.idea/artifacts/Patchwork_jar.xml
+le blame est différent de null pour el fichier .idea/artifacts/Patchwork_jar.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/uiDesigner.xml
+filepath.to string vaut :.idea/uiDesigner.xml
+le blame est différent de null pour el fichier .idea/uiDesigner.xml
+filepath.to string vaut :.idea/uiDesigner.xml
+le blame est différent de null pour el fichier .idea/uiDesigner.xml
+filepath.to string vaut :.idea/uiDesigner.xml
+le blame est différent de null pour el fichier .idea/uiDesigner.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/modules.xml
+filepath.to string vaut :.idea/modules.xml
+le blame est différent de null pour el fichier .idea/modules.xml
+filepath.to string vaut :.idea/modules.xml
+le blame est différent de null pour el fichier .idea/modules.xml
+filepath.to string vaut :.idea/modules.xml
+le blame est différent de null pour el fichier .idea/modules.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/remote-targets.xml
+filepath.to string vaut :.idea/remote-targets.xml
+le blame est différent de null pour el fichier .idea/remote-targets.xml
+filepath.to string vaut :.idea/remote-targets.xml
+le blame est différent de null pour el fichier .idea/remote-targets.xml
+filepath.to string vaut :.idea/remote-targets.xml
+le blame est différent de null pour el fichier .idea/remote-targets.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/codeStyles/codeStyleConfig.xml
+filepath.to string vaut :.idea/codeStyles/codeStyleConfig.xml
+le blame est différent de null pour el fichier .idea/codeStyles/codeStyleConfig.xml
+filepath.to string vaut :.idea/codeStyles/codeStyleConfig.xml
+le blame est différent de null pour el fichier .idea/codeStyles/codeStyleConfig.xml
+filepath.to string vaut :.idea/codeStyles/codeStyleConfig.xml
+le blame est différent de null pour el fichier .idea/codeStyles/codeStyleConfig.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/inspectionProfiles/Project_Default.xml
+filepath.to string vaut :.idea/inspectionProfiles/Project_Default.xml
+le blame est différent de null pour el fichier .idea/inspectionProfiles/Project_Default.xml
+filepath.to string vaut :.idea/inspectionProfiles/Project_Default.xml
+le blame est différent de null pour el fichier .idea/inspectionProfiles/Project_Default.xml
+filepath.to string vaut :.idea/inspectionProfiles/Project_Default.xml
+le blame est différent de null pour el fichier .idea/inspectionProfiles/Project_Default.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/libraries/zen5.xml
+filepath.to string vaut :.idea/libraries/zen5.xml
+le blame est différent de null pour el fichier .idea/libraries/zen5.xml
+filepath.to string vaut :.idea/libraries/zen5.xml
+le blame est différent de null pour el fichier .idea/libraries/zen5.xml
+filepath.to string vaut :.idea/libraries/zen5.xml
+le blame est différent de null pour el fichier .idea/libraries/zen5.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/vcs.xml
+filepath.to string vaut :.idea/vcs.xml
+le blame est différent de null pour el fichier .idea/vcs.xml
+filepath.to string vaut :.idea/vcs.xml
+le blame est différent de null pour el fichier .idea/vcs.xml
+filepath.to string vaut :.idea/vcs.xml
+le blame est différent de null pour el fichier .idea/vcs.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.idea/workspace.xml
+filepath.to string vaut :.idea/workspace.xml
+le blame est différent de null pour el fichier .idea/workspace.xml
+filepath.to string vaut :.idea/workspace.xml
+le blame est différent de null pour el fichier .idea/workspace.xml
+filepath.to string vaut :.idea/workspace.xml
+le blame est différent de null pour el fichier .idea/workspace.xml
+le fichier existant ce nomme : target/tmp/Patchwork/docs/user.pdf
+filepath.to string vaut :docs/user.pdf
+le blame est différent de null pour el fichier docs/user.pdf
+filepath.to string vaut :docs/user.pdf
+le blame est différent de null pour el fichier docs/user.pdf
+filepath.to string vaut :docs/user.pdf
+le blame est différent de null pour el fichier docs/user.pdf
+le fichier existant ce nomme : target/tmp/Patchwork/README.md
+filepath.to string vaut :README.md
+le blame est différent de null pour el fichier README.md
+filepath.to string vaut :README.md
+le blame est différent de null pour el fichier README.md
+filepath.to string vaut :README.md
+le blame est différent de null pour el fichier README.md
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.log
+filepath.to string vaut :.metadata/.log
+le blame est différent de null pour el fichier .metadata/.log
+filepath.to string vaut :.metadata/.log
+le blame est différent de null pour el fichier .metadata/.log
+filepath.to string vaut :.metadata/.log
+le blame est différent de null pour el fichier .metadata/.log
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.ui.intro/introstate
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.intro/introstate
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.intro/introstate
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.intro/introstate
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.intro/introstate
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.intro/introstate
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.intro/introstate
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+filepath.to string vaut :.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+filepath.to string vaut :.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+filepath.to string vaut :.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.oomph.setup/workspace.setup
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/externalFilesCache
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.root/3.tree
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+filepath.to string vaut :.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+filepath.to string vaut :.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+filepath.to string vaut :.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+filepath.to string vaut :.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.2.0.0.20220705-1221.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+filepath.to string vaut :.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.tips.ide/dialog_settings.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+filepath.to string vaut :.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+le blame est différent de null pour el fichier .metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/version.ini
+filepath.to string vaut :.metadata/version.ini
+le blame est différent de null pour el fichier .metadata/version.ini
+filepath.to string vaut :.metadata/version.ini
+le blame est différent de null pour el fichier .metadata/version.ini
+filepath.to string vaut :.metadata/version.ini
+le blame est différent de null pour el fichier .metadata/version.ini
+le fichier existant ce nomme : target/tmp/Patchwork/.metadata/.lock
+filepath.to string vaut :.metadata/.lock
+le blame est différent de null pour el fichier .metadata/.lock
+filepath.to string vaut :.metadata/.lock
+le blame est différent de null pour el fichier .metadata/.lock
+filepath.to string vaut :.metadata/.lock
+le blame est différent de null pour el fichier .metadata/.lock
+le fichier existant ce nomme : target/tmp/Patchwork/.git/config
+filepath.to string vaut :.git/config
+filepath.to string vaut :.git/config
+filepath.to string vaut :.git/config
+le fichier existant ce nomme : target/tmp/Patchwork/.git/refs/heads/master
+filepath.to string vaut :.git/refs/heads/master
+filepath.to string vaut :.git/refs/heads/master
+filepath.to string vaut :.git/refs/heads/master
+le fichier existant ce nomme : target/tmp/Patchwork/.git/packed-refs
+filepath.to string vaut :.git/packed-refs
+filepath.to string vaut :.git/packed-refs
+filepath.to string vaut :.git/packed-refs
+le fichier existant ce nomme : target/tmp/Patchwork/.git/index
+filepath.to string vaut :.git/index
+filepath.to string vaut :.git/index
+filepath.to string vaut :.git/index
+le fichier existant ce nomme : target/tmp/Patchwork/.git/logs/refs/heads/master
+filepath.to string vaut :.git/logs/refs/heads/master
+filepath.to string vaut :.git/logs/refs/heads/master
+filepath.to string vaut :.git/logs/refs/heads/master
+le fichier existant ce nomme : target/tmp/Patchwork/.git/logs/HEAD
+filepath.to string vaut :.git/logs/HEAD
+filepath.to string vaut :.git/logs/HEAD
+filepath.to string vaut :.git/logs/HEAD
+le fichier existant ce nomme : target/tmp/Patchwork/.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.pack
+filepath.to string vaut :.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.pack
+filepath.to string vaut :.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.pack
+filepath.to string vaut :.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.pack
+le fichier existant ce nomme : target/tmp/Patchwork/.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.idx
+filepath.to string vaut :.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.idx
+filepath.to string vaut :.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.idx
+filepath.to string vaut :.git/objects/pack/pack-6cab229fcc9f009f367496acca2184768115ae59.idx
+le fichier existant ce nomme : target/tmp/Patchwork/.git/FETCH_HEAD
+filepath.to string vaut :.git/FETCH_HEAD
+filepath.to string vaut :.git/FETCH_HEAD
+filepath.to string vaut :.git/FETCH_HEAD
+le fichier existant ce nomme : target/tmp/Patchwork/.git/HEAD
+filepath.to string vaut :.git/HEAD
+filepath.to string vaut :.git/HEAD
+filepath.to string vaut :.git/HEAD
+le fichier existant ce nomme : target/tmp/Patchwork/build.xml
+filepath.to string vaut :build.xml
+le blame est différent de null pour el fichier build.xml
+filepath.to string vaut :build.xml
+le blame est différent de null pour el fichier build.xml
+filepath.to string vaut :build.xml
+le blame est différent de null pour el fichier build.xml
+le nombre total de fichiers existants est : 115
+le nombre de fichier dans le repos à traiter est : 115
