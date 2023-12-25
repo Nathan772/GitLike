@@ -82,7 +82,7 @@ function Repo() {
                 <p>{url()}</p>
 
                 <div class="mt-5">
-                    <h2 class="h3">Tags</h2>
+                    <h2 class="h3">Tags test Nathan pour voir si c'est bien l'affichage </h2>
                     <ul class="d-flex overflow-x-auto ps-0">
                         <For each={tags()}>
                             {(tag: any) => (
