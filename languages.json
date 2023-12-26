@@ -1,18 +1,184 @@
 {
-  "java": {
-    "type": "CODE",
-    "commentsRegex": "//.*"
-  },
-  "javascript": {
-    "type": "CODE",
-    "commentsRegex": "//.*"
-  },
-  "python": {
-    "type": "CODE",
-    "commentsRegex": "#.*"
-  },
-  "md": {
-    "type": "DOCUMENTATION",
-    "commentsRegex": "<!--.*-->"
+  "extensions": {
+    ".java": {
+      "type": "CODE",
+      "language": "Java"
+    },
+    ".py": {
+      "type": "CODE",
+      "language": "Python"
+    },
+    ".js": {
+      "type": "CODE",
+      "language": "JavaScript"
+    },
+    ".ts": {
+      "type": "CODE",
+      "language": "TypeScript"
+    },
+    ".rb": {
+      "type": "CODE",
+      "language": "Ruby"
+    },
+    ".php": {
+      "type": "CODE",
+      "language": "PHP"
+    },
+    ".cpp": {
+      "type": "CODE",
+      "language": "C++"
+    },
+    ".cs": {
+      "type": "CODE",
+      "language": "C#"
+    },
+    ".c": {
+      "type": "CODE",
+      "language": "C"
+    },
+    ".go": {
+      "type": "CODE",
+      "language": "Go"
+    },
+    ".swift": {
+      "type": "CODE",
+      "language": "Swift"
+    },
+    ".kt": {
+      "type": "CODE",
+      "language": "Kotlin"
+    },
+    ".rs": {
+      "type": "CODE",
+      "language": "Rust"
+    },
+    ".scala": {
+      "type": "CODE",
+      "language": "Scala"
+    },
+    ".html": {
+      "type": "CODE",
+      "language": "HTML"
+    },
+    ".png": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".jpg": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".jpeg": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".gif": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".bmp": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".svg": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".pdf": {
+      "type": "RESOURCE",
+      "language": "Document"
+    },
+    ".mp4": {
+      "type": "RESOURCE",
+      "language": "Video"
+    },
+    ".avi": {
+      "type": "RESOURCE",
+      "language": "Video"
+    },
+    ".mov": {
+      "type": "RESOURCE",
+      "language": "Video"
+    },
+    ".mp3": {
+      "type": "RESOURCE",
+      "language": "Audio"
+    },
+    ".wav": {
+      "type": "RESOURCE",
+      "language": "Audio"
+    },
+    "build.xml": {
+      "type": "BUILD",
+      "language": "XML"
+    },
+    "pom.xml": {
+      "type": "CONFIG",
+      "language": "Maven"
+    },
+    "settings.gradle": {
+      "type": "CONFIG",
+      "language": "Gradle"
+    },
+    "configure.ac": {
+      "type": "CONFIG",
+      "language": "Autoconf"
+    },
+    "Makefile": {
+      "type": "CONFIG",
+      "language": "Make"
+    },
+    "Dockerfile": {
+      "type": "CONFIG",
+      "language": "Docker"
+    },
+    "Vagrantfile": {
+      "type": "CONFIG",
+      "language": "Vagrant"
+    },
+    "package.json": {
+      "type": "CONFIG",
+      "language": "NPM"
+    },
+    "composer.json": {
+      "type": "CONFIG",
+      "language": "Composer"
+    },
+    ".travis.yml": {
+      "type": "CONFIG",
+      "language": "Travis CI"
+    },
+    ".gitlab-ci.yml": {
+      "type": "CONFIG",
+      "language": "GitLab CI"
+    },
+    ".circleci": {
+      "type": "CONFIG",
+      "language": "CircleCI"
+    },
+    ".github": {
+      "type": "CONFIG",
+      "language": "GitHub Actions"
+    },
+    ".azure-pipelines": {
+      "type": "CONFIG",
+      "language": "Azure Pipelines"
+    },
+    ".md": {
+      "type": "DOCUMENTATION",
+      "language": "Markdown"
+    },
+    ".rst": {
+      "type": "DOCUMENTATION",
+      "language": "reStructuredText"
+    },
+    ".wiki": {
+      "type": "DOCUMENTATION",
+      "language": "Wiki"
+    },
+    ".txt": {
+      "type": "DOCUMENTATION",
+      "language": "Text"
+    }
   }
 }

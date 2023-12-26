@@ -1,5 +1,6 @@
-package fr.uge.gitclout.repository;
+package fr.uge.gitclout.repository.db;
 
+import fr.uge.gitclout.repository.Repository;
 import io.micronaut.data.repository.CrudRepository;
 
 import java.util.Optional;

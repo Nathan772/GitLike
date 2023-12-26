@@ -1,4 +1,4 @@
-package fr.uge.gitclout.contributions;
+/*package fr.uge.gitclout.contribution;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,7 +72,6 @@ public class ContributionManager {
 
   private void processBlameResult(BlameResult blameResult, String path) {
     String fileExtension = getFileExtension(path);
-    // if java
 
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
       updateContributions(blameResult, i, fileExtension);
@@ -123,12 +122,16 @@ public class ContributionManager {
     loadLanguageTypes();
     try {
       ObjectId commitId = resolveTagNameToCommitId();
+      System.out.println(commitId);
       RevTree tree = getCommitTree(commitId);
       analyzeContributions(tree);
     } catch (IOException | GitAPIException e) {
       throw new RuntimeException(e);
     }
+    System.out.println(tagName);
+    System.out.println(contributions);
     return contributions;
   }
 
 }
+*/

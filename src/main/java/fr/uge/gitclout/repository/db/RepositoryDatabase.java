@@ -1,5 +1,7 @@
-package fr.uge.gitclout.repository;
+package fr.uge.gitclout.repository.db;
 
+import fr.uge.gitclout.repository.Repository;
+import fr.uge.gitclout.repository.db.RepositoryRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 

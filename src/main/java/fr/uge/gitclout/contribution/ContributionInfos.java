@@ -1,7 +1,8 @@
-package fr.uge.gitclout.contributions;
+package fr.uge.gitclout.contribution;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.HashMap;
@@ -9,11 +10,11 @@ import java.util.Map;
 
 @Serdeable
 public class ContributionInfos {
-  @JsonProperty("languages")
-  Map<String, LanguageCount> languages = new HashMap<>();
+  @JsonValue
+  private Map<String, LanguageCount> languages = new HashMap<>();
 
   @JsonProperty("totalCount")
-  int totalCount;
+  private int totalCount;
 
   public ContributionInfos() {
   }
@@ -44,7 +45,20 @@ public class ContributionInfos {
     this.totalCount += totalCount;
   }
 
+  /*public void incrementLanguageCount(String language, int increment, int commentIncrement) {
+    languages.computeIfAbsent(language, k -> new LanguageCount(language, 0, 0))
+            .incrementCount(increment, commentIncrement);
+  }*/
+
   public boolean isLanguagePresent(String language) {
     return languages.containsKey(language);
+  }
+
+  @Override
+  public String toString() {
+    return "ContributionInfos{" +
+            "languages=" + languages +
+            ", totalCount=" + totalCount +
+            '}';
   }
 }

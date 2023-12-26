@@ -1,4 +1,4 @@
-package fr.uge.gitclout.contributions;
+package fr.uge.gitclout.contribution;
 
 import io.micronaut.serde.annotation.Serdeable;
 

@@ -1,5 +1,6 @@
 package fr.uge.gitclout.repository;
 
+import fr.uge.gitclout.repository.db.RepositoryRepository;
 import jakarta.inject.Singleton;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -13,10 +14,7 @@ import java.nio.file.Path;
 
 @Singleton
 public class RepositoryManager {
-  private Git git;
-
   private final RepositoryRepository repositoryRepository;
-
   private final Path repositoryPath = Path.of("repositories");
 
   public RepositoryManager(RepositoryRepository repositoryRepository) {
@@ -24,7 +22,7 @@ public class RepositoryManager {
   }
 
   private void cloneRepository(String repositoryURL, Path path) throws GitAPIException {
-    git = Git.cloneRepository()
+    Git.cloneRepository()
             .setURI(repositoryURL)
             .setDirectory(path.toFile())
             .setBare(true)
@@ -37,7 +35,7 @@ public class RepositoryManager {
   }
 
   private void openRepository(Path path) throws GitAPIException, IOException {
-    git = Git.open(path.toFile());
+    Git.open(path.toFile());
   }
 
   private Path generateRepositoryLocalPath(String repositoryURL) throws URISyntaxException {

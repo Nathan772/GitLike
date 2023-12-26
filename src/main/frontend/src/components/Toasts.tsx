@@ -17,7 +17,7 @@ function addToast(info: ToastInfo) {
 function Toasts() {
 
     return (
-        <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast-container position-fixed top-0 end-0 p-3 overflow-auto">
             <For each={toasts()}>
                 {(toast: any) => (
                     <div>

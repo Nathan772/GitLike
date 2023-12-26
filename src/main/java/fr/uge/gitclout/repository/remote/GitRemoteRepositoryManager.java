@@ -1,6 +1,6 @@
-package fr.uge.gitclout.repository.infos;
+package fr.uge.gitclout.repository.remote;
 
-import fr.uge.gitclout.app.json.JSONRepository;
+import fr.uge.gitclout.app.json.JSONData.JSONRepository;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -11,10 +11,10 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 
-public class GitRepositoryInfosManager {
+public class GitRemoteRepositoryManager {
   private final String repositoryURL;
 
-  public GitRepositoryInfosManager(String repositoryURL) {
+  public GitRemoteRepositoryManager(String repositoryURL) {
     this.repositoryURL = repositoryURL;
   }
 
@@ -45,7 +45,7 @@ public class GitRepositoryInfosManager {
             .filter(ref -> ref.getName().startsWith("refs/tags/"))
             .map(ref -> ref.getName().replace("refs/tags/", ""))
             .sorted()
-            .toList().reversed();
+            .toList();
   }
 
   public JSONRepository getRepositoryInfos() throws URISyntaxException, GitAPIException {
