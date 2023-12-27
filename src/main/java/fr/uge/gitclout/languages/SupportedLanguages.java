@@ -5,26 +5,31 @@ import fr.uge.gitclout.contribution.ContributionType;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.util.*;
 
 public class SupportedLanguages {
 
-  private Map<String, FileTypeInfo> fileTypes;
+  private Map<String, SupportedFiles> fileTypes;
+  //private ArrayList<SupportedFiles> fileTypes;
 
   public SupportedLanguages() {
     var path = "languages.json";
     ObjectMapper mapper = new ObjectMapper();
     try {
-      FileTypes fileTypesData = mapper.readValue(
-              new File(path),
-              FileTypes.class
-      );
+      FileTypes fileTypesData = mapper.readValue(new File(path), FileTypes.class);
       fileTypes = fileTypesData.getExtensions();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
+  /**
+   * precise if an extension is supported or not
+   * @param extension
+   * the extension you want to test
+   * @return
+   * true if the extension is supported, false otherwise.
+   */
   public boolean isSupported(String extension) {
     return fileTypes.containsKey(extension);
   }
@@ -36,14 +41,36 @@ public class SupportedLanguages {
     return fileTypes.get(extension).getType();
   }
 
+  /*
+   * enables to retrieve a File based on its extension
+   * @param extension
+   * return the File the extension represents
+
+  public Optional<SupportedFiles> getByExtension(String extension){
+    for(var document:fileTypes){
+      if(document.extension().equals(extension)){
+        return Optional.of(document);
+      }
+    }
+   return Optional.empty();
+  }*/
+
+  /**
+   * this method enables to retrieve a language name based on their extension
+   * @param extension
+   * the extension of the language
+   * @return
+   * the language with this extension
+   */
   public String getLanguage(String extension) {
+    Objects.requireNonNull(extension);
     if (!isSupported(extension)) {
       return extension;
     }
-    return fileTypes.get(extension).getLanguage();
+    return fileTypes.get(extension).name();
   }
 
-  public Map<String, FileTypeInfo> getFileTypes() {
+  public Map<String,SupportedFiles>  getFileTypes() {
     return fileTypes;
   }
 
