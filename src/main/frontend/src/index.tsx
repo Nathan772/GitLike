@@ -3,7 +3,8 @@ import { HashRouter, Route } from "@solidjs/router";
 
 import Landing from "./pages/Home.tsx";
 import Repo from "./pages/Repository.tsx";
-/*import UserFromTagList from "./pages/Users.tsx";*/
+import UsersFromTagList from "./pages/Users.tsx";
+import UserDataFromTag from "./pages/UserDataFromTag.tsx";
 import NotFound from './pages/NotFound.tsx';
 import './scss/styles.scss';
 
@@ -22,6 +23,9 @@ render(
             /* the path refers to the page from which the redirection will be done
             and the component refers to the method which will be taken from "tsx" file */
             <Route path="/repository" component={Repo} />
+            /* enable to choose a user to see their contribution for the tag */
+            <Route path="/contributors" component={UsersFromTagList} />
+            <Route path="/contributorInfos" component={UserDataFromTag} />
             <Route path="*" component={NotFound} />
         </HashRouter>
     ),

@@ -20,6 +20,7 @@ function Repo() {
         const [searchParams] = useSearchParams();
         const url = searchParams.url;
         if (!url) {
+            console.log("test nathan != url mais entrée dans repository.tsx")
             navigate('/not-found');
             return;
         }
@@ -31,6 +32,8 @@ function Repo() {
                 setName(data.name);
                 setUrl(data.URL);
                 setTags(data.tags);
+                console.log("la valeur  des tags récupérés est : "+data.tags);
+                console.log("la valeur  de l'url récupéré est : "+data.URL);
 
                 const info: ToastInfo = {
                     type: "success",
@@ -83,13 +86,18 @@ function Repo() {
                 <p>{url()}</p>
 
                 <div class="mt-5">
-                    <h2 class="h3">Tags test Nathan pour voir si c'est bien l'affichage </h2>
+                    <h2 class="h3">Tags </h2>
+
+                    <button type="button" class="btn btn-primary" onClick={() => navigate("/")}>Back to Home</button>
                     <ul class="d-flex overflow-x-auto ps-0">
                         <For each={tags()}>
                             {(tag: any) => (
                                 <li class="list-unstyled">
-                                    <button type="button" class="btn btn-outline-secondary text-nowrap me-2 mb-2">
-                                        {tag}
+                                    <button type="button" class="btn btn-outline-secondary text-nowrap me-2 mb-2"onClick={() =>
+                                    navigate(`/contributors?tag=${tag}`)
+                                    }
+                                    >
+                                  {tag}
                                     </button>
                                 </li>
                             )}

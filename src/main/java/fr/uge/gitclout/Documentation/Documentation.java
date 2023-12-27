@@ -2,6 +2,7 @@ package fr.uge.gitclout.Documentation;
 
 import fr.uge.gitclout.Contribution.FileType;
 import fr.uge.gitclout.Language.Language;
+import io.micronaut.serde.annotation.Serdeable;
 
 import java.io.IOException;
 
@@ -14,13 +15,14 @@ import java.util.Optional;
 /*
 this class associated a fileType to a language if necessary
  */
+
 public class Documentation {
     /* it represents the programming language used*/
     private Language language = null;
     /* it represents the fileType (CODE, BUILD, ETC...)*/
     private final FileType fileType;
     /* The extension associated to the file */
-    private final String extension;
+    private final  String extension;
 
     public Documentation(Language language, FileType fileType, String extension ){
         Objects.requireNonNull(fileType);
@@ -42,11 +44,44 @@ public class Documentation {
         return new Documentation (null,FileType.Unknown,"unknown");
     }
 
+
+
     public boolean equals(Object obj){
         return obj instanceof Documentation doc && doc.fileType.equals(fileType) && extension.equals(doc.extension)
                 && ((language == doc.language) && (doc.language == null) || language != null && doc.language != null &&
                 language.equals(doc.language));
     }
+
+    /**
+     * this method enables to know if two documentation refers to the same category
+     * (for example build with build, config with config, .java with .java) but not necessarily exactly the same
+     * extension.
+     * @param obj
+     * the object of comparison
+     * @return
+     * if the category are alike.
+     */
+    public boolean equalsCategory(Object obj){
+        return obj instanceof Documentation doc && ((doc.fileType.equals(fileType) && doc.fileType != FileType.CODE) ||
+                (doc.fileType.equals(fileType) && extension.equals(doc.extension)
+                && ((language == doc.language) && (doc.language == null) || language != null && doc.language != null &&
+                language.equals(doc.language))));
+    }
+
+
+    /**
+     * this method enables to know if two documents are of the same category when you will
+     * compute the number of lines when you will sort them.
+     * the document you want to check if they're of the same category
+     * @return
+     * either the elements are of the same category or not
+
+    public boolean equalsCategory(Documentation doc){
+        return (doc.fileType.equals(fileType) && doc.fileType != FileType.CODE)
+                || (extension.equals(doc.extension)
+                && ((language == doc.language) && (doc.language == null) || language != null && doc.language != null &&
+                language.equals(doc.language)));
+    }*/
 
     public int hashCode(){
         return extension.hashCode()^fileType.hashCode()^ language.hashCode();
@@ -60,7 +95,7 @@ public class Documentation {
             bd.append("Programming language : yes \n Language informations : \n"); bd.append(language.toString());
         }
         bd.append("\n extension : "); bd.append(extension); bd.append("\n");
-        bd.append("Type of file : "); bd.append(fileType); bd.append("\n");
+        bd.append("Type of file : "); bd.append(fromFileTypeToString(fileType)); bd.append("\n");
 
         return bd.toString();
     }
@@ -147,8 +182,15 @@ public class Documentation {
     }
 
 
-
+    /**
+     * this method enables to transform a string to a FileType type
+     * @param typeFile
+     * the file type you have as string
+     * @return
+     * the fileType object it represents
+     */
     public static FileType fromStringToFileType(String typeFile){
+        Objects.requireNonNull(typeFile);
         switch (typeFile){
             case "BUILD" -> {return FileType.BUILD;}
             case "CODE" -> {return FileType.CODE;}
@@ -158,10 +200,66 @@ public class Documentation {
         }
     }
 
-    public static void main(String[] args){
-           var listDocumentation = fromPathToListDocumentation(Path.of("FILES/langages_reconnus/langagesListe.txt"));
-           System.out.println(listDocumentation);
+    /**
+     * this method enables to transform a fileType to the corresponding String
+     * @param typeFile
+     * the file type you have as fileType
+     * @return
+     * the String objects it represents
+     */
+    public static String fromFileTypeToString(FileType typeFile){
+        Objects.requireNonNull(typeFile);
+        switch (typeFile){
+            case FileType.BUILD -> {return "BUILD";}
+            case FileType.CODE  -> {return "CODE";}
+            case FileType.CONFIG -> {return "CONFIGURATION";}
+            case FileType.RESOURCE -> {return "RESOURCE" ;}
+            default ->  {return "OTHER" ;}
+        }
     }
+
+    /**
+     * a getter to the field extension
+     * @return
+     * access to the field extension
+    public String getExtension() {
+        return extension;
+    }
+    /**
+     * a getter to the field fileType
+     * @return
+     * access to the field fileType
+    public FileType getFileType() {
+        return fileType;
+    }
+
+    /**
+     * a getter to the field fileType
+     * @return
+     * access to the field fileType
+    public FileType getFileType() {
+        return fileType;
+    }
+
+    /**
+     * a setter to the field extension
+     * the new name of the document
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+    /**
+     * a setter to the field fileType
+     * the new extension of the document
+    public void setFileType(FileType fileType) {
+        this.fileType = fileType;
+    }
+    */
+
+    public static void main(String[] args){
+        System.out.println(" les types suivants sont équivalents : "+(FileType.Unknown == FileType.CONFIG));
+    }
+
+
 
 
 

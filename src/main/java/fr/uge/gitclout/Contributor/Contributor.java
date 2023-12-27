@@ -1,16 +1,24 @@
 package fr.uge.gitclout.Contributor;
 
-import java.util.Objects;
+import fr.uge.gitclout.repository.Repository;
+import io.micronaut.serde.annotation.Serdeable;
 
-public class Contributor {
-  private final String name;
-  private final String email;
+import java.util.Comparator;
+import java.util.Objects;
+@Serdeable
+public class Contributor implements Comparable<Contributor> {
+  private String name;
+  private String email;
   public Contributor(String name, String email) {
     Objects.requireNonNull(name, "contributor's name cannot be null");
     Objects.requireNonNull(email, "contributor's email cannot be null");
 
     this.name = name;
     this.email = email;
+  }
+  @Override
+  public int compareTo(Contributor other){
+    return name.compareTo(other.name);
   }
 
   public String toString(){
@@ -39,4 +47,45 @@ public class Contributor {
   public String name(){
     return this.name;
   }
+
+
+
+
+
+  //getters and setters necessary to use a type as a new type recognized with
+
+  /**
+   * a getter to the field email
+   * @return
+   * access to the field email
+   */
+  public String getEmail() {
+    return email;
+  }
+  /**
+   * a getter to the field Name
+   * @return
+   * access to the field name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * a setter to the field name
+   * @param name
+   * the new name of the contributor
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+  /**
+   * a setter to the field mail
+   * @param email
+   * the new mail of the contributor
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
 }

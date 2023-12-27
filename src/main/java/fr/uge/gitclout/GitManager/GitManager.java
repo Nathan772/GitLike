@@ -6,6 +6,9 @@ import fr.uge.gitclout.Contributor.Contributor;
 import fr.uge.gitclout.Documentation.Documentation;
 import fr.uge.gitclout.Tag.Tag;
 import fr.uge.gitclout.Repository.Repository;
+import fr.uge.gitclout.app.json.JSONContributors;
+import fr.uge.gitclout.app.json.JSONRepository;
+import fr.uge.gitclout.tag.GitTagManager;
 import org.eclipse.jgit.api.BlameCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -21,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,6 +44,8 @@ public class GitManager {
   private final Repository repository;
   /* it represents all the documents chosen by the user (all the file that exists and documentation files that exists) */
   private final ArrayList<Documentation> documentations;
+
+  private final ContributionLoader contributionLoader=  new ContributionLoader();
 
   private static final String PATH = "target/tmp";
 
@@ -155,8 +161,7 @@ public class GitManager {
    * @throws IOException
    * exception for the use of the method from parseOneFileForEachTag.
    */
-  public ContributionLoader retrieveEveryFileFromCurrentRepoAndParseToContribution() throws IOException, GitAPIException, ExecutionException, InterruptedException {
-    var contributionLoader = new ContributionLoader();
+  public void retrieveEveryFileFromCurrentRepoAndParseToContribution() throws IOException, GitAPIException, ExecutionException, InterruptedException {
     ExecutorService executorService = Executors.newFixedThreadPool(10);
     List<Callable<Void>> callables = new ArrayList<>();
 
@@ -180,7 +185,7 @@ public class GitManager {
                 BlameResult blameResult = new BlameCommand(git.getRepository()).setFilePath(filePath).setStartCommit(finalCommitId).call();
                 HashMap<Contributor, Integer> hashUserLine = new HashMap<Contributor, Integer>(); HashMap<Contributor, Integer> hashUserCommentLine = new HashMap<Contributor, Integer>();
                 feedHashWithBlame(document, hashUserLine, hashUserCommentLine, blameResult);
-                fromMapToListContribution(contributionLoader, hashUserLine,hashUserCommentLine, document, tagRef);
+                fromMapToListContribution(hashUserLine,hashUserCommentLine, document, tagRef);
                 /*
                 for (int i = 0; i < blameResult.getResultContents().size(); i++) {
                   RevCommit lineCommit = blameResult.getSourceCommit(i);
@@ -215,8 +220,6 @@ public class GitManager {
     /*for (Future<Void> future : executorService.invokeAll(callables)) {
       future.get(); // Attendre la fin de chaque tâche
     }*/
-
-    return contributionLoader;
   }
 
   /**
@@ -228,14 +231,14 @@ public class GitManager {
    */
 
   //old à supprimer
-  private List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
+  /*private List<String> retrieveEveryFileFromRepo(String directoryForRepoStorage) throws IOException {
     Objects.requireNonNull(directoryForRepoStorage);
     Path startDir = Paths.get(localPath.toString());
     List<Path> fileList = Files.walk(startDir).filter(Files::isRegularFile).toList();
     var files = fileList.stream().map(Path::toString).toList();
     //retrieve the part of the file name which is relevant
     return files.stream().map(x -> x.substring((directoryForRepoStorage).length() + 1)).toList();
-  }
+  }*/
 
   /**
    *
@@ -246,21 +249,17 @@ public class GitManager {
    * @throws IOException
    * exception for the use of the method from parseOneFileForEachTag.
    */
-
-  private ContributionLoader parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
+  /*
+  private void parseEveryFileFromCurrentRepoAndTransformItIntoContribution() throws GitAPIException, IOException {
     //the final lists with all hte contributions
-    var contributionLoader = new ContributionLoader();
     var files = retrieveEveryFileFromRepo(localPath.toString());
     for (var file : files) {
         parseOneFileForEachTagWithContributors(contributionLoader, Path.of(file));
     }
-    return contributionLoader;
-  }
+  }*/
 
 
     /**
-     *
-     * @param contributionLoader
      * the list that will contain the contributions made by the users.
      * @param hashUserLine
      * the line written by each user.
@@ -269,30 +268,27 @@ public class GitManager {
      * @param documentation
      * it represents the kind of documentation used by the user.
      */
-  public void fromMapToListContribution(ContributionLoader contributionLoader, HashMap<Contributor, Integer> hashUserLine, HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
+  public void fromMapToListContribution(HashMap<Contributor, Integer> hashUserLine, HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
     Objects.requireNonNull(tag);
     Objects.requireNonNull(documentation);
     Objects.requireNonNull(hashUserLine);
-    Objects.requireNonNull(contributionLoader);
     //feed code line
-    fromMapToListLineContribution(contributionLoader, hashUserLine,  documentation, tag);
+    fromMapToListLineContribution(hashUserLine,  documentation, tag);
     //feed comments lines
-    fromMapToListCommentContribution(contributionLoader, hashUserCommentLine,  documentation, tag);
+    fromMapToListCommentContribution(hashUserCommentLine,  documentation, tag);
 
   }
 
   /**
    *
-   * this method feed the loader with the lines of actual contributions.
-   * @param contributionLoader
    * the list that will contain the contributions made by the users.
    * @param hashUserLine
    * the comment lines written by each user.
    * @param documentation
    * it represents the kind of documentation used by the user.
    */
-  public void fromMapToListLineContribution(ContributionLoader contributionLoader, HashMap<Contributor, Integer> hashUserLine, Documentation documentation, Ref tag) {
-    Objects.requireNonNull(tag);Objects.requireNonNull(documentation); Objects.requireNonNull(hashUserLine); Objects.requireNonNull(contributionLoader);
+  public void fromMapToListLineContribution(HashMap<Contributor, Integer> hashUserLine, Documentation documentation, Ref tag) {
+    Objects.requireNonNull(tag);Objects.requireNonNull(documentation); Objects.requireNonNull(hashUserLine);
     try {
       final Tag tag1 = new Tag(tag.getName().substring(tag.getName().lastIndexOf("/") + 1), tag.getName(), getTagDate(tag), repository);
       hashUserLine.forEach((user, lines) -> {
@@ -309,8 +305,6 @@ public class GitManager {
 
   /**
    *
-   * this method feed the loader with the lines of comment contributions.
-   * @param contributionLoader
    * the list that will contain the contributions made by the users.
    * @param hashUserCommentLine
    * the comment line written by each user.
@@ -319,7 +313,7 @@ public class GitManager {
    * @param documentation
    * it represents the kind of documentation used by the user.
    */
-  public void fromMapToListCommentContribution(ContributionLoader contributionLoader, HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
+  public void fromMapToListCommentContribution(HashMap<Contributor, Integer> hashUserCommentLine, Documentation documentation, Ref tag) {
     Objects.requireNonNull(tag);Objects.requireNonNull(documentation); Objects.requireNonNull(hashUserCommentLine); Objects.requireNonNull(contributionLoader);
     try {
       final Tag tag1 = new Tag(tag.getName().substring(tag.getName().lastIndexOf("/") + 1), tag.getName(), getTagDate(tag), repository);
@@ -376,7 +370,7 @@ public class GitManager {
       var blameResult = git.blame().setFilePath(filePath.toString()).setStartCommit(tag.getObjectId()).call();
       if (blameResult != null) {
         feedHashWithBlame(document, hashUserLine, hashUserCommentLine, blameResult);
-        fromMapToListContribution(contributionLoader, hashUserLine,hashUserCommentLine, document, tag);
+        fromMapToListContribution(hashUserLine,hashUserCommentLine, document, tag);
       }
     }
   }
@@ -490,59 +484,77 @@ public class GitManager {
       }
       //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
     }
-
-
   }
 
-
-  public static void main(String[] args) throws IOException, GitAPIException {
-
-    try {
-
-      /*projets tests :
-      "https://github.com/vuejs/core"
-      "https://github.com/facebookresearch/llama"*/
-      //var repositoryPath = "https://github.com/vuejs/core";
-      //"https://github.com/damo-vilab/AnyDoor";
-      //https://github.com/LC044/WeChatMsg;
-      //https://gitlab.ow2.org/asm/asm.git
-      //var repositoryPath ="https://github.com/facebookresearch/llama";
-      //"https://github.com/bruno00o/Patchwork"*/
-      var repositoryPath = "https://gitlab.ow2.org/asm/asm.git";
-      //var fileForAnalyze = "packages/global.d.ts";
-      //var fileForAnalyze = "scripts/aliases.js";
-      var fileForAnalyze = "src/fr/uge/patchwork/game/QuiltSquare.java";
-      var handler2 = new GitManager(repositoryPath);
-      //var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
-      //parse file one by one and give for each file its specific contribution
-      /*for(var file:handler2.retrieveEveryFileFromRepo(handler2.localPath.toString())) {
-        var resContribution = new ContributionLoader();
-        handler2.parseOneFileForEachTagWithContributors(resContribution, Path.of(file));
-        System.out.println("on teste le fichier : "+file+"\n\n");
-        for (var contribution : resContribution.contributions()) {
-          System.out.println(contribution);
-        }
-      }*/
-      //envoie le résultat du sysout vers un fichier
-      System.setOut(new PrintStream(new FileOutputStream("./SortieTraitement.txt")));
-      //parse every file but gather them into a language
-      //var resContribution = handler2.parseEveryFileFromCurrentRepoAndTransformItIntoContribution();
-      /*for(var contribution:resContribution.contributions()){
-        System.out.println(contribution);
-      }*/
-      //parse every file but gather into a language with metadata
-      var resContribution = handler2.retrieveEveryFileFromCurrentRepoAndParseToContribution();
-      //System.out.println("le nombre de fichier dans le repos à traiter est : "+handler2.retrieveEveryFileFromRepo(handler2.localPath.toString()).size());
-      for(var contribution:resContribution.contributions()){
-        System.out.println(contribution);
+  /**
+   *
+   * this method enables to prepare data from users contributions by parsing every file from the current Repository.
+   *
+   */
+  public void prepareContributionsData(){
+      try {
+        retrieveEveryFileFromCurrentRepoAndParseToContribution();
+      } catch (GitAPIException | IOException | ExecutionException | InterruptedException e) {
+          System.out.println("Error during data parsing for contribution");
+          throw new RuntimeException(e);
       }
-    } catch (GitAPIException | IOException e) {
-      throw new RuntimeException(e);
-    } catch (ExecutionException e) {
-        throw new RuntimeException(e);
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-    }
-
   }
+
+
+
+  /*public JSONContributors getContributorTagInfos(String tag) throws URISyntaxException, GitAPIException {
+    if(contributionLoader.isEmpty()){
+    //do parsing only it hasn't been done yet.
+      prepareContributionsData();
+    }
+    return new JSONContributors(contributionLoader.getContributorsByTag(tag).stream().map(contributor -> contributor.name()+" as "+contributor.email()).toList(), tag, repository.getName());
+  }
+   */
+
+  /**this method enables to retrieve the contributor related to a tag and transform it into json data
+   *
+   * @param tag
+   * the tag you parse
+   * @return
+   * the contributors for this repo for this tag.
+   * @throws URISyntaxException
+   * @throws GitAPIException
+   *
+   * */
+
+  public JSONContributors getContributorFromTag(String tag) throws URISyntaxException, GitAPIException {
+    if(contributionLoader.isEmpty()){
+      //do parsing only it hasn't been done yet.
+      prepareContributionsData();
+    }
+    return new JSONContributors(contributionLoader.getContributorsByTag(tag), tag, repository.getName());
+  }
+
+  /**
+   * this method enables to retrieve every contribution made a user for a specific tag
+   * @param tagName
+   * the tag related to the contribution
+   * @param userName
+   * the user identifcator
+   * @param userEmail
+   * the user email adresss
+   * @return
+   * all the contribution made by this user for this tag
+   */
+  public List<Contribution> getContributionByUserAndTag(String tagName, String userName, String userEmail){
+    return contributionLoader.getContributionByUserAndTag(tagName, userName, userEmail);
+  }
+
+  /*public static void main(String[] args){
+      GitManager gitM;
+      try {
+          gitM = new GitManager("https://github.com/bruno00o/Patchwork");
+      } catch (IOException e) {
+          throw new RuntimeException(e);
+      } catch (GitAPIException e) {
+          throw new RuntimeException(e);
+      }
+      gitM.prepareContributionsData();
+      System.out.println("On affiche le contrubution loader pour quelques tests : "+gitM.contributionLoader.toString());
+  }*/
 }

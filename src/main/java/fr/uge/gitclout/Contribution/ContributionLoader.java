@@ -83,7 +83,7 @@ public class ContributionLoader {
     public Optional<Contribution> getFromDescription(Tag tag1, Contributor contributor, Documentation documentation){
         Objects.requireNonNull(tag1); Objects.requireNonNull(contributor);Objects.requireNonNull(documentation);
         for(var contribution:contributions){
-            if(contribution.tag().equals(tag1) && contribution.documentation().equals(documentation) && contribution.contributor().equals(contributor)){
+            if(contribution.tag().equals(tag1) && contribution.documentation().equalsCategory(documentation) && contribution.contributor().equals(contributor)){
                 return Optional.of(contribution);
             }
         }
@@ -93,20 +93,91 @@ public class ContributionLoader {
 
     /**
      * this method retrieves all the contributor associated to this tag
-     * @param tag
+     * @param tagName
      * the tag chosen
      * @return
      * A list that contains all the contributors for this tag
-     */
-    public List<Contributor> findContributorsByTag(Tag tag){
-        Objects.requireNonNull(tag);
+     *
+     *
+     * */
+     public List<Contributor> getContributorsByTag(String tagName){
+        Objects.requireNonNull(tagName);
         ArrayList<Contributor> result = new ArrayList<>();
         for(var contribution:contributions){
-            if(contribution.tag().equals(tag) && !result.contains(contribution.contributor())){
+            if(contribution.tag().getName().equals(tagName) && !result.contains(contribution.contributor())){
                 result.add(contribution.contributor());
             }
         }
         //sort to always keep a consistent order
         return result.stream().sorted().toList();
+    }
+
+    /**
+     * this method enables to retrieve every contribution made a user for a specific tag.
+     * It also merge the contribution of the same type.
+     * @param tagName
+     * the tag related to the contribution
+     * @param userName
+     * the user identifcator
+     * @param userEmail
+     * the user email adresss
+     * @return
+     * all the contribution made by this user for this tag
+     */
+    public List<Contribution> getContributionByUserAndTag(String tagName, String userName, String userEmail){
+        var contributionsList = new ArrayList<Contribution>();
+        for(var contribution:contributions){
+            if(contribution.contributor().name().equals(userName) && contribution.contributor().email().equals(userEmail)
+            & contribution.tag().getName().equals(tagName)){
+                contributionsList.add(contribution);
+            }
+        }
+        return contributionsList;
+    }
+
+    /**
+     *
+     * this method enables to merge contributions by categories.
+     * The category that are alike (BUILD WITH BUILD, CONFIG WITH CONFIG, ....) will be merged.
+     * @param contributions
+     * the contribution you want to merge
+     * @return
+     * the contribution merged by category
+
+    public List<Contribution> groupingContributionByCategory(ArrayList<Contribution> contributions){
+        var contributionGrouped = new ArrayList<Contribution>();
+        for(var contribution:contributions){
+
+        }
+    }*/
+
+     /**
+     * this method retrieves all the contributor associated to this tag
+     * @param tagName
+     * the tag chosen
+     * @return
+     * A map that contains all the contributors for this tag
+     public Map<String, String> getContributorsByTag(String tagName){
+        Objects.requireNonNull(tagName);
+        HashMap<String, String> result = new HashMap<String,String>();
+        for(var contribution:contributions){
+            if(contribution.tag().getName().equals(tagName)){
+                //feed with email-name from contributor
+                result.put(contribution.contributor().email(), contribution.contributor().name());
+            }
+        }
+        //sort to always keep a consistent order
+        return result;
+    }*/
+
+
+
+    /**
+     * This methods enables to know if the contributions already have been added
+     * @return
+     * true if it's empty (no contribution yet), false if not empty (there are contributions)
+     */
+    public boolean isEmpty(){
+        return contributions.isEmpty();
     }
 }
