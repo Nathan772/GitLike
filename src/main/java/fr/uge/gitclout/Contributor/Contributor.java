@@ -37,12 +37,26 @@ public class Contributor implements Comparable<Contributor> {
   }
 
   public boolean equals(Object obj){
-    return obj instanceof Contributor contributor && contributor.email.equals(email) &&
-            contributor.name.equals(name);
+    //a particular case is handle in a particular way
+    return obj instanceof Contributor contributor && contributor.email.replace("+"," ").equals(email.replace("+"," ")) &&
+            contributor.name.replace("+"," ").equals(name.replace("+"," "));
   }
+  /**
+
+  an accessor to the field email
+   @return
+   the email of the contributor
+   */
   public String email(){
     return this.email;
   }
+
+  /**
+
+   an accessor to the field name
+   @return
+   the name of the contributor
+   */
 
   public String name(){
     return this.name;

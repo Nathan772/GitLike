@@ -94,7 +94,7 @@ function Repo() {
                             {(tag: any) => (
                                 <li class="list-unstyled">
                                     <button type="button" class="btn btn-outline-secondary text-nowrap me-2 mb-2"onClick={() =>
-                                    navigate(`/contributors?tag=${tag}`)
+                                    navigate(`/contributors?tag=${tag}&url=${url()}`)
                                     }
                                     >
                                   {tag}

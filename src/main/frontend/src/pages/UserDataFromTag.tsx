@@ -17,6 +17,8 @@ function UserDataFromTag() {
 
     const [contributions, setContributions] = createSignal([] as ContributionIntermediate[]);
 
+     const [urlUsed, setURL] = createSignal('');
+
     const [tagName, setTagName] = createSignal('');
     onMount(async () => {
         const modal = new Modal(document.getElementById('modal')!);
@@ -26,6 +28,7 @@ function UserDataFromTag() {
         const tagUsed = searchParams.tag;
         const contributorEmail = searchParams.contributorEmail;
         const contributorName = searchParams.contributorName;
+        const urlParam = searchParams.url;
          if (!tagUsed) {
                     console.log(`le mail qui pose problème contient ${contributorEmail}`);
                     console.log("test nathan2 != tagUsed mais entrée dans User.tsx")
@@ -49,6 +52,7 @@ function UserDataFromTag() {
                 setContributorEmail(data.contributorEmail);
                 /*retrieve the name from the contributor*/
                 setContributorName(data.contributorName);
+                setURL(urlParam);
                 console.log(`Les contributions contiennent : ${data.contributions}`);
 
 
@@ -76,6 +80,8 @@ function UserDataFromTag() {
 
 
                 <p> Tag : {tagName()}  </p>
+
+                <button type="button" class="btn btn-primary" onClick={() => navigate(`/contributors?tag=${tagName()}&url=${urlUsed()}`)}>Back to Contributors </button>
 
                 <div class="mt-5">
                     <h2 class="h3">Les contributions du contributeur {contributorName()} as {contributorEmail()}</h2>

@@ -124,8 +124,10 @@ public class GitcloutController {
   @Get(uri = "Contributor-InfosFromTag", produces = "application/json")
   public HttpResponse<JSONResponse> getContributorContributionsFromTagName(String tagName, String contributorName, String contributorEmail) {
     Objects.requireNonNull(tagName); Objects.requireNonNull(contributorEmail); Objects.requireNonNull(contributorName);
+    System.out.println("l'ensemble des contributions est contributeurs : "+gitManager.toString());
+    System.out.println("le tagName : "+tagName+"Le nom du user : "+contributorName+" le mail du contributeur problématique : "+contributorEmail);
     var contrib= gitManager.getContributionByUserAndTag(tagName, contributorName,contributorEmail);
-      //System.out.println(" les contributions avant transformation "+contrib);
+      System.out.println(" les contributions avant transformation "+contrib);
       var contributionFromUserForTag = fromUserContributionToContributionIntermediate(contrib);
       //System.out.println("on vérifie que les contributions associées au user ne sont pas vides, le contenu : "+contributionFromUserForTag);
       return HttpResponse.ok(new JSONResponse("Retrieved information for tag '" + tagName + "'.", "success",

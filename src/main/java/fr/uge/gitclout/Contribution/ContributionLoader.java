@@ -126,11 +126,9 @@ public class ContributionLoader {
      */
     public List<Contribution> getContributionByUserAndTag(String tagName, String userName, String userEmail){
         var contributionsList = new ArrayList<Contribution>();
+        var tmpContributor = new Contributor(userName, userEmail);
         for(var contribution:contributions){
-            if(contribution.contributor().name().equals(userName) && contribution.contributor().email().equals(userEmail)
-            & contribution.tag().getName().equals(tagName)){
-                contributionsList.add(contribution);
-            }
+            if(contribution.contributor().equals(tmpContributor) & contribution.tag().getName().equals(tagName))contributionsList.add(contribution);
         }
         return contributionsList;
     }

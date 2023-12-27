@@ -18,6 +18,7 @@ export const getRepoInfos = async (repoURL: string) => {
 }
 
 /* this method enables to give to the api the link with the tag */
+/* &url=${repoURL} */
 export const getTagContributors = async (tagName: string) => {
     /* the name associated to the equal must be the same you use for the function used in the gitController
      method created */

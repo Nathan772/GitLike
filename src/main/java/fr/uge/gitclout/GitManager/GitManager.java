@@ -71,7 +71,23 @@ public class GitManager {
         }
     }
     else {
-        try {this.cloneRepository();} catch (GitAPIException e) {
+        try {
+          var file = new File(PATH+"/"+projectName);
+          //if the project had already been imported
+          if(file.exists() && file.isDirectory()){
+            //case when the project has already been import
+            try {
+              git = Git.open(file);
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+          }
+          //if the project never had been imported
+          else
+            // clone the repo in a directory which has the same name as the repo
+            // gives the path for the location of the directory
+            git = Git.cloneRepository().setURI(remoteURL).setDirectory(file).setBare(true).call();
+          ;} catch (GitAPIException e) {
             System.out.println("Erreur : Problème lors du clonage du repo git ");
             throw new RuntimeException(e);
         }
@@ -101,7 +117,8 @@ public class GitManager {
     return new File(localPath.toString()).exists();
   }
 
-  public Repository cloneRepository() throws GitAPIException {
+  /*
+  public void cloneRepository() throws GitAPIException {
 
     var file = new File(PATH+"/"+projectName);
     //if the project had already been imported
@@ -119,8 +136,8 @@ public class GitManager {
       // gives the path for the location of the directory
       git = Git.cloneRepository().setURI(remoteURL).setDirectory(file).setBare(true).call();
 
-    return repository;
-  }
+    return;
+  }*/
 
   private Date getTagDate(Ref ref) throws IOException {
     Objects.requireNonNull(ref);
@@ -543,6 +560,11 @@ public class GitManager {
    */
   public List<Contribution> getContributionByUserAndTag(String tagName, String userName, String userEmail){
     return contributionLoader.getContributionByUserAndTag(tagName, userName, userEmail);
+  }
+
+  @Override
+  public String toString(){
+    return contributionLoader.toString();
   }
 
   /*public static void main(String[] args){

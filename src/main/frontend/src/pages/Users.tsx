@@ -19,6 +19,7 @@ function UsersFromTagList() {
     const [contributors, setContributors] = createSignal([] as Contributor[]);
     /* this variable will contains the tag chosen*/
     const [tagName, setTag] = createSignal('');
+    const [urlUsed, setURL] = createSignal('');
 
     onMount(async () => {
         const modal = new Modal(document.getElementById('modal')!);
@@ -26,6 +27,7 @@ function UsersFromTagList() {
         const [searchParams] = useSearchParams();
         //retrieve the value associated to tag="" in the web page link
         const tagUsed = searchParams.tag;
+        const urlUsedParam = searchParams.url;
          if (!tagUsed) {
                     console.log("test nathan2 != tagUsed mais entrée dans User.tsx")
                     navigate('/not-found');
@@ -37,7 +39,6 @@ function UsersFromTagList() {
             const data = res.data as ContributorsInfosForTag;
             modal.hide();
             if (res.status === "success") {
-                console.log("on teste si res status === success ");
             //JSONContributors(List<String> Contributors, String tagName, String repositoryName)
                 //give to the variable contributors the data from the field contributors
                 setContributors(data.contributors);
@@ -45,8 +46,7 @@ function UsersFromTagList() {
                 setRepository(data.repositoryName);
                 /* retrieve the tags from the project */
                 setTag(data.tagName);
-
-                console.log(`les users contiennent : ${data.contributors}`);
+                setURL(urlUsedParam);
 
 
             } else {
@@ -72,8 +72,13 @@ function UsersFromTagList() {
                 </div>
 
 
+
                 <p> Projet : {repositoryName()}  </p>
 
+                <button type="button" class="btn btn-primary" onClick={() => navigate("/")}>Back to Home</button>
+                <br/>
+                <button type="button" class="btn btn-primary" onClick={() => navigate(`/repository?url=${urlUsed()}`)}>Back to Tags </button>
+                <br/>
                 <div class="mt-5">
                     <h2 class="h3">Liste des contributeurs pour le tag {tagName()} </h2>
                     <ul class="d-flex overflow-x-auto ps-0">
@@ -82,7 +87,7 @@ function UsersFromTagList() {
                             <div class="userAndEmail">
                                 <li class="list-unstyled">
                                 <button type="button" class="btn btn-outline-secondary text-nowrap me-2 mb-2"
-                                onClick={() => navigate(`/contributorInfos?tag=${tagName()}&contributorName=${contributor.name}&contributorEmail=${contributor.email}`)}>
+                                onClick={() => navigate(`/contributorInfos?tag=${tagName()}&contributorName=${contributor.name}&contributorEmail=${contributor.email}&url=${urlUsed()}`)}>
                                         {contributor.name}
                                 </button>
                                   <span class="hiddenEmail"> {contributor.email} </span>
