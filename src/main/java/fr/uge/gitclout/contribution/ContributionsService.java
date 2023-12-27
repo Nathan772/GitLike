@@ -28,6 +28,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static fr.uge.gitclout.contribution.ContributionType.CODE;
+
 public class ContributionsService {
   private final Map<String, Contributions> contributions = new HashMap<>();
   private final List<Callable<String>> callables = new ArrayList<>(); // TODO: return a Optional<String> instead of null
@@ -86,7 +88,13 @@ public class ContributionsService {
 
             String fileExtension = getFileExtension(path);
             ContributionType contributionType = supportedLanguages.getType(fileExtension);
+            /* handle the specific case of a document kind of type "CODE" ... (to complete) */
+            if(contributionType == CODE){
+              synchronized (lock) {
 
+              }
+            }
+            /*handle the case different from CODE type of document */
             for (int i = 0; i < blameResult.getResultContents().size(); i++) {
               RevCommit lineCommit = blameResult.getSourceCommit(i);
               String author = lineCommit.getAuthorIdent().getName();
