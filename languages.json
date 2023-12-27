@@ -1,184 +1,120 @@
 {
   "extensions": {
     ".java": {
-      "type": "CODE",
-      "language": "Java"
+      "extension":".java",
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "Java"
     },
     ".py": {
-      "type": "CODE",
-      "language": "Python"
+      "beginSingleLineComment":"#",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\"\"\"",
+      "endMultiLineComment":"\"\"\"",
+      "name": "Python",
+      "extension":".py"
     },
     ".js": {
-      "type": "CODE",
-      "language": "JavaScript"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "JavaScript",
+      "extension":".js"
     },
     ".ts": {
-      "type": "CODE",
-      "language": "TypeScript"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "TypeScript",
+      "extension":".ts"
     },
     ".rb": {
-      "type": "CODE",
-      "language": "Ruby"
+      "beginSingleLineComment":"#",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"=begin",
+      "endMultiLineComment":"=end",
+      "name": "Ruby",
+      "extension":".rb"
     },
     ".php": {
-      "type": "CODE",
-      "language": "PHP"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "PHP",
+      "extension":".php"
     },
     ".cpp": {
-      "type": "CODE",
-      "language": "C++"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "C++",
+      "extension":".cpp"
     },
     ".cs": {
-      "type": "CODE",
-      "language": "C#"
+      
+      "name": "C#"
     },
     ".c": {
-      "type": "CODE",
-      "language": "C"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "C",
+      "extension":".c"
     },
     ".go": {
-      "type": "CODE",
-      "language": "Go"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "Go",
+      "extension":".go"
     },
     ".swift": {
-      "type": "CODE",
-      "language": "Swift"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "Swift",
+      "extension":".swift"
     },
     ".kt": {
-      "type": "CODE",
-      "language": "Kotlin"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "Kotlin",
+      "extension":".kt"
     },
     ".rs": {
-      "type": "CODE",
-      "language": "Rust"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "Rust",
+      "extension":".rs"
     },
     ".scala": {
-      "type": "CODE",
-      "language": "Scala"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"\/\\*",
+      "endMultiLineComment":"\\*\/",
+      "name": "Scala",
+      "extension":".scala"
     },
     ".html": {
-      "type": "CODE",
-      "language": "HTML"
-    },
-    ".png": {
-      "type": "RESOURCE",
-      "language": "Image"
-    },
-    ".jpg": {
-      "type": "RESOURCE",
-      "language": "Image"
-    },
-    ".jpeg": {
-      "type": "RESOURCE",
-      "language": "Image"
-    },
-    ".gif": {
-      "type": "RESOURCE",
-      "language": "Image"
-    },
-    ".bmp": {
-      "type": "RESOURCE",
-      "language": "Image"
-    },
-    ".svg": {
-      "type": "RESOURCE",
-      "language": "Image"
-    },
-    ".pdf": {
-      "type": "RESOURCE",
-      "language": "Document"
-    },
-    ".mp4": {
-      "type": "RESOURCE",
-      "language": "Video"
-    },
-    ".avi": {
-      "type": "RESOURCE",
-      "language": "Video"
-    },
-    ".mov": {
-      "type": "RESOURCE",
-      "language": "Video"
-    },
-    ".mp3": {
-      "type": "RESOURCE",
-      "language": "Audio"
-    },
-    ".wav": {
-      "type": "RESOURCE",
-      "language": "Audio"
-    },
-    "build.xml": {
-      "type": "BUILD",
-      "language": "XML"
-    },
-    "pom.xml": {
-      "type": "CONFIG",
-      "language": "Maven"
-    },
-    "settings.gradle": {
-      "type": "CONFIG",
-      "language": "Gradle"
-    },
-    "configure.ac": {
-      "type": "CONFIG",
-      "language": "Autoconf"
-    },
-    "Makefile": {
-      "type": "CONFIG",
-      "language": "Make"
-    },
-    "Dockerfile": {
-      "type": "CONFIG",
-      "language": "Docker"
-    },
-    "Vagrantfile": {
-      "type": "CONFIG",
-      "language": "Vagrant"
-    },
-    "package.json": {
-      "type": "CONFIG",
-      "language": "NPM"
-    },
-    "composer.json": {
-      "type": "CONFIG",
-      "language": "Composer"
-    },
-    ".travis.yml": {
-      "type": "CONFIG",
-      "language": "Travis CI"
-    },
-    ".gitlab-ci.yml": {
-      "type": "CONFIG",
-      "language": "GitLab CI"
-    },
-    ".circleci": {
-      "type": "CONFIG",
-      "language": "CircleCI"
-    },
-    ".github": {
-      "type": "CONFIG",
-      "language": "GitHub Actions"
-    },
-    ".azure-pipelines": {
-      "type": "CONFIG",
-      "language": "Azure Pipelines"
-    },
-    ".md": {
-      "type": "DOCUMENTATION",
-      "language": "Markdown"
-    },
-    ".rst": {
-      "type": "DOCUMENTATION",
-      "language": "reStructuredText"
-    },
-    ".wiki": {
-      "type": "DOCUMENTATION",
-      "language": "Wiki"
-    },
-    ".txt": {
-      "type": "DOCUMENTATION",
-      "language": "Text"
+      "beginSingleLineComment":"//",
+      "endSingleLineComment":"\n",
+      "beginMultiLineComment":"<!--",
+      "endMultiLineComment":"-->",
+      "name": "HTML",
+      "extension":".html"
     }
   }
 }

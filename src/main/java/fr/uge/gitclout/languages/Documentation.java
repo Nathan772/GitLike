@@ -18,9 +18,9 @@ public final class Documentation implements SupportedFiles {
     /* it represents the programming language used*/
     private final String name;
     /* it represents the fileType (CODE, BUILD, ETC...)*/
-    private final ContributionType contributionType;
+    private final ContributionType type;
     /* The extension associated to the file */
-    private final  String extension;
+    private final String extension;
 
     public Documentation(String name, ContributionType fileType, String extension ){
         Objects.requireNonNull(fileType);
@@ -28,7 +28,7 @@ public final class Documentation implements SupportedFiles {
         //the language can be null ? (must be precise)
         //Objects.requireNonNull(language);
         this.name = name();
-        this.contributionType = fileType;
+        this.type = fileType;
         this.extension = extension;
     }
 
@@ -38,7 +38,7 @@ public final class Documentation implements SupportedFiles {
      * CODE because it's necessarily a programming language with some code.
      */
     public ContributionType getType(){
-        return contributionType;
+        return type;
     }
 
     /**
@@ -73,7 +73,7 @@ public final class Documentation implements SupportedFiles {
     }
 
     public boolean equals(Object obj){
-        return obj instanceof Documentation doc && doc.contributionType.equals(contributionType) && extension.equals(doc.extension)
+        return obj instanceof Documentation doc && doc.type.equals(type) && extension.equals(doc.extension)
                 && doc.name.equals(name);
     }
 
@@ -109,13 +109,13 @@ public final class Documentation implements SupportedFiles {
     }*/
 
     public int hashCode(){
-        return extension.hashCode()^contributionType.hashCode()^ name.hashCode();
+        return extension.hashCode()^type.hashCode()^ name.hashCode();
     }
 
     public String toString(){
         var bd = new StringBuilder();
         bd.append("\n extension : "); bd.append(extension); bd.append("\n");
-        bd.append("Type of file : "); bd.append(fromFileTypeToString(contributionType)); bd.append("\n");
+        bd.append("Type of file : "); bd.append(fromFileTypeToString(type)); bd.append("\n");
 
         return bd.toString();
     }

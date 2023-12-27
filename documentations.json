@@ -1,0 +1,155 @@
+{
+  "extensions": {
+     ".png": {
+      "type": "RESOURCE",
+      "extension":".png",
+      "name": "PNG"
+    },
+    ".jpg": {
+      "type": "RESOURCE",
+      "extension": ".jpg",
+      "name": "JPG"
+    },
+    ".jpeg": {
+      "type": "RESOURCE",
+      "extension": ".jpeg",
+      "name":"JPEG"
+    },
+    ".gif": {
+      "type": "RESOURCE",
+      "extension": ".gif",
+      "name":"GIF"
+    },
+    ".bmp": {
+      "type": "RESOURCE",
+      "extension": ".bmp",
+      "name":"BMP"
+    },
+    ".svg": {
+      "type": "RESOURCE",
+      "extension": ".svg",
+      "name":"SVG"
+    },
+    ".pdf": {
+      "type": "RESOURCE",
+      "extension": ".pdf",
+      "name":"PDF"
+    },
+    ".mp4": {
+      "type": "RESOURCE",
+      "extension": ".mp4",
+      "name":"MP4"
+    },
+    ".avi": {
+      "type": "RESOURCE",
+      "extension": "avi",
+      "name":"AVI"
+    },
+    ".mov": {
+      "type": "RESOURCE",
+      "extension": ".mov",
+      "name":"MOV"
+    },
+    ".mp3": {
+      "type": "RESOURCE",
+      "extension": ".mp3",
+      "name":"MP3"
+    },
+    ".wav": {
+      "type": "RESOURCE",
+      "extension": ".wav",
+      "name":"WAV"
+    },
+    "build.xml": {
+      "type": "BUILD",
+      "name": "XML",
+      "extension":".xml"
+    },
+    "pom.xml": {
+      "type": "CONFIG",
+      "name": "Maven",
+      "extension":".xml"
+    },
+    "settings.gradle": {
+      "type": "CONFIG",
+      "name": "Gradle",
+      "extension":".gradle"
+    },
+    "configure.ac": {
+      "type": "CONFIG",
+      "name": "Autoconf",
+      "extension":".ac"
+    },
+    "Makefile": {
+      "type": "CONFIG",
+      "name": "Make",
+      "extension":""
+
+    },
+    "Dockerfile": {
+      "type": "CONFIG",
+      "name": "Docker",
+      "extension":""
+    },
+    "Vagrantfile": {
+      "type": "CONFIG",
+      "name": "Vagrant",
+      "extension":""
+    },
+    "package.json": {
+      "type": "CONFIG",
+      "name": "NPM",
+      "extension":".json"
+    },
+    "composer.json": {
+      "type": "CONFIG",
+      "name": "Composer",
+      "extension":".json"
+    },
+    ".travis.yml": {
+      "type": "CONFIG",
+      "name": "Travis CI",
+      "extension":".yml"
+    },
+    ".gitlab-ci.yml": {
+      "type": "CONFIG",
+      "name": "GitLab CI",
+      "extension":".yml"
+    },
+    ".circleci": {
+      "type": "CONFIG",
+      "name": "CircleCI",
+      "extension":".circleci"
+    },
+    ".github": {
+      "type": "CONFIG",
+      "name": "GitHub Actions",
+      "extension":".github"
+    },
+    ".azure-pipelines": {
+      "type": "CONFIG",
+      "name": "Azure Pipelines",
+      "extension":".azure-pipelines"
+    },
+    ".md": {
+      "type": "DOCUMENTATION",
+      "name": "Markdown",
+      "extension":".md"
+    },
+    ".rst": {
+      "type": "DOCUMENTATION",
+      "name": "reStructuredText",
+      "extension":".rst"
+    },
+    ".wiki": {
+      "type": "DOCUMENTATION",
+      "name": "Wiki",
+      "extension":".wiki"
+    },
+    ".txt": {
+      "type": "DOCUMENTATION",
+      "name": "Text",
+      "extension":".txt"
+    }
+  }
+}

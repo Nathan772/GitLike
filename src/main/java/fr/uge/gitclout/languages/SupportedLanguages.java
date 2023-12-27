@@ -9,15 +9,23 @@ import java.util.*;
 
 public class SupportedLanguages {
 
-  private Map<String, SupportedFiles> fileTypes;
+  private HashMap<String, SupportedFiles> fileTypes;
   //private ArrayList<SupportedFiles> fileTypes;
 
   public SupportedLanguages() {
-    var path = "languages.json";
+    var path = "languages.json"; var path2 = "documentations.json";
     ObjectMapper mapper = new ObjectMapper();
     try {
-      FileTypes fileTypesData = mapper.readValue(new File(path), FileTypes.class);
-      fileTypes = fileTypesData.getExtensions();
+
+      //retrieve the documentation from documentations.json
+      FileTypesDocumentation fileTypesDocumentation = mapper.readValue(new File(path2), FileTypesDocumentation.class);
+      //retrieve the documentation from language.json
+      FileTypesLanguage fileTypesLanguage = mapper.readValue(new File(path), FileTypesLanguage.class);
+
+      //merge the two kind in one Kind of Map using the interface
+      fileTypes.putAll(fileTypesDocumentation.getExtensions());
+      fileTypes.putAll(fileTypesLanguage.getExtensions());
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -74,6 +82,36 @@ public class SupportedLanguages {
     return fileTypes;
   }
 
+  public static class FileTypesDocumentation {
+
+    private Map<String, Documentation> extensions;
+
+    public Map<String, Documentation> getExtensions() {
+      return extensions;
+    }
+
+
+    public void setExtensions(Map<String, Documentation> extensions) {
+      this.extensions = extensions;
+    }
+  }
+
+  public static class FileTypesLanguage {
+
+    private Map<String, Language> extensions;
+
+    public Map<String, Language> getExtensions() {
+      return extensions;
+    }
+
+
+    public void setExtensions(Map<String, Language> extensions) {
+      this.extensions = extensions;
+    }
+  }
+
+  /*
+  old deprecated
   public static class FileTypes {
 
     private Map<String, FileTypeInfo> extensions;
@@ -92,6 +130,8 @@ public class SupportedLanguages {
 
     private ContributionType type;
     private String language;
+
+
 
     public ContributionType getType() {
       return type;
@@ -113,5 +153,5 @@ public class SupportedLanguages {
     public String toString() {
       return "Type: " + type + ", Language: " + language;
     }
-  }
+  }*/
 }
