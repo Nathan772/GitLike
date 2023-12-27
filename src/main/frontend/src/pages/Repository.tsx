@@ -65,11 +65,11 @@ function Repo() {
                 evtSource.onmessage = (event) => {
                     const data = JSON.parse(event.data);
                     console.log(data);
-                    const info: ToastInfo = {
-                        type: data.status,
-                        message: data.message
-                    };
-                    addToast(info);
+                    // const info: ToastInfo = {
+                    //     type: data.status,
+                    //     message: data.message
+                    // };
+                    //addToast(info);
                     count++;
 
                     setProgress(count / tags().length * 100);
@@ -87,7 +87,7 @@ function Repo() {
                         const end = new Date().getTime();
 
                         const info: ToastInfo = {
-                            type: "success",
+                            type: "info",
                             message: `Done in ${(end - begin) / 1000} seconds.`
                         };
 
@@ -109,6 +109,20 @@ function Repo() {
 
     });
 
+    function scrollHorizontally(e: any) {
+        e.preventDefault();
+        const target = e.currentTarget as HTMLElement;
+        target.scrollLeft += (e.deltaY * 2);
+    }
+
+    function getClassButton(tag: string) {
+        if (dataTags()[tags().indexOf(tag)] === undefined) {
+            return selectedTag() === tag ? "btn-secondary" : "btn-outline-secondary";
+        }
+        return selectedTag() === tag ? "btn-primary" : "btn-outline-primary";
+    }
+
+
     return (
         <>
 
@@ -123,19 +137,17 @@ function Repo() {
                 </div>
                 <p>{url()}</p>
 
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress" role="progressbar" aria-label="Analyzing Progress Bar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar"></div>
                 </div>
 
-                <p>Progress: {progress()}%</p>
-
                 <div class="mt-5">
                     <h2 class="h3">Tags</h2>
-                    <ul class="d-flex overflow-x-auto ps-0">
+                    <ul class="d-flex overflow-x-auto ps-0" onWheel={(e) => scrollHorizontally(e)}>
                         <For each={tags()}>
                             {(tag: any) => (
                                 <li class="list-unstyled">
-                                    <button type="button" class={(selectedTag() == tag ? "btn-primary" : "btn-outline-secondary") + " btn text-nowrap me-2 mb-2"}
+                                    <button type="button" class={(getClassButton(tag)) + " btn text-nowrap me-2 mb-2"}
                                         onClick={() => setSelectedTag(tag)}>
                                         {tag}
                                     </button>

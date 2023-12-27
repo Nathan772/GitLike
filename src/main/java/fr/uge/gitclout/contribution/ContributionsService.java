@@ -90,6 +90,8 @@ public class ContributionsService {
             for (int i = 0; i < blameResult.getResultContents().size(); i++) {
               RevCommit lineCommit = blameResult.getSourceCommit(i);
               String author = lineCommit.getAuthorIdent().getName();
+              String email = lineCommit.getAuthorIdent().getEmailAddress();
+              author = author + " <" + email + ">";
 
               synchronized (lock) {
                 Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
