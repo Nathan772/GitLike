@@ -38,7 +38,6 @@ public class AuthorContributions {
     if(count < 0) throw new IllegalArgumentException("count cannot be lesser than 0");
     if(commentCount < 0) throw new IllegalArgumentException("comment count cannot be lesser than 0");
     Objects.requireNonNull(language);
-
     ContributionTypeDetails typeDetails = contributionsByType.computeIfAbsent(type, k -> new ContributionTypeDetails());
     typeDetails.addContribution(language, count, commentCount);
   }

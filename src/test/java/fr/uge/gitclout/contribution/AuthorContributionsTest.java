@@ -11,27 +11,49 @@ class AuthorContributionsTest {
     void getterAreFunctional(){
         var languageCount = new LanguageCount("Java", 2 ,3);
         var hashLang = new HashMap<String,LanguageCount>();
+        var languageCount2 = new LanguageCount("Python", 2 ,3);
         hashLang.put("Java",languageCount);
-        var contributionTypeDetails = new ContributionTypeDetails(5,hashLang);
-        assertEquals(5,contributionTypeDetails.getTotal());
-        assertEquals(hashLang,contributionTypeDetails.getDetails());
+        hashLang.put("Python", languageCount2);
+        var contributionTypeDetails = new ContributionTypeDetails(10,hashLang);
+        var mapContribution = new HashMap<ContributionType, ContributionTypeDetails>();
+        mapContribution.put(ContributionType.CODE,contributionTypeDetails);
+        var author = "Jean";
+        hashLang.put("Java",languageCount);
+        var authorContrib = new AuthorContributions(author, mapContribution);
+        assertEquals("Jean",authorContrib.getAuthor());
+        assertEquals(mapContribution,authorContrib.getContributionsByType());
     }
 
     @Test
-    void addContributionWorks(){
+    void exceptionAreThrownWhenFieldIsInconsistentForAddContribution(){
+        //var languageCount = new LanguageCount("Java", 2 ,3);
         var languageCount = new LanguageCount("Java", 2 ,3);
         var hashLang = new HashMap<String,LanguageCount>();
         var languageCount2 = new LanguageCount("Python", 2 ,3);
         hashLang.put("Java",languageCount);
         hashLang.put("Python", languageCount2);
         var contributionTypeDetails = new ContributionTypeDetails(10,hashLang);
-        contributionTypeDetails.addContribution("Python", 5, 6);
-        assertEquals(21,contributionTypeDetails.getTotal());
-        //assertEquals(hashLang,contributionTypeDetails.getDetails());
+        var mapContribution = new HashMap<ContributionType, ContributionTypeDetails>();
+        mapContribution.put(ContributionType.CODE,contributionTypeDetails);
+        var author = "Jean";
+        hashLang.put("Java",languageCount);
+        var authorContrib = new AuthorContributions(author, mapContribution);
+        assertThrows(NullPointerException.class,()->
+                authorContrib.addContribution(null,"Java",0,0)
+        );
+        assertThrows(NullPointerException.class,()->
+                authorContrib.addContribution(ContributionType.CODE,null,0,0)
+        );
+        assertThrows(IllegalArgumentException.class,()->
+                authorContrib.addContribution(ContributionType.CODE,"Java",-1,0)
+        );
+        assertThrows(IllegalArgumentException.class,()->
+                authorContrib.addContribution(ContributionType.CODE,"Java",0,-1)
+        );
     }
 
     @Test
-    void exceptionAreThrownWhenFieldIsInconsistent(){
+    void exceptionAreThrownWhenFieldIsInconsistentForConstructor(){
         //var languageCount = new LanguageCount("Java", 2 ,3);
         var languageCount = new LanguageCount("Java", 2 ,3);
         var hashLang = new HashMap<String,LanguageCount>();
