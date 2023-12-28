@@ -1,5 +1,6 @@
 package fr.uge.gitclout.languages;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.uge.gitclout.contribution.ContributionType;
 
 import java.util.ArrayList;
@@ -9,15 +10,21 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 public final class Language implements SupportedFiles {
-    private final String name;
-    private final String extension;
-    private final String beginSingleLineComment;
-    private final String endSingleLineComment;
-    private final String endMultiLineComment;
-    private final String beginMultiLineComment;
 
-    public Language(String name, String beginSingleLineComment,
-    String endSingleLineComment,  String beginMultiLineComment,  String endMultiLineComment, String extension ) {
+    private String name;
+
+    private String extension;
+
+    private String beginSingleLineComment;
+
+    private String endSingleLineComment;
+
+    private String endMultiLineComment;
+
+    private String beginMultiLineComment;
+
+    public Language(@JsonProperty("name") String name,  @JsonProperty("beginSingleLineComment") String beginSingleLineComment,
+                    @JsonProperty("endSingleLineComment") String endSingleLineComment,  @JsonProperty("beginMultiLineComment") String beginMultiLineComment, @JsonProperty("endMultiLineComment") String endMultiLineComment,@JsonProperty("extension") String extension ) {
         Objects.requireNonNull(name, "language's name cannot be null");
         Objects.requireNonNull(beginSingleLineComment);Objects.requireNonNull(endSingleLineComment);
         Objects.requireNonNull(beginSingleLineComment);Objects.requireNonNull(endSingleLineComment);
@@ -55,6 +62,84 @@ public final class Language implements SupportedFiles {
      */
     public ContributionType getType(){
         return ContributionType.CODE;
+    }
+
+    /**
+     * this methods enables to set a new name for a language
+     * @param name
+     * the new name for the language
+     */
+    public void setName(String name){
+        this.name=name;
+    }
+
+    /**
+     * this methods is an accessor on the field name.
+     * @return
+     * the name for the language
+     */
+    public String getName(){
+      return name;
+    }
+
+    /**
+     * This methods is an accessor on the field extension.
+     * @return
+     * the extension for the language
+     */
+    public String getExtension(){
+        return extension;
+    }
+
+
+    /**
+     * this methods enables to set the new extension for the language.
+     * @param extension
+     * the extension you want for your field extension.
+     *
+     */
+    public void setExtension(String extension){
+        this.extension=extension;
+    }
+
+    /**
+     * this methods enables to set the new beginSingleLine for the language.
+     * @param beginSingleLineComment
+     * the beginSingleLine you want for your field beginSingleLine.
+     *
+     */
+    public void setBeginSingleLineComment(String beginSingleLineComment){
+        this.beginSingleLineComment=beginSingleLineComment;
+    }
+
+    /**
+     * this methods enables to set the new beginSingleLine for the language.
+     * @param endSingleLineComment
+     * the beginSingleLine you want for your field beginSingleLine.
+     *
+     */
+    public void setEndSingleLineComment(String endSingleLineComment){
+        this.endSingleLineComment=endSingleLineComment;
+    }
+
+    /**
+     * this methods enables to set the new beginSingleLine for the language.
+     * @param beginMultiLineComment
+     * the beginMultiLine you want for your field beginMultiLine.
+     *
+     */
+    public void setBeginMultiLineComment(String beginMultiLineComment){
+        this.beginMultiLineComment=beginMultiLineComment;
+    }
+
+    /**
+     * this methods enables to set the new beginSingleLine for the language.
+     * @param endMultiLineComment
+     * the endMultiLine you want for your field endMultiLine.
+     *
+     */
+    public void setEndMultiLineComment(String endMultiLineComment){
+        this.endMultiLineComment=endMultiLineComment;
     }
 
     @Override
@@ -138,6 +223,7 @@ public final class Language implements SupportedFiles {
     public String getBeginMultiLineComment(){
         return beginMultiLineComment;
     }
+
     /*public static Language fromStringTabToLanguage(String[] tabLanguage){
         Objects.requireNonNull(tabLanguage);
         var beginRegex = new ArrayList<String>();

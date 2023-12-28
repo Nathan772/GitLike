@@ -1,4 +1,5 @@
 package fr.uge.gitclout.languages;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.uge.gitclout.contribution.ContributionType;
 import io.micronaut.serde.annotation.Serdeable;
 
@@ -16,19 +17,23 @@ this class associated a fileType to a language if necessary
 
 public final class Documentation implements SupportedFiles {
     /* it represents the programming language used*/
-    private final String name;
-    /* it represents the fileType (CODE, BUILD, ETC...)*/
-    private final ContributionType type;
-    /* The extension associated to the file */
-    private final String extension;
 
-    public Documentation(String name, ContributionType fileType, String extension ){
-        Objects.requireNonNull(fileType);
+    private String name;
+    /* it represents the fileType (CODE, BUILD, ETC...)*/
+
+    private ContributionType type;
+    /* The extension associated to the file */
+
+    private String extension;
+
+    public Documentation(@JsonProperty("name") String name,@JsonProperty("type") ContributionType type, @JsonProperty("extension") String extension ){
+        Objects.requireNonNull(type);
         Objects.requireNonNull(extension);
+        Objects.requireNonNull(name);
         //the language can be null ? (must be precise)
         //Objects.requireNonNull(language);
-        this.name = name();
-        this.type = fileType;
+        this.name = name;
+        this.type = type;
         this.extension = extension;
     }
 
@@ -40,6 +45,66 @@ public final class Documentation implements SupportedFiles {
     public ContributionType getType(){
         return type;
     }
+
+    /**
+     * this methods enables to know the extension of the file.
+     * @return
+     * extension of the file
+     */
+    public String getExtension(){
+        return extension;
+    }
+
+    /**
+     * this methods enables to know the name of the file.
+     * @return
+     * name of the file type.
+     */
+    public String getName(){
+        return name;
+    }
+
+
+
+
+
+
+    /**
+     * this methods enables to set the extension of the file.
+     * @param extension
+     * the new extension of the file
+     */
+    public void setExtension(String extension){
+        this.extension=extension;
+    }
+
+    /**
+     * This methods to update the name of the documentation.
+     * @param name
+     * the nex name for the documentation
+     */
+    public void setName(String name){
+        this.name=name;
+    }
+
+    /**
+     * This methods to update the type of the documentation.
+     * @param type
+     * the nex name for the documentation
+     */
+    public void setType(ContributionType type){
+        this.type=type;
+    }
+
+
+
+
+
+
+
+
+
+
 
     /**
      * this method tells either a supportedFile contain or not comments

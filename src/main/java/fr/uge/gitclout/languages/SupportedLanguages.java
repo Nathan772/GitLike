@@ -9,11 +9,12 @@ import java.util.*;
 
 public class SupportedLanguages {
 
-  private HashMap<String, SupportedFiles> fileTypes;
+  private HashMap<String, SupportedFiles> fileTypes = new HashMap<>();
   //private ArrayList<SupportedFiles> fileTypes;
 
   public SupportedLanguages() {
-    var path = "languages.json"; var path2 = "documentations.json";
+    var path = "languages.json";
+    var path2 = "documentations.json";
     ObjectMapper mapper = new ObjectMapper();
     try {
 
