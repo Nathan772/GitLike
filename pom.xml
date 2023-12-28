@@ -80,11 +80,16 @@
       <artifactId>micronaut-test-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- junit test -->
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
+      <version>5.10.0</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -137,6 +142,15 @@
       <artifactId>hibernate-community-dialects</artifactId>
       <version>6.3.1.Final</version>
     </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.13.1</version>
+      <scope>test</scope>
+    </dependency>
+
+
+
   </dependencies>
 
 

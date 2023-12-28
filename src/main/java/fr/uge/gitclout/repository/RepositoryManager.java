@@ -11,6 +11,7 @@ import org.eclipse.jgit.transport.URIish;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.Objects;
 
 @Singleton
 public class RepositoryManager {
@@ -18,6 +19,7 @@ public class RepositoryManager {
   private final Path repositoryPath = Path.of("repositories");
 
   public RepositoryManager(RepositoryRepository repositoryRepository) {
+    Objects.requireNonNull(repositoryRepository);
     this.repositoryRepository = repositoryRepository;
   }
 
@@ -30,6 +32,7 @@ public class RepositoryManager {
   }
 
   private String getRepositoryName(String repositoryURL) throws URISyntaxException {
+    Objects.requireNonNull(repositoryURL);
     URIish uri = new URIish(repositoryURL);
     return uri.getHumanishName();
   }
@@ -44,6 +47,7 @@ public class RepositoryManager {
   }
 
   public Repository resolveRepository(String repositoryURL) throws GitAPIException, URISyntaxException, IOException {
+    Objects.requireNonNull(repositoryURL);
     var repository = repositoryRepository.findByRepositoryURL(repositoryURL);
     if (repository.isPresent()) {
       try {
