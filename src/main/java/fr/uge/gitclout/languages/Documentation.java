@@ -1,13 +1,17 @@
 package fr.uge.gitclout.languages;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.uge.gitclout.contribution.ContributionType;
+import fr.uge.gitclout.contribution.Contributions;
 import io.micronaut.serde.annotation.Serdeable;
+import org.eclipse.jgit.blame.BlameResult;
+import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.io.IOException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -300,6 +304,30 @@ public final class Documentation implements SupportedFiles {
             case ContributionType.CONFIG -> {return "CONFIGURATION";}
             case ContributionType.RESOURCE -> {return "RESOURCE" ;}
             default ->  {return "OTHER" ;}
+        }
+    }
+    /**
+     * @param blameResult
+     * the blame result you want to parse.
+     * @param contributions
+     * the Map that contains the contribution you want to increase.
+     * @param tagName
+     * the object that represents the tag associated to the contribution
+     *
+     */
+    @Override
+    public void feedWithContributions(BlameResult blameResult, Map<String,Contributions> contributions, String tagName) {
+        Objects.requireNonNull(tagName);Objects.requireNonNull(contributions); Objects.requireNonNull(blameResult);
+        /*handle the case different from CODE type of document */
+        for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+            RevCommit lineCommit = blameResult.getSourceCommit(i);
+            String author = lineCommit.getAuthorIdent().getName();
+            String email = lineCommit.getAuthorIdent().getEmailAddress();
+            author = author + " <" + email + ">";
+            Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+            tagContributions.addAuthorContribution(author, this.getType(), this.name(), 1, 0);
+            //for resource kind document just count one line by document
+            if (this.getType() == ContributionType.RESOURCE) break;
         }
     }
 

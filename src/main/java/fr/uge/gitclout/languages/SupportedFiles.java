@@ -1,6 +1,10 @@
 package fr.uge.gitclout.languages;
 
 import fr.uge.gitclout.contribution.ContributionType;
+import fr.uge.gitclout.contribution.Contributions;
+import org.eclipse.jgit.blame.BlameResult;
+
+import java.util.Map;
 
 public sealed interface SupportedFiles permits Language, Documentation {
     /**
@@ -30,4 +34,17 @@ public sealed interface SupportedFiles permits Language, Documentation {
      * the type of contribution it represents;
      */
     public ContributionType getType();
+
+    /**
+     * @param blameResult
+     * the blame result you want to parse.
+     * @param contributions
+     * the object that represents the kind of file
+     * @param tagName
+     * the object that represents the tag associated to the contribution
+     *
+     */
+    public void feedWithContributions(BlameResult blameResult, Map<String,Contributions> contributions, String tagName);
+
+
 }

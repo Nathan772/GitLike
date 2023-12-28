@@ -83,6 +83,16 @@ public class SupportedLanguages {
     return fileTypes;
   }
 
+  /**
+   * @param extension
+   * the file extension
+   * @return
+   * the kind of supported file.
+   */
+  public SupportedFiles getSupportedFileFromExtension(String extension){
+    return fileTypes.get(extension);
+  }
+
   public static class FileTypesDocumentation {
 
     private Map<String, Documentation> extensions;

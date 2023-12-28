@@ -26,7 +26,7 @@ public class ContributionTypeDetails {
   public void addContribution(String language, int count, int commentCount) {
     LanguageCount languageCount = details.computeIfAbsent(language, LanguageCount::new);
     languageCount.incrementCount(count, commentCount);
-    total += count;
+    total += count+commentCount;
   }
 
   public int getTotal() {

@@ -2,11 +2,11 @@ package fr.uge.gitclout.languages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.uge.gitclout.contribution.ContributionType;
+import fr.uge.gitclout.contribution.Contributions;
+import org.eclipse.jgit.blame.BlameResult;
+import org.eclipse.jgit.revwalk.RevCommit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public final class Language implements SupportedFiles {
@@ -377,6 +377,92 @@ public final class Language implements SupportedFiles {
     public boolean thisStringStartsWithSingleLineComment(String line){
         Objects.requireNonNull(line);
         return !thisStringStartsWithComment(line).isEmpty() && thisStringStartsWithComment(line).orElseThrow().equals(beginSingleLineComment);
+    }
+
+    /**
+     * @param blameResult
+     * the blame result you want to parse.
+     * @param contributions
+     * the object that represents the kind of file
+     * @param tagName
+     * the object that represents the tag associated to the contribution
+     *
+     */
+    @Override
+    public void feedWithContributions(BlameResult blameResult, Map<String, Contributions> contributions, String tagName) {
+        Objects.requireNonNull(tagName);Objects.requireNonNull(contributions); Objects.requireNonNull(blameResult);
+        //precise if a multiline comment has started.
+        var isInMultiLineCommentMode = false;
+        /*for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+            RevCommit lineCommit = blameResult.getSourceCommit(i);
+            String author = lineCommit.getAuthorIdent().getName();
+            String email = lineCommit.getAuthorIdent().getEmailAddress();
+            author = author + " <" + email + ">";
+            Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+            tagContributions.addAuthorContribution(author, fileCategory.getType(), fileCategory.name(), 1, 0);
+            //for resource kind document just count one line by document
+            if (fileCategory.getType() == ContributionType.RESOURCE) break;
+        }*/
+        for (int i = 0; i < blameResult.getResultContents().size(); i++) {
+            RevCommit lineCommit = blameResult.getSourceCommit(i);
+            String author = lineCommit.getAuthorIdent().getName();
+            String email = lineCommit.getAuthorIdent().getEmailAddress();
+            author = author + " <" + email + ">";
+            //      //retrieve the current line content
+            var lineToParse = blameResult.getResultContents().getString(i);
+//      //a multiline continue
+            if (isInMultiLineCommentMode && !this.thisStringEndsComment(lineToParse, this.endMultiLineComment)) {
+//        //the comments ends here
+                isInMultiLineCommentMode= false;
+//              //one last comment line
+                Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+                //hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+                tagContributions.addAuthorContribution(author, this.getType(), this.name(), 0, 1);
+            }
+//      //we start a single line comment
+            else if (this.thisStringStartsWithSingleLineComment(lineToParse)) {
+//        //increase the number of comments
+//              //one last comment line
+                Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+                //hashUserCommentLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+                tagContributions.addAuthorContribution(author, this.getType(), this.name(), 0, 1);
+            }
+
+            else{
+//        //check if a new multiline comment starts and doesn't finish on the same line
+                if(this.thisStringEndsWithUnfinishedComment(lineToParse).isPresent()){
+//         //System.out.println(" un multi line comment commence "+lineToParse);
+//         //comment mode start
+                    isInMultiLineCommentMode = true;
+//                  //the line didn't start by a comment, then it starts by code
+                    if(this.thisStringStartsWithComment(lineToParse).isEmpty()) {
+                        //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+                        Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+                        tagContributions.addAuthorContribution(author, this.getType(), this.name(), 1, 0);
+                    }
+                    //the line start with comments
+                    else {
+                        Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+                        tagContributions.addAuthorContribution(author, this.getType(), this.name(), 0, 1);
+                    }
+                }
+//
+//              //a multiline comment starts and ends on the same line at the start of the line
+                else if(this.thisStringStartsWithComment(lineToParse).isPresent()){
+                    Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+                    tagContributions.addAuthorContribution(author, this.getType(), this.name(), 0, 1);
+                }
+//              //code line (but not exhaustive should check if there's code between two comments
+                else{
+                    Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
+                    tagContributions.addAuthorContribution(author, this.getType(), this.name(), 1, 0);
+                    isInMultiLineCommentMode = false;
+                }
+                //
+
+            }
+            //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
+        }
     }
 
 

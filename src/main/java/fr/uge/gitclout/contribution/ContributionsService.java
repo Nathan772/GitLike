@@ -88,36 +88,14 @@ public class ContributionsService {
 
             String fileExtension = getFileExtension(path);
             ContributionType contributionType = supportedLanguages.getType(fileExtension);
-            /* handle the specific case of a document kind of type "CODE" ... (to complete) */
-            if(contributionType == CODE){
-              synchronized (lock) {
+            var fileCategory = supportedLanguages.getSupportedFileFromExtension(fileExtension);
 
-              }
+            /* handle the contributions for the two kinds of files (codes and others)*/
+
+            synchronized (lock) {
+              fileCategory.feedWithContributions(blameResult, this.contributions, tagName);
             }
-            /*handle the case different from CODE type of document */
-            for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-              RevCommit lineCommit = blameResult.getSourceCommit(i);
-              String author = lineCommit.getAuthorIdent().getName();
-              String email = lineCommit.getAuthorIdent().getEmailAddress();
-              author = author + " <" + email + ">";
 
-              synchronized (lock) {
-                Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
-                String language = supportedLanguages.getLanguage(fileExtension);
-
-                tagContributions.addAuthorContribution(
-                        author,
-                        contributionType,
-                        language,
-                        1,
-                        0
-                );
-
-                if (contributionType == ContributionType.RESOURCE) {
-                  break;
-                }
-              }
-            }
           } catch (GitAPIException e) {
             throw new RuntimeException(e);
           }
