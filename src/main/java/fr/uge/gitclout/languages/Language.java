@@ -224,20 +224,6 @@ public final class Language implements SupportedFiles {
         return beginMultiLineComment;
     }
 
-    /*public static Language fromStringTabToLanguage(String[] tabLanguage){
-        Objects.requireNonNull(tabLanguage);
-        var beginRegex = new ArrayList<String>();
-        var endRegex= new ArrayList<String>();
-        for(var i =0;i<tabLanguage.length;i++){
-            //add the beginning of comment
-            if(i>=3 && i % 2 != 0)  beginRegex.add(tabLanguage[i].replace(" ", ""));
-                // add the end of comment
-            else if(i>=4) endRegex.add(tabLanguage[i].replace("]", "").replace(" ", ""));
-        }
-        //we start at index 1 to avoid the first "["
-        return new Language(tabLanguage[0].substring(1),beginRegex,endRegex);
-    }*/
-
     /**
      * this method enables to know if a string contains a comment line or not at its beginning.
      *
@@ -337,33 +323,6 @@ public final class Language implements SupportedFiles {
         return line.contains(commentEndingType);
     }
 
-    /*
-     * this method enables to know if the current comment is a "single line" comment.
-     *
-     * the index associated to the beginning of the comment.
-     * à supprimer ?
-     * true if it's a  single lien comment
-     * false if it's not
-     */
-    /*public boolean thisIndexIsSingleLineComment(int commentIndex){
-        Objects.checkIndex(commentIndex, endCommentRegex.size());
-        return endCommentRegex.get(commentIndex).equals("\\n");
-    }*/
-
-    /*
-     * à supprimer ?
-     * this method enables to know if the current comment is a "multi line" comment.
-     *
-     * the index associated to the beginning of the comment.
-     *
-     * @return
-     * true if it's a  single lien comment
-     * false if it's not
-    public boolean thisIndexIsMultiLineComment(int commentIndex){
-        Objects.checkIndex(commentIndex, endCommentRegex.size());
-        return !endCommentRegex.get(commentIndex).equals(("\n"));
-    }*/
-
 
     /**
      * this method enables to know if a string contains a one line, comment line or not at its beginning.
@@ -376,7 +335,7 @@ public final class Language implements SupportedFiles {
      */
     public boolean thisStringStartsWithSingleLineComment(String line){
         Objects.requireNonNull(line);
-        return !thisStringStartsWithComment(line).isEmpty() && thisStringStartsWithComment(line).orElseThrow().equals(beginSingleLineComment);
+        return thisStringStartsWithComment(line).isPresent() && thisStringStartsWithComment(line).orElseThrow().equals(beginSingleLineComment);
     }
 
     /**
@@ -393,16 +352,7 @@ public final class Language implements SupportedFiles {
         Objects.requireNonNull(tagName);Objects.requireNonNull(contributions); Objects.requireNonNull(blameResult);
         //precise if a multiline comment has started.
         var isInMultiLineCommentMode = false;
-        /*for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-            RevCommit lineCommit = blameResult.getSourceCommit(i);
-            String author = lineCommit.getAuthorIdent().getName();
-            String email = lineCommit.getAuthorIdent().getEmailAddress();
-            author = author + " <" + email + ">";
-            Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
-            tagContributions.addAuthorContribution(author, fileCategory.getType(), fileCategory.name(), 1, 0);
-            //for resource kind document just count one line by document
-            if (fileCategory.getType() == ContributionType.RESOURCE) break;
-        }*/
+
         for (int i = 0; i < blameResult.getResultContents().size(); i++) {
             RevCommit lineCommit = blameResult.getSourceCommit(i);
             String author = lineCommit.getAuthorIdent().getName();
@@ -461,7 +411,6 @@ public final class Language implements SupportedFiles {
                 //
 
             }
-            //hashUserLines.merge(new Contributor(blameResult.getSourceAuthor(i).getName(), blameResult.getSourceAuthor(i).getEmailAddress()), 1, (oldValue, newValue) -> oldValue + 1);
         }
     }
 
