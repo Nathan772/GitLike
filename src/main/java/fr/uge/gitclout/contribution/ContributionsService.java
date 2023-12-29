@@ -18,15 +18,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public class ContributionsService {
   private final Map<String, Contributions> contributions = new HashMap<>();
@@ -65,6 +65,29 @@ public class ContributionsService {
     return "";
   }
 
+  public Set<Integer> findCommentLines(List<String> fileContentLines, Pattern commentPattern) {
+    String fileContent = String.join("\n", fileContentLines);
+
+    Matcher matcher = commentPattern.matcher(fileContent);
+    Set<Integer> commentLineNumbers = new HashSet<>();
+    while (matcher.find()) {
+      int start = matcher.start();
+      int end = matcher.end();
+
+      int startLine = countLines(fileContent.substring(0, start)) + 1;
+      int endLine = countLines(fileContent.substring(0, end)) + 1;
+
+      for (int i = startLine; i <= endLine; i++) {
+        commentLineNumbers.add(i - 1);
+      }
+    }
+    return commentLineNumbers;
+  }
+
+  private int countLines(String str) {
+    return (int) str.chars().filter(ch -> ch == '\n').count();
+  }
+
   private void walkTree(RevCommit commit, Repository repository, ObjectId commitId, String tag) {
     try (var treeWalk = new TreeWalk(repository)) {
       treeWalk.addTree(commit.getTree());
@@ -79,30 +102,41 @@ public class ContributionsService {
         callables.add(() -> {
           var tagName = tag.replace("refs/tags/", "");
           try {
+
             BlameResult blameResult = new BlameCommand(repository)
                     .setFilePath(path)
                     .setStartCommit(commitId)
                     .call();
 
+            Pattern regexComment = supportedLanguages.getCommentRegex(getFileExtension(path));
+            Set<Integer> commentLineNumbers = new HashSet<>();
+            if (regexComment != null) {
+              List<String> fileContentLines = IntStream.range(0, blameResult.getResultContents().size())
+                      .mapToObj(blameResult.getResultContents()::getString)
+                      .toList();
+              commentLineNumbers = findCommentLines(fileContentLines, regexComment);
+            }
+
+
             String fileExtension = getFileExtension(path);
             ContributionType contributionType = supportedLanguages.getType(fileExtension);
 
             for (int i = 0; i < blameResult.getResultContents().size(); i++) {
-              RevCommit lineCommit = blameResult.getSourceCommit(i);
-              String author = lineCommit.getAuthorIdent().getName();
-              String email = lineCommit.getAuthorIdent().getEmailAddress();
-              author = author + " <" + email + ">";
-
               synchronized (lock) {
+                RevCommit lineCommit = blameResult.getSourceCommit(i);
+                String author = lineCommit.getAuthorIdent().getName() + " <" + lineCommit.getAuthorIdent().getEmailAddress() + ">";
+
                 Contributions tagContributions = contributions.computeIfAbsent(tagName, k -> new Contributions());
                 String language = supportedLanguages.getLanguage(fileExtension);
+
+                boolean isComment = commentLineNumbers.contains(i);
 
                 tagContributions.addAuthorContribution(
                         author,
                         contributionType,
                         language,
                         1,
-                        0
+                        isComment ? 1 : 0
                 );
 
                 if (contributionType == ContributionType.RESOURCE) {
@@ -121,6 +155,7 @@ public class ContributionsService {
           }
           return null;
         });
+
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -155,11 +190,16 @@ public class ContributionsService {
                       new JSONData.JSONContributions(tag, contributions.get(tag).getContributions())
               ));
               contributions.remove(tag);
+              tags.removeIf(ref -> ref.getName().equals("refs/tags/" + tag));
               sink.tryEmitNext(event);
             }
           }
         } catch (Exception e) {
           sink.tryEmitError(e);
+        } finally {
+          if (tags.isEmpty()) {
+            sink.tryEmitComplete();
+          }
         }
       }, executorService);
     }

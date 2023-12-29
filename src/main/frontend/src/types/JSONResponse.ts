@@ -32,6 +32,7 @@ export interface ContributionsByType {
 
 export interface Contribution {
     total: number;
+    totalComment: number;
     details: ContributionDetails;
 }
 

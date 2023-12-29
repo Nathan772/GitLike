@@ -2,63 +2,78 @@
   "extensions": {
     ".java": {
       "type": "CODE",
-      "language": "Java"
+      "language": "Java",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".py": {
       "type": "CODE",
-      "language": "Python"
+      "language": "Python",
+      "regexComments": "(?:#[^\\r\\n]*|\"\"\"[\\s\\S]*?\"\"\")"
     },
     ".js": {
       "type": "CODE",
-      "language": "JavaScript"
+      "language": "JavaScript",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".ts": {
       "type": "CODE",
-      "language": "TypeScript"
+      "language": "TypeScript",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".rb": {
       "type": "CODE",
-      "language": "Ruby"
+      "language": "Ruby",
+      "regexComments": "#[^\\r\\n]*"
     },
     ".php": {
       "type": "CODE",
-      "language": "PHP"
+      "language": "PHP",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".cpp": {
       "type": "CODE",
-      "language": "C++"
+      "language": "C++",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".cs": {
       "type": "CODE",
-      "language": "C#"
+      "language": "C#",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".c": {
       "type": "CODE",
-      "language": "C"
+      "language": "C",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".go": {
       "type": "CODE",
-      "language": "Go"
+      "language": "Go",
+      "regexComments": "\\/\\/[^\\r\\n]*"
     },
     ".swift": {
       "type": "CODE",
-      "language": "Swift"
+      "language": "Swift",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".kt": {
       "type": "CODE",
-      "language": "Kotlin"
+      "language": "Kotlin",
+      "regexComments": "\\/\\/[^\\r\\n]*"
     },
     ".rs": {
       "type": "CODE",
-      "language": "Rust"
+      "language": "Rust",
+      "regexComments": "\\/\\/[^\\r\\n]*"
     },
     ".scala": {
       "type": "CODE",
-      "language": "Scala"
+      "language": "Scala",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
     },
     ".html": {
       "type": "CODE",
-      "language": "HTML"
+      "language": "HTML",
+      "regexComments": "<!--[\\s\\S]*?-->"
     },
     ".png": {
       "type": "RESOURCE",

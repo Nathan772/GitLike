@@ -6,22 +6,20 @@ import fr.uge.gitclout.contribution.ContributionType;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class SupportedLanguages {
 
-  private Map<String, FileTypeInfo> fileTypes;
+  private final Map<String, FileTypeInfo> fileTypes;
 
   public SupportedLanguages() {
     var path = "languages.json";
     ObjectMapper mapper = new ObjectMapper();
     try {
-      FileTypes fileTypesData = mapper.readValue(
-              new File(path),
-              FileTypes.class
-      );
-      fileTypes = fileTypesData.getExtensions();
+      FileTypes fileTypesData = mapper.readValue(new File(path), FileTypes.class);
+      fileTypes = fileTypesData.extensions();
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new RuntimeException("Failed to load language types", e);
     }
   }
 
@@ -30,61 +28,20 @@ public class SupportedLanguages {
   }
 
   public ContributionType getType(String extension) {
-    if (!isSupported(extension)) {
-      return ContributionType.OTHER;
-    }
-    return fileTypes.get(extension).getType();
+    return isSupported(extension) ? fileTypes.get(extension).type() : ContributionType.OTHER;
   }
 
   public String getLanguage(String extension) {
-    if (!isSupported(extension)) {
-      return extension;
-    }
-    return fileTypes.get(extension).getLanguage();
+    return isSupported(extension) ? fileTypes.get(extension).language() : extension;
   }
 
-  public Map<String, FileTypeInfo> getFileTypes() {
-    return fileTypes;
+  public Pattern getCommentRegex(String extension) {
+    return isSupported(extension) && fileTypes.get(extension).regexComments() != null
+            ? Pattern.compile(fileTypes.get(extension).regexComments())
+            : null;
   }
 
-  public static class FileTypes {
+  private record FileTypes(Map<String, FileTypeInfo> extensions) {}
 
-    private Map<String, FileTypeInfo> extensions;
-
-    public Map<String, FileTypeInfo> getExtensions() {
-      return extensions;
-    }
-
-
-    public void setExtensions(Map<String, FileTypeInfo> extensions) {
-      this.extensions = extensions;
-    }
-  }
-
-  public static class FileTypeInfo {
-
-    private ContributionType type;
-    private String language;
-
-    public ContributionType getType() {
-      return type;
-    }
-
-    public void setType(ContributionType type) {
-      this.type = type;
-    }
-
-    public String getLanguage() {
-      return language;
-    }
-
-    public void setLanguage(String language) {
-      this.language = language;
-    }
-
-    @Override
-    public String toString() {
-      return "Type: " + type + ", Language: " + language;
-    }
-  }
+  private record FileTypeInfo(ContributionType type, String language, String regexComments) {}
 }

@@ -11,6 +11,8 @@ import java.util.Map;
 public class ContributionTypeDetails {
   @JsonProperty("total")
   private int total;
+  @JsonProperty("totalComment")
+  private int totalComment;
   @JsonProperty("details")
   private final Map<String, LanguageCount> details = new HashMap<>();
 
@@ -18,8 +20,9 @@ public class ContributionTypeDetails {
   }
 
   @JsonCreator
-  public ContributionTypeDetails(int total, Map<String, LanguageCount> details) {
+  public ContributionTypeDetails(int total, int totalComment, Map<String, LanguageCount> details) {
     this.total = total;
+    this.totalComment = totalComment;
     this.details.putAll(details);
   }
 
@@ -27,10 +30,15 @@ public class ContributionTypeDetails {
     LanguageCount languageCount = details.computeIfAbsent(language, LanguageCount::new);
     languageCount.incrementCount(count, commentCount);
     total += count;
+    totalComment += commentCount;
   }
 
   public int getTotal() {
     return total;
+  }
+
+  public int getTotalComment() {
+    return totalComment;
   }
 
   public Map<String, LanguageCount> getDetails() {

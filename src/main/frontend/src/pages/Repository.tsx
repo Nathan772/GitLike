@@ -19,7 +19,9 @@ function Repo() {
     const [progress, setProgress] = createSignal(0);
 
     const [selectedTag, setSelectedTag] = createSignal('' as string);
-    const [dataTags, setDataTags] = createSignal([] as Contributions[]);
+    const [dataTags, setDataTags] = createSignal({} as Record<string, Contributions>);
+
+    const [showComments, setShowComments] = createSignal(false);
 
     onMount(async () => {
         const modal = new Modal(document.getElementById('modal')!);
@@ -52,6 +54,7 @@ function Repo() {
                 const begin = new Date().getTime();
 
                 const evtSource = new EventSource(`http://localhost:8080/api/analyze-tags?url=${url}`);
+                console.log("evtSource", evtSource);
 
                 const infoCloning: ToastInfo = {
                     type: "info",
@@ -64,7 +67,7 @@ function Repo() {
 
                 evtSource.onmessage = (event) => {
                     const data = JSON.parse(event.data);
-                    console.log(data);
+                    console.log("DATA", data);
                     // const info: ToastInfo = {
                     //     type: data.status,
                     //     message: data.message
@@ -77,11 +80,15 @@ function Repo() {
                     progressBar.style.width = `${progress()}%`;
 
                     if (data.status === "success") {
-                        setDataTags([...dataTags(), data.data]);
+                        setDataTags(prevDataTags => ({
+                            ...prevDataTags,
+                            [data.data.tagName]: data.data
+                        }));
                     }
 
+                    console.log("dataTags", dataTags());
+
                     if (count === tags().length) {
-                        console.log('done');
                         evtSource.close();
 
                         const end = new Date().getTime();
@@ -90,6 +97,7 @@ function Repo() {
                             type: "info",
                             message: `Done in ${(end - begin) / 1000} seconds.`
                         };
+                        console.log(`Done in ${(end - begin) / 1000} seconds.`);
 
                         addToast(info);
                     }
@@ -97,6 +105,7 @@ function Repo() {
 
                 evtSource.onerror = (event) => {
                     console.log(event);
+                    evtSource.close();
                 }
 
 
@@ -116,12 +125,11 @@ function Repo() {
     }
 
     function getClassButton(tag: string) {
-        if (dataTags()[tags().indexOf(tag)] === undefined) {
+        if (dataTags()[tag] === undefined) {
             return selectedTag() === tag ? "btn-secondary" : "btn-outline-secondary";
         }
         return selectedTag() === tag ? "btn-primary" : "btn-outline-primary";
     }
-
 
     return (
         <>
@@ -160,16 +168,15 @@ function Repo() {
                 <div class="mt-5">
                     <Show when={selectedTag() !== ''}>
                         <h2 class="h3">Tag: {selectedTag()}</h2>
-                        <Show when={dataTags()[tags().indexOf(selectedTag())] !== undefined} fallback={<div class="spinner-border spinner-border-sm" role="status">
+                        <button class="btn btn-secondary" role="button" data-bs-toggle="button" onClick={() => setShowComments(!showComments())}>
+                            {showComments() ? "Hide Comments" : "Show Comments"}
+                        </button>
+                        <Show when={dataTags()[selectedTag()] !== undefined} fallback={<div class="spinner-border spinner-border-sm" role="status">
                             <span class="visually-hidden">Loading...</span></div>}>
-                            <Stats contributions={dataTags()[tags().indexOf(selectedTag())]} />
+                            <Stats contributions={dataTags()[selectedTag()]} showComments={showComments()} />
                         </Show>
                     </Show>
                 </div>
-
-
-
-
 
             </main>
 
