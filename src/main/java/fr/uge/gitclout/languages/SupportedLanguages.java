@@ -47,7 +47,10 @@ public class SupportedLanguages {
     if (!isSupported(extension)) {
       return ContributionType.OTHER;
     }
-    return fileTypes.get(extension).getType();
+    switch(fileTypes.get(extension)){
+      case Documentation doc -> {return doc.getType();}
+      case Language lang -> {return lang.getType();}
+    }
   }
 
   /*
@@ -76,7 +79,10 @@ public class SupportedLanguages {
     if (!isSupported(extension)) {
       return extension;
     }
-    return fileTypes.get(extension).name();
+    switch(fileTypes.get(extension)){
+      case Language lang -> {return lang.name();}
+      case Documentation doc -> {return doc.name();}
+    }
   }
 
   public Map<String,SupportedFiles>  getFileTypes() {

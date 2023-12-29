@@ -50,7 +50,6 @@ public final class Language implements SupportedFiles {
      * @return
      * true if yes, if no, false
      */
-    @Override
     public boolean containsComments(){
         return true;
     }
