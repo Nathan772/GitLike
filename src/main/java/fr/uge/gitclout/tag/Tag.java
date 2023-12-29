@@ -23,6 +23,7 @@ public class Tag {
   public Tag(String name, String gitName, Repository repository) {
     Objects.requireNonNull(name, "You cannot have a null for your tag name");
     Objects.requireNonNull(repository, "you cannot hava a null repository");
+    Objects.requireNonNull(gitName, "you cannot have a null gitName");
     this.tagName = name;
     this.refTagName = gitName;
     this.repository = repository;

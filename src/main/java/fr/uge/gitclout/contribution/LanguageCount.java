@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.serde.annotation.Serdeable;
 
+import java.util.Objects;
+
 @Serdeable
 public class LanguageCount {
   @JsonProperty("language")
@@ -21,6 +23,9 @@ public class LanguageCount {
   public LanguageCount(@JsonProperty("language") String language,
                        @JsonProperty("count") int count,
                        @JsonProperty("commentCount") int commentCount) {
+    Objects.requireNonNull(language);
+    if(count < 0) throw new IllegalArgumentException("count cannot be lesser than 0");
+    if(commentCount < 0) throw new IllegalArgumentException("commentCount cannot be lesser than 0");
     this.language = language;
     this.count = count;
     this.commentCount = commentCount;

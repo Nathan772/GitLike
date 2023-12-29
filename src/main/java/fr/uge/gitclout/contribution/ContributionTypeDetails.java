@@ -6,6 +6,7 @@ import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Serdeable
 public class ContributionTypeDetails {
@@ -21,6 +22,10 @@ public class ContributionTypeDetails {
 
   @JsonCreator
   public ContributionTypeDetails(int total, int totalComment, Map<String, LanguageCount> details) {
+    Objects.requireNonNull(details);
+    if (total < 0) {
+      throw new IllegalArgumentException("total contribution cannot be lesser than 0");
+    }
     this.total = total;
     this.totalComment = totalComment;
     this.details.putAll(details);

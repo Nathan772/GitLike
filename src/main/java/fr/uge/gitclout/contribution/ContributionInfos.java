@@ -7,6 +7,7 @@ import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Serdeable
 public class ContributionInfos {
@@ -21,6 +22,10 @@ public class ContributionInfos {
 
   @JsonCreator
   public ContributionInfos(Map<String, LanguageCount> languages, int totalCount) {
+    if(totalCount < 0){
+      throw new IllegalArgumentException("total count cannot be lesser than 0");
+    }
+    Objects.requireNonNull(languages);
     this.languages = languages;
     this.totalCount = totalCount;
   }
