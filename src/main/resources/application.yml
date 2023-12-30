@@ -14,7 +14,7 @@ micronaut:
         mapping: /swagger-ui/**
 datasources:
   default:
-    url: jdbc:sqlite:src/main/resources/db/gitclout.db
+    url: jdbc:sqlite:gitclout.db
     driverClassName: org.sqlite.JDBC
     dialect: org.hibernate.community.dialect.SQLiteDialect
 jpa:

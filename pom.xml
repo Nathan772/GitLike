@@ -142,15 +142,6 @@
       <artifactId>hibernate-community-dialects</artifactId>
       <version>6.3.1.Final</version>
     </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>6.13.1</version>
-      <scope>test</scope>
-    </dependency>
-
-
-
   </dependencies>
 
 
@@ -171,9 +162,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <!-- Uncomment to enable incremental compilation -->
-          <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
-
           <annotationProcessorPaths combine.children="append">
             <path>
               <groupId>io.micronaut</groupId>
@@ -191,10 +179,6 @@
                 </exclusion>
               </exclusions>
             </path>
-            <!--                        <path>-->
-            <!--                            <groupId>io.micronaut.data</groupId>-->
-            <!--                            <artifactId>micronaut-data-processor</artifactId>-->
-            <!--                        </path>-->
             <path>
               <groupId>io.micronaut.serde</groupId>
               <artifactId>micronaut-serde-processor</artifactId>
@@ -206,16 +190,6 @@
                 </exclusion>
               </exclusions>
             </path>
-            <path>
-              <groupId>io.micronaut.data</groupId>
-              <artifactId>micronaut-data-hibernate-jpa</artifactId>
-              <version>4.1.4</version>
-            </path>
-            <path>
-              <groupId>io.micronaut.data</groupId>
-              <artifactId>micronaut-data-processor</artifactId>
-              <version>4.1.4</version>
-            </path>
           </annotationProcessorPaths>
           <compilerArgs>
             <arg>-Amicronaut.processing.group=fr.uge.gitclout</arg>
@@ -225,13 +199,53 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.1</version>
+        <executions>
+          <execution>
+            <id>default-shade</id>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>${exec.mainClass}</mainClass>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*.*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                    <exclude>module-info.class</exclude>
+                    <exclude>META-INF/versions/9/module-info.class</exclude>
+                    <exclude>META-INF/LICENSE.md</exclude>
+                    <exclude>META-INF/NOTICE.md</exclude>
+                    <exclude>META-INF/LICENSE.txt</exclude>
+                    <exclude>META-INF/NOTICE</exclude>
+                    <exclude>META-INF/LICENSE</exclude>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>META-INF/config-properties.adoc</exclude>
+                    <exclude>META-INF/spring-configuration-metadata.json</exclude>
+                    <exclude>META-INF/io.netty.versions.properties</exclude>
+                    <exclude>META-INF/native-image/io.micronaut.data/data-tx/native-image.properties</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <configuration>
           <workingDirectory>src/main/frontend</workingDirectory>
           <installDirectory>target</installDirectory>
         </configuration>
-        <!-- NB! Set <version> to the latest released version of frontend-maven-plugin, like in README.md -->
         <version>1.14.0</version>
         <executions>
           <execution>
@@ -241,7 +255,6 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <!-- See https://nodejs.org/en/download/ for latest node and npm (lts) versions -->
               <nodeVersion>v20.9.0</nodeVersion>
               <npmVersion>10.2.1</npmVersion>
             </configuration>

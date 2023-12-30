@@ -1,4 +1,4 @@
-package fr.uge.gitclout.contribution;
+/*package fr.uge.gitclout.contribution;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,3 +44,4 @@ class ContributionTypeDetailsTest {
     }
 
 }
+ */

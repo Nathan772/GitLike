@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [solid()],
   build: {
     outDir: '../resources/static/',
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         entryFileNames: 'assets/index.js',
