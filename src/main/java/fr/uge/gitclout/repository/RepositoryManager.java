@@ -13,6 +13,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Objects;
 
+/**
+ * The class managing the repositories.
+ */
 @Singleton
 public class RepositoryManager {
   private final RepositoryRepository repositoryRepository;
@@ -23,6 +26,13 @@ public class RepositoryManager {
     this.repositoryRepository = repositoryRepository;
   }
 
+  /**
+   * Clones a repository in Bare mode.
+   *
+   * @param repositoryURL The URL of the repository.
+   * @param path          The path where the repository will be cloned.
+   * @throws GitAPIException If an error occurred while cloning the repository.
+   */
   private void cloneRepository(String repositoryURL, Path path) throws GitAPIException {
     Git.cloneRepository()
             .setURI(repositoryURL)
@@ -31,30 +41,70 @@ public class RepositoryManager {
             .call();
   }
 
+  /**
+   * Gets the repository name from its URL.
+   *
+   * @param repositoryURL The URL of the repository.
+   * @return The repository name.
+   * @throws URISyntaxException If the repository URL is not valid.
+   */
   private String getRepositoryName(String repositoryURL) throws URISyntaxException {
     Objects.requireNonNull(repositoryURL);
     URIish uri = new URIish(repositoryURL);
     return uri.getHumanishName();
   }
 
-  private void openRepository(Path path) throws GitAPIException, IOException {
+  /**
+   * Opens a repository.
+   *
+   * @param path The path of the repository.
+   * @throws IOException If an error occurred while opening the repository.
+   */
+  private void openRepository(Path path) throws IOException {
     Git.open(path.toFile());
   }
 
+  /**
+   * Generates a local path for a repository.
+   *
+   * @param repositoryURL The URL of the repository.
+   * @return The local path of the repository.
+   * @throws URISyntaxException If the repository URL is not valid.
+   */
   private Path generateRepositoryLocalPath(String repositoryURL) throws URISyntaxException {
     var timestamp = System.currentTimeMillis();
     return repositoryPath.resolve(getRepositoryName(repositoryURL) + "-" + timestamp);
   }
 
+  /**
+   * Opens or creates a repository.
+   *
+   * @param repositoryURL The URL of the repository.
+   * @param path          The path of the repository.
+   * @throws GitAPIException If an error occurred while opening or creating the repository.
+   */
+  private void openOrCreateRepository(String repositoryURL, Path path) throws GitAPIException {
+    try {
+      openRepository(path);
+    } catch (IOException e) {
+      cloneRepository(repositoryURL, path);
+    }
+  }
+
+  /**
+   * Resolves a repository.
+   *
+   * @param repositoryURL The URL of the repository.
+   * @return The repository.
+   * @throws GitAPIException    If an error occurred while resolving the repository.
+   * @throws URISyntaxException If the repository URL is not valid.
+   * @throws IOException        If an error occurred while resolving the repository.
+   */
   public Repository resolveRepository(String repositoryURL) throws GitAPIException, URISyntaxException, IOException {
     Objects.requireNonNull(repositoryURL);
     var repository = repositoryRepository.findByRepositoryURL(repositoryURL);
     if (repository.isPresent()) {
-      try {
-        openRepository(Path.of(repository.get().getRepositoryLocalPath()));
-      } catch (IOException e) {
-        cloneRepository(repositoryURL, Path.of(repository.get().getRepositoryLocalPath()));
-      }
+      openOrCreateRepository(repositoryURL, Path.of(repository.get().getRepositoryLocalPath()));
       return new FileRepository(Path.of(repository.get().getRepositoryLocalPath()).toFile());
     } else {
       var repositoryLocalPath = generateRepositoryLocalPath(repositoryURL);

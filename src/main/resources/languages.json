@@ -1,5 +1,5 @@
 {
-  "extensions": {
+  "filetypes": {
     ".java": {
       "type": "CODE",
       "language": "Java",
@@ -125,7 +125,7 @@
     },
     "build.xml": {
       "type": "BUILD",
-      "language": "XML"
+      "language": "build.xml"
     },
     "pom.xml": {
       "type": "CONFIG",

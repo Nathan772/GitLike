@@ -4,13 +4,14 @@ import { useNavigate, useSearchParams } from '@solidjs/router';
 import { Modal } from 'bootstrap';
 import { JSONResponse, RepositoryInfos, Contributions } from '../types/JSONResponse';
 import { setStoreError } from '../store';
-import { Toasts, addToast } from '../components/Toasts';
+import { Toasts, addToast } from '../components/toasts/Toasts';
 import { ToastInfo } from '../types/ToastInfo';
 
 import Stats from '../components/Stats';
+import BackToHomeButton from '../components/BackToHomeButton';
+import ResolvingTagsModal from '../components/ResolvingTagsModal';
 
 function Repo() {
-
     const navigate = useNavigate();
     const [name, setName] = createSignal('');
     const [url, setUrl] = createSignal('');
@@ -23,99 +24,122 @@ function Repo() {
 
     const [showComments, setShowComments] = createSignal(false);
 
+    /**
+     * Set repository infos and show success toast
+     * 
+     * @param data 
+     * @param res 
+     */
+    const setRepositoryInfos = (data: RepositoryInfos, res: JSONResponse) => {
+        setName(data.name);
+        setUrl(data.URL);
+        setTags(data.tags);
+        setSelectedTag(data.tags[0]);
+
+        const info: ToastInfo = {
+            type: "success",
+            message: res.message
+        };
+
+        addToast(info);
+    }
+
+    /**
+     * Start event source and show info toast
+     * 
+     * @param url 
+     * @returns 
+     */
+    const startEventSource = (url: string) => {
+        const evtSource = new EventSource(`http://localhost:8080/api/analyze-tags?url=${url}`);
+
+        const infoCloning: ToastInfo = {
+            type: "info",
+            message: "Cloning repository... This may take a while."
+        };
+
+        addToast(infoCloning);
+        return evtSource;
+    }
+
+    /**
+     * Update progress bar
+     * 
+     * @param count 
+     */
+    const updateProgress = (count: number) => {
+        const progressBar = document.querySelector('.progress-bar')! as HTMLElement;
+        setProgress(count / tags().length * 100);
+        progressBar.style.width = `${progress()}%`;
+    }
+
+    /**
+     * Add data to dataTags
+     * 
+     * @param data 
+     */
+    const addToDataTags = (data: Contributions) => {
+        setDataTags(prevDataTags => ({
+            ...prevDataTags,
+            [data.tagName]: data
+        }));
+    }
+
+    const toastEnd = (start: number) => {
+        const end = new Date().getTime();
+
+        const info: ToastInfo = {
+            type: "info",
+            message: `Done in ${(end - start) / 1000} seconds.`
+        };
+
+        addToast(info);
+    }
+
     onMount(async () => {
         const modal = new Modal(document.getElementById('modal')!);
         const modalElement = document.getElementById('modal')!;
-        const progressBar = document.querySelector('.progress-bar')! as HTMLElement;
+
         const [searchParams] = useSearchParams();
         const url = searchParams.url;
+
         if (!url) {
             navigate('/not-found');
             return;
         }
+
         modalElement.addEventListener('shown.bs.modal', async () => {
             const res = await getRepoInfos(url) as JSONResponse;
             const data = res.data as RepositoryInfos;
             modal.hide();
+
             if (res.status === "success") {
-                setName(data.name);
-                setUrl(data.URL);
-                setTags(data.tags);
-
-                setSelectedTag(data.tags[0]);
-
-                const info: ToastInfo = {
-                    type: "success",
-                    message: res.message
-                };
-
-                addToast(info);
-
-                const begin = new Date().getTime();
-
-                const evtSource = new EventSource(`http://localhost:8080/api/analyze-tags?url=${url}`);
-                console.log("evtSource", evtSource);
-
-                const infoCloning: ToastInfo = {
-                    type: "info",
-                    message: "Cloning repository... Please wait."
-                };
-
-                addToast(infoCloning);
-
+                setRepositoryInfos(data, res);
+                const start = new Date().getTime();
+                const evtSource = startEventSource(url);
                 let count = 0;
 
                 evtSource.onmessage = (event) => {
                     const data = JSON.parse(event.data);
-                    console.log("DATA", data);
-                    // const info: ToastInfo = {
-                    //     type: data.status,
-                    //     message: data.message
-                    // };
-                    //addToast(info);
                     count++;
-
-                    setProgress(count / tags().length * 100);
-                    console.log(progress());
-                    progressBar.style.width = `${progress()}%`;
+                    updateProgress(count);
 
                     if (data.status === "success") {
-                        setDataTags(prevDataTags => ({
-                            ...prevDataTags,
-                            [data.data.tagName]: data.data
-                        }));
+                        addToDataTags(data.data);
                     }
-
-                    console.log("dataTags", dataTags());
-
                     if (count === tags().length) {
-                        evtSource.close();
-
-                        const end = new Date().getTime();
-
-                        const info: ToastInfo = {
-                            type: "info",
-                            message: `Done in ${(end - begin) / 1000} seconds.`
-                        };
-                        console.log(`Done in ${(end - begin) / 1000} seconds.`);
-
-                        addToast(info);
+                        toastEnd(start);
                     }
                 }
-
-                evtSource.onerror = (event) => {
-                    console.log(event);
+                evtSource.onerror = () => {
                     evtSource.close();
                 }
-
-
             } else {
                 setStoreError({ message: res.message });
                 navigate('/not-found');
             }
         });
         modal.show();
-
     });
 
     function scrollHorizontally(e: any) {
@@ -133,23 +157,25 @@ function Repo() {
 
     return (
         <>
-
-            <main class="container mt-5">
+            <main class="container my-5">
                 <div class="d-inline-flex gap-3 align-items-center">
-                    <button class="icon-button btn btn-outline-secondary rounded-circle p-2" onClick={() => navigate('/')}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-                        </svg>
-                    </button>
+                    <BackToHomeButton />
                     <h1>{name()}</h1>
                 </div>
                 <p>{url()}</p>
 
-                <div class="progress" role="progressbar" aria-label="Analyzing Progress Bar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar"></div>
+                <div class="card" style="width: 50%; min-width: 18rem;">
+                    <div class="card-body">
+                        <Show when={progress() === 100} fallback={<h2 class="h5">Analyzing...</h2>}>
+                            <h2 class="h5">Done!</h2>
+                        </Show>
+                        <div class="progress" role="progressbar" aria-label="Analyzing Progress Bar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-5">
+                <div class="mt-4">
                     <h2 class="h3">Tags</h2>
                     <ul class="d-flex overflow-x-auto ps-0" onWheel={(e) => scrollHorizontally(e)}>
                         <For each={tags()}>
@@ -165,14 +191,18 @@ function Repo() {
                     </ul>
                 </div>
 
-                <div class="mt-5">
+                <div class="mt-4">
                     <Show when={selectedTag() !== ''}>
-                        <h2 class="h3">Tag: {selectedTag()}</h2>
-                        <button class="btn btn-secondary" role="button" data-bs-toggle="button" onClick={() => setShowComments(!showComments())}>
+                        <h2 class="h3 mb-3">Tag: {selectedTag()}</h2>
+                        <button class="btn btn-secondary mb-2" role="button" data-bs-toggle="button" onClick={() => setShowComments(!showComments())}>
                             {showComments() ? "Hide Comments" : "Show Comments"}
                         </button>
-                        <Show when={dataTags()[selectedTag()] !== undefined} fallback={<div class="spinner-border spinner-border-sm" role="status">
-                            <span class="visually-hidden">Loading...</span></div>}>
+                        <Show when={dataTags()[selectedTag()] !== undefined} fallback={
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>}>
                             <Stats contributions={dataTags()[selectedTag()]} showComments={showComments()} />
                         </Show>
                     </Show>
@@ -180,23 +210,7 @@ function Repo() {
 
             </main>
 
-            <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="modalLabel">Resolving Tags</h1>
-                        </div>
-                        <div class="modal-body">
-                            <div class="d-flex justify-content-center">
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <ResolvingTagsModal />
             <Toasts />
         </>
     )

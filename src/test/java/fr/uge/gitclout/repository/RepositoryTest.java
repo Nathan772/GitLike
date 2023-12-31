@@ -1,5 +1,6 @@
 package fr.uge.gitclout.repository;
 
+import fr.uge.gitclout.repository.db.Repository;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

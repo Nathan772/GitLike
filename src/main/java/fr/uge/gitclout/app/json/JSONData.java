@@ -5,9 +5,19 @@ import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.List;
 
+/**
+ * The interface representing a JSON data.
+ */
 @Serdeable
-public sealed interface JSONData permits JSONData.JSONRepository, JSONData.JSONUrl, JSONData.JSONContributions {
+public interface JSONData {
 
+  /**
+   * The record representing a JSON repository.
+   *
+   * @param name name of the repository
+   * @param URL  URL of the repository
+   * @param tags list of tags
+   */
   @Serdeable
   record JSONRepository(
           String name,
@@ -16,16 +26,38 @@ public sealed interface JSONData permits JSONData.JSONRepository, JSONData.JSONU
   ) implements JSONData {
   }
 
+  /**
+   * The record representing a JSON URL.
+   *
+   * @param URL
+   */
   @Serdeable
   record JSONUrl(
           String URL
   ) implements JSONData {
   }
 
+  /**
+   * The record representing a JSON contributions.
+   *
+   * @param tagName
+   * @param contributions list of author contributions
+   */
   @Serdeable
   record JSONContributions(
           String tagName,
           List<AuthorContributions> contributions
+  ) implements JSONData {
+  }
+
+  /**
+   * The record representing a JSON history.
+   *
+   * @param repositories list of repositories
+   */
+  @Serdeable
+  record JSONHistory(
+          List<JSONRepository> repositories
   ) implements JSONData {
   }
 }

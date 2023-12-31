@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Represents the number of lines and comments for a language.
+ */
 @Serdeable
 public class ContributionTypeDetails {
   @JsonProperty("total")
@@ -17,9 +20,19 @@ public class ContributionTypeDetails {
   @JsonProperty("details")
   private final Map<String, LanguageCount> details = new HashMap<>();
 
+  /**
+   * Creates a new LanguageCount.
+   */
   public ContributionTypeDetails() {
   }
 
+  /**
+   * Creates a new LanguageCount.
+   *
+   * @param total        the number of lines
+   * @param totalComment the number of lines of comments
+   * @param details      the details
+   */
   @JsonCreator
   public ContributionTypeDetails(int total, int totalComment, Map<String, LanguageCount> details) {
     Objects.requireNonNull(details);
@@ -31,6 +44,13 @@ public class ContributionTypeDetails {
     this.details.putAll(details);
   }
 
+  /**
+   * Adds a contribution for a language.
+   *
+   * @param language     the language
+   * @param count        the number of lines
+   * @param commentCount the number of lines of comments
+   */
   public void addContribution(String language, int count, int commentCount) {
     LanguageCount languageCount = details.computeIfAbsent(language, LanguageCount::new);
     languageCount.incrementCount(count, commentCount);
@@ -38,24 +58,30 @@ public class ContributionTypeDetails {
     totalComment += commentCount;
   }
 
+  /**
+   * Returns the total number of lines.
+   *
+   * @return the total number of lines
+   */
   public int getTotal() {
     return total;
   }
 
+  /**
+   * Returns the total number of lines of comments.
+   *
+   * @return the total number of lines of comments
+   */
   public int getTotalComment() {
     return totalComment;
   }
 
+  /**
+   * Returns the details.
+   *
+   * @return the details
+   */
   public Map<String, LanguageCount> getDetails() {
     return details;
-  }
-
-
-  @Override
-  public String toString() {
-    return "ContributionTypeDetails{" +
-            "total=" + total +
-            ", details=" + details +
-            '}';
   }
 }

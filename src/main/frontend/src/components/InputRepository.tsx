@@ -2,7 +2,7 @@ import { createSignal, Show } from 'solid-js';
 import { useNavigate } from "@solidjs/router";
 import { checkRepository } from "../utils";
 import { JSONResponse, URL } from '../types/JSONResponse';
-import { Toasts, addToast } from './Toasts';
+import { Toasts, addToast } from './toasts/Toasts';
 import { ToastInfo } from '../types/ToastInfo';
 
 
