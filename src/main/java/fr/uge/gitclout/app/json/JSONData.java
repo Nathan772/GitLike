@@ -29,7 +29,7 @@ public interface JSONData {
   /**
    * The record representing a JSON URL.
    *
-   * @param URL
+   * @param URL URL of the repository
    */
   @Serdeable
   record JSONUrl(
@@ -40,7 +40,7 @@ public interface JSONData {
   /**
    * The record representing a JSON contributions.
    *
-   * @param tagName
+   * @param tagName       name of the tag
    * @param contributions list of author contributions
    */
   @Serdeable

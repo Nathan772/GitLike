@@ -22,6 +22,7 @@ import io.micronaut.http.sse.Event;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.reactivestreams.Publisher;
 
@@ -120,6 +121,7 @@ public class GitcloutController {
    * @param url The URL of the remote repository.
    * @return A JSON response containing the URL of the deleted repository.
    */
+  @Transactional
   @Delete(uri = "/history", produces = "application/json")
   public HttpResponse<JSONResponse> deleteHistory(String url) {
     var repository = repositoryRepository.findByRepositoryURL(url);

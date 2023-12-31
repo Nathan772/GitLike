@@ -1,43 +1,61 @@
-## Micronaut 4.1.5 Documentation
+# GitClout
 
-- [User Guide](https://docs.micronaut.io/4.1.5/guide/index.html)
-- [API Reference](https://docs.micronaut.io/4.1.5/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/4.1.5/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+## Description
 
-- [Micronaut Maven Plugin documentation](https://micronaut-projects.github.io/micronaut-maven-plugin/latest/)
-## Feature micronaut-aot documentation
+GitClout is a web application that allows users to analyze tags from a public repository (Github or Gitlab for example) and display information about the contributors.
 
-- [Micronaut AOT documentation](https://micronaut-projects.github.io/micronaut-aot/latest/guide/)
+## Table of Contents
 
+- [GitClout](#gitclout)
+  - [Description](#description)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [About the results](#about-the-results)
 
-## Feature reactor documentation
+## Installation
 
-- [Micronaut Reactor documentation](https://micronaut-projects.github.io/micronaut-reactor/snapshot/guide/index.html)
+The project is built with Maven, so you can import it to your IDE and run it from there. You can also run it from the command line with the following command:
 
+```bash
+mvn package
+```
 
-## Feature maven-enforcer-plugin documentation
+The jar file will be located in the target folder.
 
-- [https://maven.apache.org/enforcer/maven-enforcer-plugin/](https://maven.apache.org/enforcer/maven-enforcer-plugin/)
+```bash
+java -jar target/gitclout-0.1.jar
+```
 
+## Usage
 
-## Feature swagger-ui documentation
+The application is a web application, so you can access it from your browser at the following address:
 
-- [Micronaut Swagger UI documentation](https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html)
+```bash
+http://localhost:8080
+```
 
-- [https://swagger.io/tools/swagger-ui/](https://swagger.io/tools/swagger-ui/)
+The application will ask you for a repository URL. You can use any public repository URL, for example:
 
+```bash
+https://gitlab.ow2.org/asm/asm.git
+```
 
-## Feature openapi documentation
+Once you have entered the URL, the application will start analyzing the repository. This may take a while depending on the size of the repository.
 
-- [Micronaut OpenAPI Support documentation](https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html)
+The app is entirely written reactive, so when a tag is analyzed, the result is displayed immediately. A progress bar is displayed at the top of the page to indicate the progress of the analysis.
 
-- [https://www.openapis.org](https://www.openapis.org)
+Once the analysis is complete, the results are stored in a database. The next time you analyze the same repository, only the new tags will be analyzed.
+You can see already analyzed repositories in the "History" section of the home page.
 
+### About the results
 
-## Feature serialization-jackson documentation
+The results are displayed in charts. You can see the number of lines for a selection of contribution types:
 
-- [Micronaut Serialization Jackson Core documentation](https://micronaut-projects.github.io/micronaut-serialization/latest/guide/)
+- CODE: Number of lines of code
+- RESOURCE: Number of resource files (images, etc.) (**not lines**)
+- CONFIG: Number of lines of configuration files (pom.xml, etc.)
+- DOCUMENATION: Number of lines of documentation files (README.md, etc.)
+- BUILD: Number of lines of build files (Dockerfile, etc.)
 
-
+You can click "Show Comments" to see the number of comments for each CODE contribution type.

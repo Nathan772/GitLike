@@ -4,6 +4,10 @@ import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.info.*;
 
+/**
+ * Main class of the application.
+ */
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "db",

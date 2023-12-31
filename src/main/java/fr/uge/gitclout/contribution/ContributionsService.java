@@ -38,6 +38,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+/**
+ * Service that handles the contributions analysis.
+ */
 public class ContributionsService {
   private final Map<String, Contributions> contributions = new HashMap<>();
   private final List<Callable<Optional<String>>> callables = new ArrayList<>();
@@ -53,6 +56,14 @@ public class ContributionsService {
   private final ContributionRepository contributionRepository;
   private final ContributionDetailRepository contributionDetailRepository;
 
+  /**
+   * Constructor.
+   *
+   * @param tagRepository                tag repository
+   * @param repositoryRepository         repository repository
+   * @param contributionRepository       contribution repository
+   * @param contributionDetailRepository contribution detail repository
+   */
   public ContributionsService(TagRepository tagRepository, RepositoryRepository repositoryRepository, ContributionRepository contributionRepository, ContributionDetailRepository contributionDetailRepository) {
     Objects.requireNonNull(tagRepository);
     Objects.requireNonNull(repositoryRepository);
@@ -64,7 +75,13 @@ public class ContributionsService {
     this.contributionDetailRepository = contributionDetailRepository;
   }
 
-  private ObjectId getCommitId(Ref tag) {
+  /**
+   * Get the commit id of a tag.
+   *
+   * @param tag tag
+   * @return commit id
+   */
+  private static ObjectId getCommitId(Ref tag) {
     ObjectId commitId = tag.getPeeledObjectId();
     if (commitId == null) {
       commitId = tag.getObjectId();
@@ -72,7 +89,14 @@ public class ContributionsService {
     return commitId;
   }
 
-  private RevCommit getCommit(ObjectId commitId, Repository repository) {
+  /**
+   * Get the commit of a commit id.
+   *
+   * @param commitId   commit id
+   * @param repository repository
+   * @return commit
+   */
+  private static RevCommit getCommit(ObjectId commitId, Repository repository) {
     try (var revWalk = new RevWalk(repository)) {
       return revWalk.parseCommit(commitId);
     } catch (IOException e) {
@@ -80,6 +104,13 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Find the lines that are comments.
+   *
+   * @param fileContentLines file content lines
+   * @param commentPattern   comment pattern
+   * @return set of line numbers that are comments
+   */
   private Set<Integer> findCommentLines(List<String> fileContentLines, Pattern commentPattern) {
     String fileContent = String.join("\n", fileContentLines);
     Matcher matcher = commentPattern.matcher(fileContent);
@@ -94,7 +125,13 @@ public class ContributionsService {
     return commentLineNumbers;
   }
 
-  private int countLines(String str) {
+  /**
+   * Count the number of lines in a string.
+   *
+   * @param str string
+   * @return number of lines
+   */
+  private static int countLines(String str) {
     return (int) str.chars().filter(ch -> ch == '\n').count();
   }
 
@@ -109,6 +146,13 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Get the lines that are comments.
+   *
+   * @param blameResult blame result
+   * @param path        path
+   * @return set of line numbers that are comments
+   */
   private Set<Integer> getCommentedLines(BlameResult blameResult, String path) {
     Pattern regexComment = supportedLanguages.getCommentRegex(path);
     if (regexComment == null) {
@@ -120,7 +164,15 @@ public class ContributionsService {
     return findCommentLines(fileContentLines, regexComment);
   }
 
-
+  /**
+   * Analyze the lines of a file.
+   *
+   * @param blameResult        blame result
+   * @param path               path
+   * @param tagName            tag name
+   * @param commentLineNumbers comment line numbers
+   * @param contributionType   contribution type
+   */
   private void analyzeLines(BlameResult blameResult, String path, String tagName, Set<Integer> commentLineNumbers, ContributionType contributionType) {
     for (int i = 0; i < blameResult.getResultContents().size(); i++) {
       synchronized (lock) {
@@ -138,6 +190,14 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Add a callable to the list of callables.
+   *
+   * @param repository repository
+   * @param path       path
+   * @param commitId   commit id
+   * @param tag        tag
+   */
   private void addBlameToCallables(Repository repository, String path, ObjectId commitId, String tag) {
     callables.add(() -> {
       var tagName = tag.replace("refs/tags/", "");
@@ -155,6 +215,14 @@ public class ContributionsService {
     });
   }
 
+  /**
+   * Walk the tree of a commit.
+   *
+   * @param commit     commit
+   * @param repository repository
+   * @param commitId   commit id
+   * @param tag        tag
+   */
   private void walkTree(RevCommit commit, Repository repository, ObjectId commitId, String tag) {
     try (var treeWalk = new TreeWalk(repository)) {
       treeWalk.addTree(commit.getTree());
@@ -174,6 +242,13 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Get the callables for the contributions.
+   *
+   * @param tags       tags
+   * @param repository repository
+   * @return list of callables
+   */
   private List<Callable<Optional<String>>> getContributionsCallables(List<Ref> tags, Repository repository) {
     for (Ref tag : tags) {
       ObjectId commitId = getCommitId(tag);
@@ -183,6 +258,12 @@ public class ContributionsService {
     return callables;
   }
 
+  /**
+   * Get the author contributions from the database.
+   *
+   * @param analyzedTags analyzed tags
+   * @return map of author contributions
+   */
   private Map<String, List<AuthorContributions>> authorContributionsFromDB(List<Tag> analyzedTags) {
     Map<String, List<AuthorContributions>> authorContributions = new HashMap<>();
     for (var analyzedTag : analyzedTags) {
@@ -192,6 +273,13 @@ public class ContributionsService {
     return authorContributions;
   }
 
+  /**
+   * Process the contributions for a tag.
+   *
+   * @param authorContributions author contributions
+   * @param analyzedTag         analyzed tag
+   * @param contributions       contributions
+   */
   private void processContributionsForTag(Map<String, List<AuthorContributions>> authorContributions, Tag analyzedTag, List<Contribution> contributions) {
     for (var contribution : contributions) {
       var contributionDetails = contributionDetailRepository.findByContributionId(contribution.getId());
@@ -206,6 +294,14 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Get or create an author contribution.
+   *
+   * @param authorContributions author contributions
+   * @param tagName             tag name
+   * @param author              author
+   * @return author contribution
+   */
   private AuthorContributions getOrCreateAuthorContribution(Map<String, List<AuthorContributions>> authorContributions, String tagName, String author) {
     return authorContributions.computeIfAbsent(tagName, k -> new ArrayList<>())
             .stream()
@@ -214,12 +310,27 @@ public class ContributionsService {
             .orElseGet(() -> createAndAddNewAuthorContribution(authorContributions, tagName, author));
   }
 
+  /**
+   * Create and add a new author contribution.
+   *
+   * @param authorContributions author contributions
+   * @param tagName             tag name
+   * @param author              author
+   * @return author contribution
+   */
   private AuthorContributions createAndAddNewAuthorContribution(Map<String, List<AuthorContributions>> authorContributions, String tagName, String author) {
     AuthorContributions newContributions = new AuthorContributions(author);
     authorContributions.get(tagName).add(newContributions);
     return newContributions;
   }
 
+  /**
+   * Build the contribution type details.
+   *
+   * @param contribution        contribution
+   * @param contributionDetails contribution details
+   * @return contribution type details
+   */
   private ContributionTypeDetails buildContributionTypeDetails(Contribution contribution, List<ContributionDetail> contributionDetails) {
     Map<String, LanguageCount> details = new HashMap<>();
     for (var detail : contributionDetails) {
@@ -229,6 +340,13 @@ public class ContributionsService {
   }
 
 
+  /**
+   * Remove the analyzed tags from the tags.
+   *
+   * @param analyzedTags analyzed tags
+   * @param tags         tags
+   * @return tags without the analyzed tags
+   */
   private List<Ref> removeAnalyzedTagsFromTags(List<Tag> analyzedTags, List<Ref> tags) {
     for (var analyzedTag : analyzedTags) {
       tags.removeIf(tag -> tag.getName().equals(analyzedTag.getRefTagName()));
@@ -236,6 +354,13 @@ public class ContributionsService {
     return tags;
   }
 
+  /**
+   * Save all the contributions.
+   *
+   * @param repository        repository
+   * @param tags              tags
+   * @param sentContributions contributions already sent
+   */
   @Transactional
   private void saveAll(Repository repository, List<Ref> tags, Map<String, Contributions> sentContributions) {
     var repo = saveRepository(repository);
@@ -250,6 +375,12 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Save the repository.
+   *
+   * @param repository repository
+   * @return repository
+   */
   private fr.uge.gitclout.repository.db.Repository saveRepository(Repository repository) {
     String repoURL = repository.getConfig().getString("remote", "origin", "url");
     String name;
@@ -268,6 +399,13 @@ public class ContributionsService {
     return repo;
   }
 
+  /**
+   * Save the tag.
+   *
+   * @param repo   repository
+   * @param tagRef tag ref
+   * @return tag
+   */
   private Tag saveTag(fr.uge.gitclout.repository.db.Repository repo, Ref tagRef) {
     var tagName = tagRef.getName().replace("refs/tags/", "");
     var tagDB = new Tag(tagName, tagRef.getName(), repo);
@@ -278,6 +416,12 @@ public class ContributionsService {
     return tagDB;
   }
 
+  /**
+   * Save the contributions.
+   *
+   * @param contributions contributions
+   * @param tagDB         tag
+   */
   private void saveContributions(Contributions contributions, Tag tagDB) {
     for (var authorContribution : contributions.getContributions()) {
       var author = authorContribution.getAuthor();
@@ -288,6 +432,15 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Save a contribution.
+   *
+   * @param author           author
+   * @param contributionType contribution type
+   * @param details          contribution type details
+   * @param tagDB            tag
+   * @return contribution
+   */
   private Contribution saveContribution(String author, ContributionType contributionType, ContributionTypeDetails details, Tag tagDB) {
     var contributionDB = new Contribution(author, contributionType.toString(), details.getTotal(),
             details.getTotalComment(), tagDB.getRepository(), tagDB
@@ -302,6 +455,12 @@ public class ContributionsService {
     return contributionDB;
   }
 
+  /**
+   * Save the contribution details.
+   *
+   * @param details        contribution type details
+   * @param contributionDB contribution
+   */
   private void saveContributionDetails(ContributionTypeDetails details, Contribution contributionDB) {
     for (var entry : details.getDetails().entrySet()) {
       var language = entry.getKey();
@@ -317,6 +476,13 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Emit events for the analyzed tags.
+   *
+   * @param analyzedTags        analyzed tags
+   * @param authorContributions author contributions
+   * @param sink                sink
+   */
   private void emitEventsForAnalyzedTags(List<Tag> analyzedTags, Map<String, List<AuthorContributions>> authorContributions, Sinks.Many<Event<JSONResponse>> sink) {
     for (var analyzedTag : analyzedTags) {
       Event<JSONResponse> event = Event.of(new JSONResponse(
@@ -327,6 +493,13 @@ public class ContributionsService {
     }
   }
 
+  /**
+   * Process the new tags.
+   *
+   * @param repository repository
+   * @param tags       tags
+   * @param sink       sink
+   */
   private void processNewTags(Repository repository, List<Ref> tags, Sinks.Many<Event<JSONResponse>> sink) {
     ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     AtomicInteger count = new AtomicInteger(tags.size());
@@ -362,7 +535,14 @@ public class ContributionsService {
     }
   }
 
-
+  /**
+   * Get the contributions.
+   *
+   * @param repository repository
+   * @return contributions
+   * @throws GitAPIException git api exception
+   * @throws IOException     io exception
+   */
   public Flux<Event<JSONResponse>> getContributions(Repository repository) throws GitAPIException, IOException {
     var gitTagManager = new TagManager(repository);
     var analyzedTags = tagRepository.findByRepositoryRepositoryURL(repository.getConfig().getString("remote", "origin", "url"));
@@ -383,6 +563,12 @@ public class ContributionsService {
     return sink.asFlux().doFinally(signalType -> executorService.shutdown());
   }
 
+  /**
+   * Get the contribution type.
+   *
+   * @param contribution contribution
+   * @return contribution type
+   */
   private static ContributionType getContributionType(Contribution contribution) {
     var type = contribution.getContributionType();
     ContributionType contributionType = ContributionType.OTHER;

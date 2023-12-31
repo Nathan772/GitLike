@@ -7,9 +7,9 @@ import java.util.Objects;
 /**
  * The record representing a JSON response.
  *
- * @param message
- * @param status
- * @param data
+ * @param message message of the response
+ * @param status status of the response
+ * @param data  data of the response
  */
 @Serdeable
 public record JSONResponse(
