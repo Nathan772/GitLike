@@ -3,8 +3,9 @@ micronaut:
     name: gitclout
   router:
     static-resources:
-      default:
+      app:
         paths: classpath:static
+        mapping: /**
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /swagger/**
@@ -13,15 +14,15 @@ micronaut:
         mapping: /swagger-ui/**
 datasources:
   default:
-    url: jdbc:sqlite:src/main/resources/db/gitclout.db
+    url: jdbc:sqlite:gitclout.db
     driverClassName: org.sqlite.JDBC
     dialect: org.hibernate.community.dialect.SQLiteDialect
 jpa:
   default:
     entity-scan:
-      packages: 'fr.uge.gitclout.model'
-#    properties:
-#      hibernate:
-#        hbm2ddl:
-#          auto: update
-#        show_sql: true
+      packages: 'fr.uge.gitclout'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: false

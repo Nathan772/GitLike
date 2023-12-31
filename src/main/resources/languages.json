@@ -1,0 +1,199 @@
+{
+  "filetypes": {
+    ".java": {
+      "type": "CODE",
+      "language": "Java",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".py": {
+      "type": "CODE",
+      "language": "Python",
+      "regexComments": "(?:#[^\\r\\n]*|\"\"\"[\\s\\S]*?\"\"\")"
+    },
+    ".js": {
+      "type": "CODE",
+      "language": "JavaScript",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".ts": {
+      "type": "CODE",
+      "language": "TypeScript",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".rb": {
+      "type": "CODE",
+      "language": "Ruby",
+      "regexComments": "#[^\\r\\n]*"
+    },
+    ".php": {
+      "type": "CODE",
+      "language": "PHP",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".cpp": {
+      "type": "CODE",
+      "language": "C++",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".cs": {
+      "type": "CODE",
+      "language": "C#",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".c": {
+      "type": "CODE",
+      "language": "C",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".go": {
+      "type": "CODE",
+      "language": "Go",
+      "regexComments": "\\/\\/[^\\r\\n]*"
+    },
+    ".swift": {
+      "type": "CODE",
+      "language": "Swift",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".kt": {
+      "type": "CODE",
+      "language": "Kotlin",
+      "regexComments": "\\/\\/[^\\r\\n]*"
+    },
+    ".rs": {
+      "type": "CODE",
+      "language": "Rust",
+      "regexComments": "\\/\\/[^\\r\\n]*"
+    },
+    ".scala": {
+      "type": "CODE",
+      "language": "Scala",
+      "regexComments": "(?:\\/\\/[^\\r\\n]*|\\/\\*[\\s\\S]*?\\*\\/)"
+    },
+    ".html": {
+      "type": "CODE",
+      "language": "HTML",
+      "regexComments": "<!--[\\s\\S]*?-->"
+    },
+    ".png": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".jpg": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".jpeg": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".gif": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".bmp": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".svg": {
+      "type": "RESOURCE",
+      "language": "Image"
+    },
+    ".pdf": {
+      "type": "RESOURCE",
+      "language": "Document"
+    },
+    ".mp4": {
+      "type": "RESOURCE",
+      "language": "Video"
+    },
+    ".avi": {
+      "type": "RESOURCE",
+      "language": "Video"
+    },
+    ".mov": {
+      "type": "RESOURCE",
+      "language": "Video"
+    },
+    ".mp3": {
+      "type": "RESOURCE",
+      "language": "Audio"
+    },
+    ".wav": {
+      "type": "RESOURCE",
+      "language": "Audio"
+    },
+    "build.xml": {
+      "type": "BUILD",
+      "language": "build.xml"
+    },
+    "pom.xml": {
+      "type": "CONFIG",
+      "language": "Maven"
+    },
+    "settings.gradle": {
+      "type": "CONFIG",
+      "language": "Gradle"
+    },
+    "configure.ac": {
+      "type": "CONFIG",
+      "language": "Autoconf"
+    },
+    "Makefile": {
+      "type": "CONFIG",
+      "language": "Make"
+    },
+    "Dockerfile": {
+      "type": "CONFIG",
+      "language": "Docker"
+    },
+    "Vagrantfile": {
+      "type": "CONFIG",
+      "language": "Vagrant"
+    },
+    "package.json": {
+      "type": "CONFIG",
+      "language": "NPM"
+    },
+    "composer.json": {
+      "type": "CONFIG",
+      "language": "Composer"
+    },
+    ".travis.yml": {
+      "type": "CONFIG",
+      "language": "Travis CI"
+    },
+    ".gitlab-ci.yml": {
+      "type": "CONFIG",
+      "language": "GitLab CI"
+    },
+    ".circleci": {
+      "type": "CONFIG",
+      "language": "CircleCI"
+    },
+    ".github": {
+      "type": "CONFIG",
+      "language": "GitHub Actions"
+    },
+    ".azure-pipelines": {
+      "type": "CONFIG",
+      "language": "Azure Pipelines"
+    },
+    ".md": {
+      "type": "DOCUMENTATION",
+      "language": "Markdown"
+    },
+    ".rst": {
+      "type": "DOCUMENTATION",
+      "language": "reStructuredText"
+    },
+    ".wiki": {
+      "type": "DOCUMENTATION",
+      "language": "Wiki"
+    },
+    ".txt": {
+      "type": "DOCUMENTATION",
+      "language": "Text"
+    }
+  }
+}
